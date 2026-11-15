@@ -1,0 +1,8 @@
+{
+  "name": "Nashka Saudi Tourist Visa Platform",
+  "description": "منصة نشكا للسياحة المتخصصة في خدمات التقديم على التأشيرة السياحية للمملكة العربية السعودية ومتابعة الطلبات.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

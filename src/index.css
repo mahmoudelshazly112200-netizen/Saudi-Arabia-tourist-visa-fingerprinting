@@ -1,0 +1,348 @@
+@import "tailwindcss";
+@import "./styles/design-tokens.css";
+
+@theme {
+  --color-nashka-royal: #161A8D;
+  --color-nashka-royal-hover: #10136B;
+  --color-nashka-royal-deep: #0D105A;
+  --color-nashka-sky: #C5E5FF;
+  --color-nashka-sky-soft: #F1F8FF;
+  --color-nashka-gold: #C9A13B;
+  --color-nashka-gold-dark: #8B6918;
+  --color-nashka-gold-soft: #FBF7EE;
+  --color-nashka-ivory: #FAF8F5;
+  --color-nashka-secondary: #5A657D;
+  --color-nashka-white: #FFFFFF;
+
+  --font-cairo: 'Cairo', system-ui, -apple-system, sans-serif;
+  --font-poppins: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-arabic);
+    direction: rtl;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-white);
+    color: var(--color-text-primary);
+    font-family: var(--font-arabic);
+    overflow-x: clip;
+  }
+
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+}
+
+.font-en,
+.font-english {
+  font-family: var(--font-english);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Clean Editorial Split Hero Section Architecture
+   Breakpoints:
+   - Mobile:  320px – 767px
+   - Tablet:  768px – 1024px
+   - Desktop: 1025px and above
+   ========================================================================== */
+
+.nashka-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+}
+
+.nashka-hero-ambient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 60% 70% at 15% 45%,
+    rgba(197, 229, 255, 0.35) 0%,
+    rgba(197, 229, 255, 0) 70%
+  );
+}
+
+.nashka-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+.nashka-hero-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.nashka-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-weight: 700;
+  color: #8b6918;
+}
+
+.nashka-hero-media {
+  width: 100%;
+}
+
+.nashka-hero-frame {
+  background-color: #ffffff;
+  border: 1px solid rgba(197, 229, 255, 0.9);
+  overflow: hidden;
+  box-shadow: 0 22px 48px -18px rgba(22, 26, 141, 0.16);
+}
+
+.nashka-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 38% 35%;
+  display: block;
+}
+
+/* 1. Mobile Range (320px–767px) */
+@media (max-width: 767px) {
+  .nashka-hero-grid {
+    padding-top: 1.75rem;
+    padding-bottom: 2.25rem;
+    gap: 1.5rem;
+  }
+
+  .nashka-hero-content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .nashka-hero-kicker {
+    font-size: 0.8125rem;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .nashka-hero-h1 {
+    text-wrap: initial;
+  }
+
+  .nashka-hero-line1 {
+    display: block;
+    font-size: clamp(25px, 6.8vw, 30px);
+    font-weight: 800;
+    line-height: 1.38;
+  }
+
+  .nashka-hero-line2 {
+    display: block;
+    font-size: clamp(29px, 7.8vw, 34px);
+    font-weight: 800;
+    line-height: 1.3;
+    margin-top: 0.25rem;
+  }
+
+  .nashka-hero-sub {
+    font-size: clamp(16px, 4.3vw, 18px);
+    line-height: 1.6;
+    margin-top: 0.875rem;
+  }
+
+  .nashka-hero-desc {
+    font-size: clamp(14px, 3.8vw, 15px);
+    line-height: 1.85;
+    max-width: 21rem;
+    text-wrap: balance;
+    margin-top: 0.75rem;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-cta-wrap {
+    margin-top: 1.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nashka-hero-cta {
+    height: 50px;
+    min-height: 50px;
+    width: 100%;
+    max-width: 310px;
+    padding-inline: 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .nashka-hero-frame {
+    border-radius: 1.25rem;
+    padding: 0.375rem;
+    aspect-ratio: 16 / 10;
+  }
+
+  .nashka-hero-img {
+    border-radius: 0.875rem;
+  }
+}
+
+/* 2. Tablet Range (768px–1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .nashka-hero-grid {
+    padding-top: 3rem;
+    padding-bottom: 3.25rem;
+    gap: 2.25rem;
+  }
+
+  .nashka-hero-content {
+    align-items: center;
+    text-align: center;
+    max-width: 40rem;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-kicker {
+    font-size: 0.875rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .nashka-hero-h1 {
+    font-size: clamp(38px, 4.5vw, 44px);
+    font-weight: 800;
+    line-height: 1.38;
+  }
+
+  .nashka-hero-line1,
+  .nashka-hero-line2 {
+    display: inline;
+  }
+
+  .nashka-hero-sub {
+    font-size: clamp(19px, 2.2vw, 22px);
+    line-height: 1.6;
+    margin-top: 1rem;
+  }
+
+  .nashka-hero-desc {
+    font-size: clamp(15.5px, 1.8vw, 17px);
+    line-height: 1.85;
+    max-width: 33rem;
+    text-wrap: balance;
+    margin-top: 0.875rem;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-cta-wrap {
+    margin-top: 1.875rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nashka-hero-cta {
+    height: 52px;
+    min-height: 52px;
+    width: auto;
+    min-width: 260px;
+    padding-inline: 2.25rem;
+    font-size: 1rem;
+  }
+
+  .nashka-hero-media {
+    max-width: 42rem;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-frame {
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+    aspect-ratio: 16 / 9;
+  }
+
+  .nashka-hero-img {
+    border-radius: 1rem;
+  }
+}
+
+/* 3. Desktop Range (1025px and above) */
+@media (min-width: 1025px) {
+  .nashka-hero-grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.1fr);
+    gap: 3.5rem;
+    padding-top: 4.25rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .nashka-hero-content {
+    align-items: flex-start;
+    text-align: right;
+  }
+
+  .nashka-hero-kicker {
+    font-size: 0.9375rem;
+    justify-content: flex-start;
+    margin-bottom: 1.125rem;
+  }
+
+  .nashka-hero-h1 {
+    font-size: clamp(44px, 3.4vw, 54px);
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .nashka-hero-line1,
+  .nashka-hero-line2 {
+    display: block;
+  }
+
+  .nashka-hero-sub {
+    font-size: clamp(21px, 1.55vw, 24px);
+    line-height: 1.58;
+    margin-top: 1.125rem;
+  }
+
+  .nashka-hero-desc {
+    font-size: clamp(16px, 1.15vw, 17.5px);
+    line-height: 1.85;
+    max-width: 31rem;
+    margin-top: 1rem;
+  }
+
+  .nashka-hero-cta-wrap {
+    margin-top: 2.25rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .nashka-hero-cta {
+    height: 54px;
+    min-height: 54px;
+    width: auto;
+    min-width: 268px;
+    padding-inline: 2.25rem;
+    font-size: 1.03125rem;
+  }
+
+  .nashka-hero-frame {
+    border-radius: 1.75rem;
+    padding: 0.625rem;
+    aspect-ratio: 4 / 3;
+  }
+
+  .nashka-hero-img {
+    border-radius: 1.125rem;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,59 @@
+:root {
+  /* Approved Nashka Design System v1.0 Color Tokens */
+  --color-primary: #161A8D;
+  --color-primary-hover: #10136B;
+  --color-primary-deep: #0D105A;
+  --color-secondary: #C5E5FF;
+  --color-gold: #D6AD55;
+  --color-gold-accessible: #8B6918;
+  --color-gold-soft: #FBF7EE;
+  --color-white: #FFFFFF;
+  --color-soft-bg: #F4F8FC;
+  --color-neutral: #E8EDF4;
+  --color-warm-ivory: #FAF8F5;
+
+  /* Legacy Alias Tokens (Preserved for Existing Components) */
+  --color-royal-blue: var(--color-primary);
+  --color-royal-blue-hover: var(--color-primary-hover);
+  --color-royal-blue-deep: var(--color-primary-deep);
+  --color-sky-blue: var(--color-secondary);
+  --color-sky-blue-soft: var(--color-soft-bg);
+  --color-gold-badge-border: var(--color-gold);
+
+  /* Unified Icon Container Scale (Mobile 60px -> Tablet 68px -> Desktop 76px) */
+  --icon-badge-size-mobile: 60px;
+  --icon-badge-size-tablet: 68px;
+  --icon-badge-size-desktop: 76px;
+  --icon-badge-border-width: 2px;
+
+  /* Neutral & Secondary Typography Scale */
+  --color-surface-canvas: var(--color-white);
+  --color-surface-warm: var(--color-warm-ivory);
+  --color-surface-subtle: var(--color-soft-bg);
+  --color-border-hairline: var(--color-neutral);
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #5A657D;
+  --color-text-muted: #6E7A94;
+
+  /* Semantic Status Colors */
+  --color-status-success: #15803D;
+  --color-status-warning: #B45309;
+  --color-status-error: #B91C1C;
+
+  /* Approved Typography */
+  --font-arabic: 'Cairo', system-ui, -apple-system, sans-serif;
+  --font-english: 'Poppins', system-ui, -apple-system, sans-serif;
+
+  /* Unified Radius Scale (14-18px Cards = 16px) */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-card: 1rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.125rem;
+
+  /* Subtle Corporate Elevation */
+  --shadow-card: 0 8px 24px -12px rgba(22, 26, 141, 0.08);
+  --shadow-card-hover: 0 14px 30px -10px rgba(22, 26, 141, 0.14);
+  --shadow-elevated: 0 14px 36px -8px rgba(22, 26, 141, 0.12);
+  --shadow-icon-badge: 0 8px 18px -6px rgba(22, 26, 141, 0.14);
+}

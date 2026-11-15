@@ -1,0 +1,483 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // =========================================================================
+    // 1. GLOBAL SAFETY NET (Default Deny Catch-All)
+    // =========================================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // =========================================================================
+    // 2. GLOBAL HARDENED PRIMITIVES
+    // =========================================================================
+    function isValidId(id) {
+      return id is string
+        && id.size() >= 4
+        && id.size() <= 128
+        && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidTrackingKey(key) {
+      return key is string
+        && key.size() == 68
+        && key.matches('^trk_[a-f0-9]{64}$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isBootstrappedAdmin() {
+      return isVerifiedUser()
+        && request.auth.token.email == 'nashkatourism@gmail.com';
+    }
+
+    function isAdmin() {
+      return isVerifiedUser()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isAuthorizedAdmin() {
+      return isBootstrappedAdmin() || isAdmin();
+    }
+
+    // =========================================================================
+    // 3. ENTITY VALIDATION BLUEPRINTS (Synced with firebase-blueprint.json)
+    // =========================================================================
+    function isValidApplicationStatus(status) {
+      return status is string
+        && status.size() >= 8
+        && status.size() <= 25
+        && status in [
+          'new_submission',
+          'documents_under_review',
+          'additional_info_needed',
+          'ready_for_processing',
+          'visa_issued',
+          'rejected'
+        ];
+    }
+
+    function isValidDocVerificationStatus(status) {
+      return status is string
+        && status.size() >= 7
+        && status.size() <= 20
+        && status in ['pending', 'approved', 'replacement_required'];
+    }
+
+    function isValidDocumentMap(docMap, expectedType) {
+      return docMap is map
+        && docMap.keys().hasAll([
+          'id',
+          'type',
+          'labelAr',
+          'fileName',
+          'storedFileName',
+          'fileSizeBytes',
+          'mimeType',
+          'verificationStatus'
+        ])
+        && docMap.keys().hasOnly([
+          'id',
+          'type',
+          'labelAr',
+          'fileName',
+          'storedFileName',
+          'fileSizeBytes',
+          'mimeType',
+          'verificationStatus'
+        ])
+        && isValidId(docMap.id)
+        && docMap.type is string
+        && docMap.type.size() <= 20
+        && docMap.type == expectedType
+        && docMap.labelAr is string
+        && docMap.labelAr.size() >= 2
+        && docMap.labelAr.size() <= 60
+        && docMap.fileName is string
+        && docMap.fileName.size() >= 1
+        && docMap.fileName.size() <= 160
+        && docMap.storedFileName is string
+        && docMap.storedFileName.size() >= 5
+        && docMap.storedFileName.size() <= 120
+        && docMap.storedFileName.matches('^[0-9]+-[0-9a-f\\-]+\\.(jpg|jpeg|png|webp|pdf|bin)$')
+        && docMap.fileSizeBytes is int
+        && docMap.fileSizeBytes > 0
+        && docMap.fileSizeBytes <= 10485760
+        && docMap.mimeType is string
+        && docMap.mimeType.size() >= 6
+        && docMap.mimeType.size() <= 40
+        && isValidDocVerificationStatus(docMap.verificationStatus);
+    }
+
+    function isValidVisaApplication(data) {
+      return data is map
+        && data.keys().hasAll([
+          'id',
+          'referenceId',
+          'trackingKey',
+          'customerId',
+          'adminOwnerEmail',
+          'fullName',
+          'phoneNumber',
+          'nationality',
+          'currentProfession',
+          'expectedTravelDate',
+          'applicantsCount',
+          'totalAmountEgp',
+          'bankStatementStatus',
+          'explanatoryNotes',
+          'dataUsageConsent',
+          'status',
+          'passportDoc',
+          'photoDoc',
+          'createdAtIso',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'id',
+          'referenceId',
+          'trackingKey',
+          'customerId',
+          'adminOwnerEmail',
+          'fullName',
+          'phoneNumber',
+          'nationality',
+          'currentProfession',
+          'expectedTravelDate',
+          'applicantsCount',
+          'totalAmountEgp',
+          'bankStatementStatus',
+          'explanatoryNotes',
+          'dataUsageConsent',
+          'status',
+          'passportDoc',
+          'photoDoc',
+          'createdAtIso',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.id is string
+        && data.id.size() >= 8
+        && data.id.size() <= 128
+        && data.id.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.referenceId is string
+        && data.referenceId.size() >= 15
+        && data.referenceId.size() <= 20
+        && data.referenceId.matches('^NSK-[0-9]{4}-[0-9]{6}$')
+        && isValidTrackingKey(data.trackingKey)
+        && data.customerId is string
+        && data.customerId.size() >= 20
+        && data.customerId.size() <= 32
+        && data.customerId.matches('^CUST-NSK-[0-9]{4}-[0-9]{6}$')
+        && data.adminOwnerEmail is string
+        && data.adminOwnerEmail.size() == 23
+        && data.adminOwnerEmail == 'nashkatourism@gmail.com'
+        && data.fullName is string
+        && data.fullName.size() >= 5
+        && data.fullName.size() <= 150
+        && data.phoneNumber is string
+        && data.phoneNumber.size() >= 9
+        && data.phoneNumber.size() <= 20
+        && data.phoneNumber.matches('^\\+?[0-9\\s\\-()]{9,20}$')
+        && data.nationality is string
+        && data.nationality.size() >= 2
+        && data.nationality.size() <= 80
+        && data.currentProfession is string
+        && data.currentProfession.size() >= 2
+        && data.currentProfession.size() <= 120
+        && data.expectedTravelDate is string
+        && data.expectedTravelDate.size() == 10
+        && data.expectedTravelDate.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && data.applicantsCount is int
+        && data.applicantsCount >= 1
+        && data.applicantsCount <= 20
+        && data.totalAmountEgp is int
+        && data.totalAmountEgp == data.applicantsCount * 9500
+        && data.bankStatementStatus is string
+        && data.bankStatementStatus.size() >= 17
+        && data.bankStatementStatus.size() <= 25
+        && data.bankStatementStatus in [
+          'available_if_requested',
+          'not_available_currently',
+          'need_consultation'
+        ]
+        && data.explanatoryNotes is string
+        && data.explanatoryNotes.size() <= 2000
+        && data.dataUsageConsent is bool
+        && data.dataUsageConsent == true
+        && isValidApplicationStatus(data.status)
+        && isValidDocumentMap(data.passportDoc, 'passport')
+        && isValidDocumentMap(data.photoDoc, 'personal_photo')
+        && data.createdAtIso is string
+        && data.createdAtIso.size() >= 20
+        && data.createdAtIso.size() <= 35
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidApplicationTracking(data) {
+      return data is map
+        && data.keys().hasAll([
+          'trackingKey',
+          'applicationId',
+          'referenceId',
+          'applicantDisplayName',
+          'applicantsCount',
+          'totalAmountEgp',
+          'expectedTravelDate',
+          'status',
+          'passportVerificationStatus',
+          'photoVerificationStatus',
+          'createdAtIso',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'trackingKey',
+          'applicationId',
+          'referenceId',
+          'applicantDisplayName',
+          'applicantsCount',
+          'totalAmountEgp',
+          'expectedTravelDate',
+          'status',
+          'passportVerificationStatus',
+          'photoVerificationStatus',
+          'createdAtIso',
+          'createdAt',
+          'updatedAt'
+        ])
+        && isValidTrackingKey(data.trackingKey)
+        && data.applicationId is string
+        && data.applicationId.size() >= 8
+        && data.applicationId.size() <= 128
+        && data.applicationId.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.referenceId is string
+        && data.referenceId.size() >= 15
+        && data.referenceId.size() <= 20
+        && data.referenceId.matches('^NSK-[0-9]{4}-[0-9]{6}$')
+        && data.applicantDisplayName is string
+        && data.applicantDisplayName.size() >= 2
+        && data.applicantDisplayName.size() <= 150
+        && data.applicantsCount is int
+        && data.applicantsCount >= 1
+        && data.applicantsCount <= 20
+        && data.totalAmountEgp is int
+        && data.totalAmountEgp == data.applicantsCount * 9500
+        && data.expectedTravelDate is string
+        && data.expectedTravelDate.size() == 10
+        && data.expectedTravelDate.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && isValidApplicationStatus(data.status)
+        && isValidDocVerificationStatus(data.passportVerificationStatus)
+        && isValidDocVerificationStatus(data.photoVerificationStatus)
+        && data.createdAtIso is string
+        && data.createdAtIso.size() >= 20
+        && data.createdAtIso.size() <= 35
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    function isValidAdminStaffMember(data) {
+      return data is map
+        && data.keys().hasAll([
+          'uid',
+          'email',
+          'displayName',
+          'role',
+          'addedByUid',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'uid',
+          'email',
+          'displayName',
+          'role',
+          'addedByUid',
+          'createdAt',
+          'updatedAt'
+        ])
+        && isValidId(data.uid)
+        && data.email is string
+        && data.email.size() >= 5
+        && data.email.size() <= 160
+        && data.displayName is string
+        && data.displayName.size() >= 2
+        && data.displayName.size() <= 120
+        && data.role is string
+        && data.role.size() >= 11
+        && data.role.size() <= 25
+        && data.role in [
+          'super_admin',
+          'visa_operations_manager',
+          'document_reviewer',
+          'customer_support'
+        ]
+        && isValidId(data.addedByUid)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    // =========================================================================
+    // 4. COLLECTION RULES
+    // =========================================================================
+
+    // Private PII-bearing Visa Applications (Admin-Only Read/Update, Validated Atomic Intake Create)
+    match /applications/{applicationId} {
+      allow get: if isVerifiedUser()
+        && isValidId(applicationId)
+        && isAuthorizedAdmin();
+
+      // Cost-safe Query-Enforced Admin List (zero get()/exists() calls)
+      allow list: if isBootstrappedAdmin()
+        && existing().adminOwnerEmail == request.auth.token.email;
+
+      allow create: if isValidId(applicationId)
+        && isValidVisaApplication(incoming())
+        && incoming().id == applicationId
+        && incoming().status == 'new_submission'
+        && incoming().passportDoc.verificationStatus == 'pending'
+        && incoming().photoDoc.verificationStatus == 'pending'
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time
+        && !exists(/databases/$(database)/documents/applicationTracking/$(incoming().trackingKey))
+        && existsAfter(/databases/$(database)/documents/applicationTracking/$(incoming().trackingKey))
+        && getAfter(/databases/$(database)/documents/applicationTracking/$(incoming().trackingKey)).data.applicationId == applicationId;
+
+      allow update: if isValidVisaApplication(incoming())
+        && isVerifiedUser()
+        && isValidId(applicationId)
+        && incoming().id == existing().id
+        && incoming().referenceId == existing().referenceId
+        && incoming().trackingKey == existing().trackingKey
+        && incoming().customerId == existing().customerId
+        && incoming().adminOwnerEmail == existing().adminOwnerEmail
+        && incoming().createdAt == existing().createdAt
+        && incoming().createdAtIso == existing().createdAtIso
+        && incoming().passportDoc.id == existing().passportDoc.id
+        && incoming().passportDoc.storedFileName == existing().passportDoc.storedFileName
+        && incoming().photoDoc.id == existing().photoDoc.id
+        && incoming().photoDoc.storedFileName == existing().photoDoc.storedFileName
+        && incoming().updatedAt == request.time
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])
+          || incoming().diff(existing()).affectedKeys().hasOnly(['passportDoc', 'updatedAt'])
+          || incoming().diff(existing()).affectedKeys().hasOnly(['photoDoc', 'updatedAt'])
+          || incoming().diff(existing()).affectedKeys().hasOnly([
+            'status',
+            'passportDoc',
+            'photoDoc',
+            'explanatoryNotes',
+            'updatedAt'
+          ])
+        )
+        && (!(existing().status in ['visa_issued', 'rejected']) || isBootstrappedAdmin())
+        && isAuthorizedAdmin()
+        && getAfter(/databases/$(database)/documents/applicationTracking/$(existing().trackingKey)).data.status == incoming().status
+        && getAfter(/databases/$(database)/documents/applicationTracking/$(existing().trackingKey)).data.passportVerificationStatus == incoming().passportDoc.verificationStatus
+        && getAfter(/databases/$(database)/documents/applicationTracking/$(existing().trackingKey)).data.photoVerificationStatus == incoming().photoDoc.verificationStatus;
+
+      allow delete: if false;
+    }
+
+    // Split Non-PII Tracking Projection (Single-Doc Lookup Only; No Listing)
+    match /applicationTracking/{trackingKey} {
+      allow get: if isValidTrackingKey(trackingKey);
+      allow list: if false;
+
+      allow create: if isValidTrackingKey(trackingKey)
+        && isValidApplicationTracking(incoming())
+        && incoming().trackingKey == trackingKey
+        && incoming().status == 'new_submission'
+        && incoming().passportVerificationStatus == 'pending'
+        && incoming().photoVerificationStatus == 'pending'
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time
+        && !exists(/databases/$(database)/documents/applications/$(incoming().applicationId))
+        && existsAfter(/databases/$(database)/documents/applications/$(incoming().applicationId))
+        && getAfter(/databases/$(database)/documents/applications/$(incoming().applicationId)).data.trackingKey == trackingKey
+        && getAfter(/databases/$(database)/documents/applications/$(incoming().applicationId)).data.referenceId == incoming().referenceId
+        && getAfter(/databases/$(database)/documents/applications/$(incoming().applicationId)).data.applicantsCount == incoming().applicantsCount
+        && getAfter(/databases/$(database)/documents/applications/$(incoming().applicationId)).data.totalAmountEgp == incoming().totalAmountEgp;
+
+      allow update: if isValidApplicationTracking(incoming())
+        && isVerifiedUser()
+        && isValidTrackingKey(trackingKey)
+        && incoming().trackingKey == existing().trackingKey
+        && incoming().applicationId == existing().applicationId
+        && incoming().referenceId == existing().referenceId
+        && incoming().applicantDisplayName == existing().applicantDisplayName
+        && incoming().applicantsCount == existing().applicantsCount
+        && incoming().totalAmountEgp == existing().totalAmountEgp
+        && incoming().expectedTravelDate == existing().expectedTravelDate
+        && incoming().createdAt == existing().createdAt
+        && incoming().createdAtIso == existing().createdAtIso
+        && incoming().updatedAt == request.time
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])
+          || incoming().diff(existing()).affectedKeys().hasOnly(['passportVerificationStatus', 'updatedAt'])
+          || incoming().diff(existing()).affectedKeys().hasOnly(['photoVerificationStatus', 'updatedAt'])
+          || incoming().diff(existing()).affectedKeys().hasOnly([
+            'status',
+            'passportVerificationStatus',
+            'photoVerificationStatus',
+            'updatedAt'
+          ])
+        )
+        && (!(existing().status in ['visa_issued', 'rejected']) || isBootstrappedAdmin())
+        && isAuthorizedAdmin();
+
+      allow delete: if false;
+    }
+
+    // Authorized Admin Staff Directory (Managed Exclusively by Bootstrapped Super Admin)
+    match /admins/{adminUid} {
+      allow get: if isVerifiedUser()
+        && isValidId(adminUid)
+        && (request.auth.uid == adminUid || isBootstrappedAdmin());
+
+      allow list: if false;
+
+      allow create: if isBootstrappedAdmin()
+        && isValidId(adminUid)
+        && isValidAdminStaffMember(incoming())
+        && incoming().uid == adminUid
+        && incoming().addedByUid == request.auth.uid
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+
+      allow update: if isValidAdminStaffMember(incoming())
+        && isBootstrappedAdmin()
+        && isValidId(adminUid)
+        && incoming().uid == existing().uid
+        && incoming().email == existing().email
+        && incoming().addedByUid == existing().addedByUid
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly(['role', 'updatedAt'])
+          || incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'role', 'updatedAt'])
+        );
+
+      allow delete: if isBootstrappedAdmin()
+        && isValidId(adminUid)
+        && adminUid != request.auth.uid;
+    }
+  }
+}

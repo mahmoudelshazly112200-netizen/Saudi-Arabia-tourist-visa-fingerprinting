@@ -1,0 +1,360 @@
+{
+  "entities": {
+    "VisaApplication": {
+      "title": "VisaApplication",
+      "description": "Private customer visa application record containing applicant PII, commercial summary, and uploaded document verification metadata.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique application document identifier.",
+          "minLength": 8,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "referenceId": {
+          "type": "string",
+          "description": "Official Nashka reference code (e.g., NSK-2026-123456).",
+          "minLength": 15,
+          "maxLength": 20,
+          "pattern": "^NSK-[0-9]{4}-[0-9]{6}$"
+        },
+        "trackingKey": {
+          "type": "string",
+          "description": "Deterministic SHA-256 key linking to the non-PII tracking projection.",
+          "minLength": 68,
+          "maxLength": 68,
+          "pattern": "^trk_[a-f0-9]{64}$"
+        },
+        "customerId": {
+          "type": "string",
+          "description": "Derived customer identifier.",
+          "minLength": 20,
+          "maxLength": 32,
+          "pattern": "^CUST-NSK-[0-9]{4}-[0-9]{6}$"
+        },
+        "adminOwnerEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "Bootstrapped Super Admin owner email used for query-enforced admin listing.",
+          "enum": ["nashkatourism@gmail.com"],
+          "minLength": 23,
+          "maxLength": 23
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Applicant full name as shown in passport.",
+          "minLength": 5,
+          "maxLength": 150
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Applicant phone or WhatsApp contact number.",
+          "minLength": 9,
+          "maxLength": 20,
+          "pattern": "^\\+?[0-9\\s\\-()]{9,20}$"
+        },
+        "nationality": {
+          "type": "string",
+          "description": "Applicant nationality.",
+          "minLength": 2,
+          "maxLength": 80
+        },
+        "currentProfession": {
+          "type": "string",
+          "description": "Applicant current profession or job title.",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "expectedTravelDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Expected travel date in YYYY-MM-DD format.",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "applicantsCount": {
+          "type": "integer",
+          "description": "Number of applicants in this submission (1 to 20)."
+        },
+        "totalAmountEgp": {
+          "type": "integer",
+          "description": "Total approved visa package price in EGP (applicantsCount * 9500)."
+        },
+        "bankStatementStatus": {
+          "type": "string",
+          "description": "Explanatory bank statement readiness status (not uploaded initially).",
+          "enum": [
+            "available_if_requested",
+            "not_available_currently",
+            "need_consultation"
+          ],
+          "minLength": 17,
+          "maxLength": 25
+        },
+        "explanatoryNotes": {
+          "type": "string",
+          "description": "Optional applicant explanatory notes.",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "dataUsageConsent": {
+          "type": "boolean",
+          "description": "Explicit applicant consent for processing visa application data."
+        },
+        "status": {
+          "type": "string",
+          "description": "Current operational status of the visa application.",
+          "enum": [
+            "new_submission",
+            "documents_under_review",
+            "additional_info_needed",
+            "ready_for_processing",
+            "visa_issued",
+            "rejected"
+          ],
+          "minLength": 8,
+          "maxLength": 25
+        },
+        "passportDoc": {
+          "type": "object",
+          "description": "Passport document metadata and verification state."
+        },
+        "photoDoc": {
+          "type": "object",
+          "description": "Personal photo metadata and verification state."
+        },
+        "createdAtIso": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 creation timestamp for display formatting.",
+          "minLength": 20,
+          "maxLength": 35
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp enforced via request.time."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp enforced via request.time."
+        }
+      },
+      "required": [
+        "id",
+        "referenceId",
+        "trackingKey",
+        "customerId",
+        "adminOwnerEmail",
+        "fullName",
+        "phoneNumber",
+        "nationality",
+        "currentProfession",
+        "expectedTravelDate",
+        "applicantsCount",
+        "totalAmountEgp",
+        "bankStatementStatus",
+        "explanatoryNotes",
+        "dataUsageConsent",
+        "status",
+        "passportDoc",
+        "photoDoc",
+        "createdAtIso",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ApplicationTracking": {
+      "title": "ApplicationTracking",
+      "description": "Split non-PII status projection keyed by SHA-256(referenceId + normalized phone) for secure single-document customer tracking without exposing contact PII or files.",
+      "type": "object",
+      "properties": {
+        "trackingKey": {
+          "type": "string",
+          "description": "Deterministic SHA-256 lookup key.",
+          "minLength": 68,
+          "maxLength": 68,
+          "pattern": "^trk_[a-f0-9]{64}$"
+        },
+        "applicationId": {
+          "type": "string",
+          "description": "Parent VisaApplication document ID.",
+          "minLength": 8,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "referenceId": {
+          "type": "string",
+          "description": "Official Nashka reference code.",
+          "minLength": 15,
+          "maxLength": 20,
+          "pattern": "^NSK-[0-9]{4}-[0-9]{6}$"
+        },
+        "applicantDisplayName": {
+          "type": "string",
+          "description": "Applicant display name for status confirmation.",
+          "minLength": 2,
+          "maxLength": 150
+        },
+        "applicantsCount": {
+          "type": "integer",
+          "description": "Number of applicants covered by the submission."
+        },
+        "totalAmountEgp": {
+          "type": "integer",
+          "description": "Approved package total in EGP."
+        },
+        "expectedTravelDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Expected travel date in YYYY-MM-DD format.",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current operational status of the visa application.",
+          "enum": [
+            "new_submission",
+            "documents_under_review",
+            "additional_info_needed",
+            "ready_for_processing",
+            "visa_issued",
+            "rejected"
+          ],
+          "minLength": 8,
+          "maxLength": 25
+        },
+        "passportVerificationStatus": {
+          "type": "string",
+          "description": "Verification status of passport document.",
+          "enum": ["pending", "approved", "replacement_required"],
+          "minLength": 7,
+          "maxLength": 20
+        },
+        "photoVerificationStatus": {
+          "type": "string",
+          "description": "Verification status of personal photo.",
+          "enum": ["pending", "approved", "replacement_required"],
+          "minLength": 7,
+          "maxLength": 20
+        },
+        "createdAtIso": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 creation timestamp.",
+          "minLength": 20,
+          "maxLength": 35
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server update timestamp."
+        }
+      },
+      "required": [
+        "trackingKey",
+        "applicationId",
+        "referenceId",
+        "applicantDisplayName",
+        "applicantsCount",
+        "totalAmountEgp",
+        "expectedTravelDate",
+        "status",
+        "passportVerificationStatus",
+        "photoVerificationStatus",
+        "createdAtIso",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "AdminStaffMember": {
+      "title": "AdminStaffMember",
+      "description": "Authorized Nashka Tourism staff member RBAC record.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the staff member.",
+          "minLength": 4,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified Google account email address.",
+          "minLength": 5,
+          "maxLength": 160
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Staff display name.",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "role": {
+          "type": "string",
+          "description": "Assigned administrative role.",
+          "enum": [
+            "super_admin",
+            "visa_operations_manager",
+            "document_reviewer",
+            "customer_support"
+          ],
+          "minLength": 11,
+          "maxLength": 25
+        },
+        "addedByUid": {
+          "type": "string",
+          "description": "UID of the Super Admin who granted access.",
+          "minLength": 4,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of role assignment."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of latest update."
+        }
+      },
+      "required": [
+        "uid",
+        "email",
+        "displayName",
+        "role",
+        "addedByUid",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/applications/{applicationId}": {
+      "schema": "VisaApplication",
+      "description": "Private customer visa applications accessible only to verified Nashka Tourism administrators."
+    },
+    "/applicationTracking/{trackingKey}": {
+      "schema": "ApplicationTracking",
+      "description": "Split non-PII status documents keyed by SHA-256(referenceId + phoneLast9) for single-document customer tracking."
+    },
+    "/admins/{adminUid}": {
+      "schema": "AdminStaffMember",
+      "description": "Authorized Nashka Tourism administrative staff directory."
+    }
+  }
+}
