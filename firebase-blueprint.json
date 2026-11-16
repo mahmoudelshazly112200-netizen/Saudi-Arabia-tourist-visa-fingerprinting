@@ -167,6 +167,59 @@
         "updatedAt"
       ]
     },
+    "ApplicationAttachment": {
+      "title": "ApplicationAttachment",
+      "description": "Admin-only cloud attachment copy stored in subcollection under parent application so files survive server restarts within Firestore 1MB limits.",
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "string",
+          "description": "Parent VisaApplication document ID.",
+          "minLength": 8,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "docType": {
+          "type": "string",
+          "description": "Attachment slot type.",
+          "enum": ["passport", "personal_photo"],
+          "minLength": 8,
+          "maxLength": 14
+        },
+        "fileName": {
+          "type": "string",
+          "description": "Original sanitized file name.",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "MIME type of the cloud attachment copy.",
+          "enum": ["image/jpeg", "image/png", "image/webp", "application/pdf"],
+          "minLength": 9,
+          "maxLength": 20
+        },
+        "dataUrl": {
+          "type": "string",
+          "description": "Bounded Base64 Data URL copy stored strictly for admin preview and download.",
+          "minLength": 20,
+          "maxLength": 820000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        }
+      },
+      "required": [
+        "applicationId",
+        "docType",
+        "fileName",
+        "mimeType",
+        "dataUrl",
+        "createdAt"
+      ]
+    },
     "ApplicationTracking": {
       "title": "ApplicationTracking",
       "description": "Split non-PII status projection keyed by SHA-256(referenceId + normalized phone) for secure single-document customer tracking without exposing contact PII or files.",
@@ -279,7 +332,7 @@
     },
     "AdminStaffMember": {
       "title": "AdminStaffMember",
-      "description": "Authorized Nashka Tourism staff member RBAC record.",
+      "description": "Authorized Nashka Tourism staff member RBAC record keyed by Firebase Auth UID.",
       "type": "object",
       "properties": {
         "uid": {
@@ -341,6 +394,79 @@
         "createdAt",
         "updatedAt"
       ]
+    },
+    "StaffDirectoryEntry": {
+      "title": "StaffDirectoryEntry",
+      "description": "Super-Admin-managed staff invitation & RBAC directory keyed by deterministic SHA-256 of normalized Google email.",
+      "type": "object",
+      "properties": {
+        "staffKey": {
+          "type": "string",
+          "description": "Deterministic SHA-256 key (stf_<64hex>).",
+          "minLength": 68,
+          "maxLength": 68,
+          "pattern": "^stf_[a-f0-9]{64}$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Lowercase Google account email address.",
+          "minLength": 5,
+          "maxLength": 160
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Staff display name.",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "role": {
+          "type": "string",
+          "description": "Assigned administrative role.",
+          "enum": [
+            "visa_operations_manager",
+            "document_reviewer",
+            "customer_support"
+          ],
+          "minLength": 16,
+          "maxLength": 25
+        },
+        "ownerAdminEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "Super Admin owner email for query-enforced listing.",
+          "enum": ["nashkatourism@gmail.com"],
+          "minLength": 23,
+          "maxLength": 23
+        },
+        "addedByUid": {
+          "type": "string",
+          "description": "UID of the Super Admin who added the staff member.",
+          "minLength": 4,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp."
+        }
+      },
+      "required": [
+        "staffKey",
+        "email",
+        "displayName",
+        "role",
+        "ownerAdminEmail",
+        "addedByUid",
+        "createdAt",
+        "updatedAt"
+      ]
     }
   },
   "firestore": {
@@ -348,13 +474,21 @@
       "schema": "VisaApplication",
       "description": "Private customer visa applications accessible only to verified Nashka Tourism administrators."
     },
+    "/applications/{applicationId}/attachments/{docType}": {
+      "schema": "ApplicationAttachment",
+      "description": "Admin-only cloud attachment copies (passport / personal_photo) scoped strictly under parent application."
+    },
     "/applicationTracking/{trackingKey}": {
       "schema": "ApplicationTracking",
       "description": "Split non-PII status documents keyed by SHA-256(referenceId + phoneLast9) for single-document customer tracking."
     },
     "/admins/{adminUid}": {
       "schema": "AdminStaffMember",
-      "description": "Authorized Nashka Tourism administrative staff directory."
+      "description": "Authorized Nashka Tourism administrative staff UID records."
+    },
+    "/staffDirectory/{staffKey}": {
+      "schema": "StaffDirectoryEntry",
+      "description": "Super-Admin-managed staff invitation & RBAC directory keyed by email SHA-256."
     }
   }
 }

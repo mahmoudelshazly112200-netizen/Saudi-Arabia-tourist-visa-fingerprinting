@@ -1,11 +1,14 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   onSnapshot,
   query,
   serverTimestamp,
+  setDoc,
   Unsubscribe,
+  updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore';
@@ -20,7 +23,9 @@ import {
   AdminCustomerSummary,
   AdminDocumentItem,
   ApplicationRecordStatus,
+  AssignableStaffRole,
   DocumentVerificationStatus,
+  StaffDirectoryEntry,
 } from '../types/admin';
 import {
   BankStatementStatus,
@@ -30,7 +35,7 @@ import {
   VisaApplicationFormData,
 } from '../types/visa';
 import { calculateTotalVisaPrice } from '../utils/formatters';
-import { computeTrackingKey } from '../utils/trackingHash';
+import { computeStaffKey, computeTrackingKey } from '../utils/trackingHash';
 
 // Blueprint-synchronized volumetric & regex constraints (firebase-blueprint.json)
 export const BLUEPRINT_LIMITS = {
@@ -100,6 +105,139 @@ function mapFirestoreDocToAdminRecord(raw: FirestoreApplicationDoc): AdminApplic
     documents: docs,
     createdAt: raw.createdAtIso,
     source: 'cloud_firestore',
+  };
+}
+
+const MAX_CLOUD_DATA_URL_LENGTH = 820000;
+const MAX_RAW_PDF_CLOUD_BYTES = 580000;
+
+interface CloudAttachmentPayload {
+  mimeType: 'image/jpeg' | 'application/pdf';
+  dataUrl: string;
+}
+
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject(new Error('Unexpected FileReader output'));
+      }
+    };
+    reader.onerror = () => reject(reader.error || new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function compressImageToDataUrl(
+  file: File,
+  maxDimension: number,
+  quality: number
+): Promise<string | null> {
+  return new Promise((resolve) => {
+    const objectUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const scale = Math.min(1, maxDimension / Math.max(img.width || 1, img.height || 1));
+        const targetWidth = Math.max(1, Math.round(img.width * scale));
+        const targetHeight = Math.max(1, Math.round(img.height * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          URL.revokeObjectURL(objectUrl);
+          resolve(null);
+          return;
+        }
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+        ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+        const encoded = canvas.toDataURL('image/jpeg', quality);
+        URL.revokeObjectURL(objectUrl);
+        resolve(encoded);
+      } catch {
+        URL.revokeObjectURL(objectUrl);
+        resolve(null);
+      }
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(null);
+    };
+    img.src = objectUrl;
+  });
+}
+
+async function buildCloudAttachmentCopy(file: File | undefined): Promise<CloudAttachmentPayload | null> {
+  if (!file || typeof document === 'undefined') return null;
+
+  try {
+    if (file.type === 'application/pdf') {
+      if (file.size > MAX_RAW_PDF_CLOUD_BYTES) {
+        return null;
+      }
+      const dataUrl = await readFileAsDataUrl(file);
+      if (
+        dataUrl.length >= 20 &&
+        dataUrl.length <= MAX_CLOUD_DATA_URL_LENGTH &&
+        dataUrl.startsWith('data:application/pdf;base64,')
+      ) {
+        return { mimeType: 'application/pdf', dataUrl };
+      }
+      return null;
+    }
+
+    if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/webp') {
+      const firstPass = await compressImageToDataUrl(file, 1280, 0.78);
+      if (
+        firstPass &&
+        firstPass.length >= 20 &&
+        firstPass.length <= MAX_CLOUD_DATA_URL_LENGTH &&
+        firstPass.startsWith('data:image/jpeg;base64,')
+      ) {
+        return { mimeType: 'image/jpeg', dataUrl: firstPass };
+      }
+
+      const secondPass = await compressImageToDataUrl(file, 960, 0.6);
+      if (
+        secondPass &&
+        secondPass.length >= 20 &&
+        secondPass.length <= MAX_CLOUD_DATA_URL_LENGTH &&
+        secondPass.startsWith('data:image/jpeg;base64,')
+      ) {
+        return { mimeType: 'image/jpeg', dataUrl: secondPass };
+      }
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+function dataUrlToBlobUrl(dataUrl: string, fallbackMime: string): { blobUrl: string; mimeType: string } {
+  const commaIndex = dataUrl.indexOf(',');
+  if (commaIndex === -1) {
+    throw new Error('بيانات المستند السحابي غير مكتملة.');
+  }
+  const header = dataUrl.slice(0, commaIndex);
+  const base64Body = dataUrl.slice(commaIndex + 1);
+  const mimeMatch = /^data:([^;]+);base64$/i.exec(header);
+  const mimeType = mimeMatch?.[1] || fallbackMime || 'application/octet-stream';
+
+  const binary = atob(base64Body);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  const blob = new Blob([bytes], { type: mimeType });
+  return {
+    blobUrl: URL.createObjectURL(blob),
+    mimeType,
   };
 }
 
@@ -187,6 +325,11 @@ export async function submitVisaApplication(
     const photoDoc = sanitizeDocumentMap(photoSource, 'personal_photo');
     const createdAtIso = (serverApp.createdAt || new Date().toISOString()).slice(0, 35);
 
+    const [passportCopy, photoCopy] = await Promise.all([
+      buildCloudAttachmentCopy(formData.passportDocument?.file),
+      buildCloudAttachmentCopy(formData.personalPhoto?.file),
+    ]);
+
     const appDocPath = `applications/${serverApp.id}`;
     try {
       const batch = writeBatch(db);
@@ -229,6 +372,28 @@ export async function submitVisaApplication(
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
+
+      if (passportCopy) {
+        batch.set(doc(db, 'applications', serverApp.id, 'attachments', 'passport'), {
+          applicationId: serverApp.id,
+          docType: 'passport',
+          fileName: passportDoc.fileName,
+          mimeType: passportCopy.mimeType,
+          dataUrl: passportCopy.dataUrl,
+          createdAt: serverTimestamp(),
+        });
+      }
+
+      if (photoCopy) {
+        batch.set(doc(db, 'applications', serverApp.id, 'attachments', 'personal_photo'), {
+          applicationId: serverApp.id,
+          docType: 'personal_photo',
+          fileName: photoDoc.fileName,
+          mimeType: photoCopy.mimeType,
+          dataUrl: photoCopy.dataUrl,
+          createdAt: serverTimestamp(),
+        });
+      }
 
       await batch.commit();
     } catch (firestoreErr) {
@@ -503,27 +668,140 @@ export async function updateCloudDocumentStatus(
 }
 
 export async function fetchProtectedAdminDocumentBlob(
-  storedFileName: string,
+  appId: string,
+  docType: 'passport' | 'personal_photo',
+  storedFileName: string | undefined,
   idToken: string | null
 ): Promise<{ blobUrl: string; mimeType: string }> {
   if (!idToken) {
     throw new Error('يرجى تسجيل الدخول بحساب الإدارة المعتمد لعرض المستند.');
   }
 
-  const response = await fetch(`/api/admin/documents/${encodeURIComponent(storedFileName)}`, {
-    headers: {
-      Authorization: `Bearer ${idToken}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error('تعذر تحميل ملف المستند من الخادم أو انتهت صلاحية الجلسة.');
+  if (storedFileName) {
+    try {
+      const response = await fetch(`/api/admin/documents/${encodeURIComponent(storedFileName)}`, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        return {
+          blobUrl: URL.createObjectURL(blob),
+          mimeType: blob.type || 'application/octet-stream',
+        };
+      }
+    } catch {
+      // Fall back to persisted cloud attachment copy in Firestore
+    }
   }
 
-  const blob = await response.blob();
-  const blobUrl = URL.createObjectURL(blob);
-  return {
-    blobUrl,
-    mimeType: blob.type || 'application/octet-stream',
-  };
+  const attachmentPath = `applications/${appId}/attachments/${docType}`;
+  try {
+    const snap = await getDoc(doc(db, 'applications', appId, 'attachments', docType));
+    if (snap.exists()) {
+      const data = snap.data() as { dataUrl?: string; mimeType?: string };
+      if (data.dataUrl) {
+        return dataUrlToBlobUrl(data.dataUrl, data.mimeType || 'image/jpeg');
+      }
+    }
+  } catch (err) {
+    try {
+      handleFirestoreError(err, OperationType.GET, attachmentPath);
+    } catch {
+      // Error logged cleanly in structured FirestoreErrorInfo format
+    }
+  }
+
+  throw new Error(
+    'تعذر العثور على نسخة المستند على الخادم أو في النسخة السحابية (الملفات PDF الكبيرة تتوفر عبر الجلسة النشطة للخادم فقط).'
+  );
+}
+
+export function subscribeToStaffDirectory(
+  onStaff: (entries: StaffDirectoryEntry[]) => void,
+  onError: (messageAr: string) => void
+): Unsubscribe {
+  const staffQuery = query(
+    collection(db, 'staffDirectory'),
+    where('ownerAdminEmail', '==', BOOTSTRAPPED_SUPER_ADMIN_EMAIL)
+  );
+
+  return onSnapshot(
+    staffQuery,
+    (snapshot) => {
+      const mapped: StaffDirectoryEntry[] = snapshot.docs.map((docSnap) => {
+        const data = docSnap.data() as {
+          staffKey: string;
+          email: string;
+          displayName: string;
+          role: AssignableStaffRole;
+          ownerAdminEmail: string;
+          addedByUid: string;
+          createdAt?: { toDate?: () => Date };
+        };
+        return {
+          staffKey: data.staffKey,
+          email: data.email,
+          displayName: data.displayName,
+          role: data.role,
+          ownerAdminEmail: data.ownerAdminEmail,
+          addedByUid: data.addedByUid,
+          createdAtIso: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : undefined,
+        };
+      });
+      onStaff(mapped);
+    },
+    (error) => {
+      onError('تعذر مزامنة قائمة فريق العمل من قاعدة البيانات السحابية.');
+      handleFirestoreError(error, OperationType.LIST, 'staffDirectory');
+    }
+  );
+}
+
+export async function saveStaffDirectoryEntry(params: {
+  email: string;
+  displayName: string;
+  role: AssignableStaffRole;
+  addedByUid: string;
+}): Promise<void> {
+  const normalizedEmail = params.email.trim().toLowerCase();
+  const safeDisplayName = params.displayName.trim().slice(0, 120);
+  const staffKey = computeStaffKey(normalizedEmail);
+  const staffRef = doc(db, 'staffDirectory', staffKey);
+  const path = `staffDirectory/${staffKey}`;
+
+  try {
+    const existingSnap = await getDoc(staffRef);
+    if (existingSnap.exists()) {
+      await updateDoc(staffRef, {
+        displayName: safeDisplayName,
+        role: params.role,
+        updatedAt: serverTimestamp(),
+      });
+      return;
+    }
+
+    await setDoc(staffRef, {
+      staffKey,
+      email: normalizedEmail,
+      displayName: safeDisplayName,
+      role: params.role,
+      ownerAdminEmail: BOOTSTRAPPED_SUPER_ADMIN_EMAIL,
+      addedByUid: params.addedByUid,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+  } catch (err) {
+    handleFirestoreError(err, OperationType.WRITE, path);
+  }
+}
+
+export async function deleteStaffDirectoryEntry(staffKey: string): Promise<void> {
+  const path = `staffDirectory/${staffKey}`;
+  try {
+    await deleteDoc(doc(db, 'staffDirectory', staffKey));
+  } catch (err) {
+    handleFirestoreError(err, OperationType.DELETE, path);
+  }
 }

@@ -5,14 +5,49 @@
   --color-nashka-royal: #161A8D;
   --color-nashka-royal-hover: #10136B;
   --color-nashka-royal-deep: #0D105A;
+  --color-nashka-action: #004AAD;
   --color-nashka-sky: #C5E5FF;
-  --color-nashka-sky-soft: #F1F8FF;
-  --color-nashka-gold: #C9A13B;
+  --color-nashka-cloud: #F4F8FC;
+  --color-nashka-gray: #E8EDF4;
+  --color-nashka-black: #0B0B0D;
+  --color-nashka-gold: #D6AD55;
   --color-nashka-gold-dark: #8B6918;
-  --color-nashka-gold-soft: #FBF7EE;
-  --color-nashka-ivory: #FAF8F5;
-  --color-nashka-secondary: #5A657D;
+  --color-nashka-gold-soft: #FCF9F0;
   --color-nashka-white: #FFFFFF;
+
+  /* Royal Blue Scale */
+  --color-royal-50: #EFF4FF;
+  --color-royal-100: #DDE8FF;
+  --color-royal-200: #C5E5FF;
+  --color-royal-300: #97C2FA;
+  --color-royal-400: #5B8EE6;
+  --color-royal-500: #2E57C7;
+  --color-royal-600: #004AAD;
+  --color-royal-700: #161A8D;
+  --color-royal-800: #10136B;
+  --color-royal-900: #0D105A;
+
+  /* Gold Scale */
+  --color-gold-50: #FCF9F0;
+  --color-gold-100: #F7EED7;
+  --color-gold-200: #EED9A6;
+  --color-gold-300: #E3C37B;
+  --color-gold-400: #D6AD55;
+  --color-gold-500: #C9A13B;
+  --color-gold-600: #A68027;
+  --color-gold-700: #8B6918;
+  --color-gold-800: #6B4F12;
+  --color-gold-900: #4C370B;
+
+  /* Semantic Colors */
+  --color-status-success: #16A36A;
+  --color-status-success-bg: #E9F8F0;
+  --color-status-warning: #E99A28;
+  --color-status-warning-bg: #FFF5E5;
+  --color-status-error: #DC3545;
+  --color-status-error-bg: #FDECEE;
+  --color-status-info: #2878C7;
+  --color-status-info-bg: #EAF4FF;
 
   --font-cairo: 'Cairo', system-ui, -apple-system, sans-serif;
   --font-poppins: 'Poppins', system-ui, -apple-system, sans-serif;
@@ -26,8 +61,8 @@
   }
 
   body {
-    background-color: var(--color-white);
-    color: var(--color-text-primary);
+    background-color: var(--color-cloud-white);
+    color: var(--color-text-black);
     font-family: var(--font-arabic);
     overflow-x: clip;
   }
@@ -112,9 +147,9 @@
 /* 1. Mobile Range (320px–767px) */
 @media (max-width: 767px) {
   .nashka-hero-grid {
-    padding-top: 1.75rem;
-    padding-bottom: 2.25rem;
-    gap: 1.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+    gap: 1.25rem;
   }
 
   .nashka-hero-content {
@@ -124,62 +159,63 @@
 
   .nashka-hero-kicker {
     font-size: 0.8125rem;
+    line-height: 1.45;
     justify-content: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   .nashka-hero-h1 {
-    text-wrap: initial;
+    font-size: clamp(1.75rem, 6.8vw, 2.125rem);
+    font-weight: 800;
+    line-height: 1.25;
+    text-wrap: balance;
   }
 
   .nashka-hero-line1 {
     display: block;
-    font-size: clamp(25px, 6.8vw, 30px);
-    font-weight: 800;
-    line-height: 1.38;
+    color: #181881;
+    font-style: normal;
+    text-decoration-line: none;
   }
 
   .nashka-hero-line2 {
     display: block;
-    font-size: clamp(29px, 7.8vw, 34px);
-    font-weight: 800;
-    line-height: 1.3;
-    margin-top: 0.25rem;
+    margin-top: 0.125rem;
   }
 
   .nashka-hero-sub {
-    font-size: clamp(16px, 4.3vw, 18px);
-    line-height: 1.6;
-    margin-top: 0.875rem;
+    font-size: clamp(1rem, 4.1vw, 1.125rem);
+    line-height: 1.45;
+    margin-top: 0.625rem;
   }
 
   .nashka-hero-desc {
-    font-size: clamp(14px, 3.8vw, 15px);
-    line-height: 1.85;
+    font-size: 0.90625rem;
+    line-height: 1.62;
     max-width: 21rem;
     text-wrap: balance;
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
     margin-inline: auto;
   }
 
   .nashka-hero-cta-wrap {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     width: 100%;
     display: flex;
     justify-content: center;
   }
 
   .nashka-hero-cta {
-    height: 50px;
-    min-height: 50px;
+    height: 48px;
+    min-height: 48px;
     width: 100%;
-    max-width: 310px;
-    padding-inline: 1.5rem;
+    max-width: 300px;
+    padding-inline: 1.375rem;
     font-size: 0.9375rem;
   }
 
   .nashka-hero-frame {
-    border-radius: 1.25rem;
+    border-radius: 1.125rem;
     padding: 0.375rem;
     aspect-ratio: 16 / 10;
   }
@@ -192,72 +228,79 @@
 /* 2. Tablet Range (768px–1024px) */
 @media (min-width: 768px) and (max-width: 1024px) {
   .nashka-hero-grid {
-    padding-top: 3rem;
-    padding-bottom: 3.25rem;
-    gap: 2.25rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.75rem;
+    gap: 2rem;
   }
 
   .nashka-hero-content {
     align-items: center;
     text-align: center;
-    max-width: 40rem;
+    max-width: 38rem;
     margin-inline: auto;
   }
 
   .nashka-hero-kicker {
     font-size: 0.875rem;
     justify-content: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .nashka-hero-h1 {
-    font-size: clamp(38px, 4.5vw, 44px);
+    font-size: clamp(2.125rem, 4.2vw, 2.5rem);
     font-weight: 800;
-    line-height: 1.38;
+    line-height: 1.32;
+    text-wrap: balance;
   }
 
-  .nashka-hero-line1,
+  .nashka-hero-line1 {
+    display: inline;
+    color: #181881;
+    font-style: normal;
+    text-decoration-line: none;
+  }
+
   .nashka-hero-line2 {
     display: inline;
   }
 
   .nashka-hero-sub {
-    font-size: clamp(19px, 2.2vw, 22px);
-    line-height: 1.6;
-    margin-top: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    margin-top: 0.875rem;
   }
 
   .nashka-hero-desc {
-    font-size: clamp(15.5px, 1.8vw, 17px);
-    line-height: 1.85;
-    max-width: 33rem;
+    font-size: 0.96875rem;
+    line-height: 1.65;
+    max-width: 32rem;
     text-wrap: balance;
-    margin-top: 0.875rem;
+    margin-top: 0.625rem;
     margin-inline: auto;
   }
 
   .nashka-hero-cta-wrap {
-    margin-top: 1.875rem;
+    margin-top: 1.5rem;
     display: flex;
     justify-content: center;
   }
 
   .nashka-hero-cta {
-    height: 52px;
-    min-height: 52px;
+    height: 50px;
+    min-height: 50px;
     width: auto;
-    min-width: 260px;
-    padding-inline: 2.25rem;
-    font-size: 1rem;
+    min-width: 248px;
+    padding-inline: 2rem;
+    font-size: 0.96875rem;
   }
 
   .nashka-hero-media {
-    max-width: 42rem;
+    max-width: 40rem;
     margin-inline: auto;
   }
 
   .nashka-hero-frame {
-    border-radius: 1.5rem;
+    border-radius: 1.375rem;
     padding: 0.5rem;
     aspect-ratio: 16 / 9;
   }
@@ -270,10 +313,10 @@
 /* 3. Desktop Range (1025px and above) */
 @media (min-width: 1025px) {
   .nashka-hero-grid {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.1fr);
-    gap: 3.5rem;
-    padding-top: 4.25rem;
-    padding-bottom: 4.5rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    gap: 3rem;
+    padding-top: 3.5rem;
+    padding-bottom: 3.75rem;
   }
 
   .nashka-hero-content {
@@ -282,58 +325,67 @@
   }
 
   .nashka-hero-kicker {
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     justify-content: flex-start;
-    margin-bottom: 1.125rem;
+    margin-bottom: 0.875rem;
   }
 
   .nashka-hero-h1 {
-    font-size: clamp(44px, 3.4vw, 54px);
+    font-size: clamp(2.5rem, 3.1vw, 3.125rem);
     font-weight: 800;
-    line-height: 1.35;
+    line-height: 1.32;
   }
 
-  .nashka-hero-line1,
+  .nashka-hero-line1 {
+    display: block;
+    font-size: 50px;
+    text-decoration-line: none;
+    font-style: normal;
+    text-align: right;
+    line-height: 80.4696px;
+    color: #181881;
+  }
+
   .nashka-hero-line2 {
     display: block;
   }
 
   .nashka-hero-sub {
-    font-size: clamp(21px, 1.55vw, 24px);
-    line-height: 1.58;
-    margin-top: 1.125rem;
+    font-size: clamp(1.125rem, 1.35vw, 1.25rem);
+    line-height: 1.55;
+    margin-top: 0.875rem;
   }
 
   .nashka-hero-desc {
-    font-size: clamp(16px, 1.15vw, 17.5px);
-    line-height: 1.85;
-    max-width: 31rem;
-    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 29rem;
+    margin-top: 0.75rem;
   }
 
   .nashka-hero-cta-wrap {
-    margin-top: 2.25rem;
+    margin-top: 1.75rem;
     display: flex;
     justify-content: flex-start;
   }
 
   .nashka-hero-cta {
-    height: 54px;
-    min-height: 54px;
+    height: 52px;
+    min-height: 52px;
     width: auto;
-    min-width: 268px;
-    padding-inline: 2.25rem;
-    font-size: 1.03125rem;
+    min-width: 256px;
+    padding-inline: 2rem;
+    font-size: 1rem;
   }
 
   .nashka-hero-frame {
-    border-radius: 1.75rem;
-    padding: 0.625rem;
+    border-radius: 1.5rem;
+    padding: 0.5rem;
     aspect-ratio: 4 / 3;
   }
 
   .nashka-hero-img {
-    border-radius: 1.125rem;
+    border-radius: 1.0625rem;
   }
 }
 

@@ -16,7 +16,7 @@ export function VisaDetailsSection() {
   return (
     <section
       id="visa-details"
-      className="py-10 sm:py-20 lg:py-24 bg-white scroll-mt-14 sm:scroll-mt-16"
+      className="py-11 sm:py-14 lg:py-20 bg-[#F4F8FC] border-b border-[#E8EDF4] scroll-mt-16"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
@@ -26,7 +26,7 @@ export function VisaDetailsSection() {
           align="center"
         />
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 items-stretch">
+        <div className="grid grid-cols-1 min-[340px]:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5 items-stretch">
           {VISA_SPEC_CARDS.map((spec) => {
             const IconComponent = SPEC_ICONS[spec.iconKey];
             return (
@@ -42,12 +42,12 @@ export function VisaDetailsSection() {
 
         <NashkaNoticeCard
           icon={Fingerprint}
-          surface="soft"
+          surface="white"
           centered
           className="max-w-2xl mx-auto mt-6 sm:mt-8"
         >
-          <p className="font-semibold text-slate-700">
-            <strong className="text-[#161A8D]">البصمة الحيوية:</strong> موعد البصمة مطلوب لدى مركز
+          <p className="font-semibold text-[#334155]">
+            <strong className="text-[#0B0B0D]">البصمة الحيوية:</strong> موعد البصمة مطلوب لدى مركز
             تساهيل.
           </p>
         </NashkaNoticeCard>

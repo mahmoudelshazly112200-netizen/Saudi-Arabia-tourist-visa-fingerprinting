@@ -9,7 +9,9 @@ import {
   validateVisaApplicationForm,
 } from './validation';
 import { calculateTotalVisaPrice } from './formatters';
-import { computeTrackingKey, sha256Hex } from './trackingHash';
+import { computeStaffKey, computeTrackingKey, sha256Hex } from './trackingHash';
+import { buildCustomerWhatsappHref, normalizeWhatsappDigits } from '../constants/brand';
+import { buildUtf8Csv } from './csvExport';
 import { BankStatementStatus, VisaApplicationFormData } from '../types/visa';
 
 test('calculateTotalVisaPrice multiplies approved EGP 9,500 per person accurately', () => {
@@ -27,6 +29,30 @@ test('sha256Hex matches official NIST RFC 6234 test vector and computeTrackingKe
   const keyIntl = computeTrackingKey('NSK-2026-123456', '+20 104 000 9577');
   assert.equal(keyLocal, keyIntl);
   assert.match(keyLocal, /^trk_[a-f0-9]{64}$/);
+});
+
+test('computeStaffKey normalizes case and whitespace into deterministic 68-char stf_ hash', () => {
+  const k1 = computeStaffKey('  Staff.Member@Gmail.com ');
+  const k2 = computeStaffKey('staff.member@gmail.com');
+  assert.equal(k1, k2);
+  assert.match(k1, /^stf_[a-f0-9]{64}$/);
+});
+
+test('normalizeWhatsappDigits and buildCustomerWhatsappHref handle local Egyptian and intl formats', () => {
+  assert.equal(normalizeWhatsappDigits('01040009577'), '201040009577');
+  assert.equal(normalizeWhatsappDigits('+20 106 007 0093'), '201060070093');
+  assert.equal(normalizeWhatsappDigits('00966501234567'), '966501234567');
+  const href = buildCustomerWhatsappHref('01040009577', 'مرحباً عميلنا الكريم');
+  assert.ok(href.startsWith('https://wa.me/201040009577?text='));
+});
+
+test('buildUtf8Csv prepends UTF-8 BOM, quotes cells, and neutralizes formula injection prefixes', () => {
+  const csv = buildUtf8Csv(
+    ['المرجع', 'الملاحظات'],
+    [['NSK-2026-111111', '=HYPERLINK("http://evil.test")']]
+  );
+  assert.ok(csv.startsWith('\uFEFF'));
+  assert.ok(csv.includes('"\'=HYPERLINK(""http://evil.test"")"'));
 });
 
 test('clampApplicantsCount enforces minimum 1 and maximum 20', () => {

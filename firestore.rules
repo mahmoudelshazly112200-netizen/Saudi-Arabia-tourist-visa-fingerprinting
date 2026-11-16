@@ -25,6 +25,12 @@ service cloud.firestore {
         && key.matches('^trk_[a-f0-9]{64}$');
     }
 
+    function isValidStaffKey(key) {
+      return key is string
+        && key.size() == 68
+        && key.matches('^stf_[a-f0-9]{64}$');
+    }
+
     function incoming() {
       return request.resource.data;
     }
@@ -231,6 +237,43 @@ service cloud.firestore {
         && data.updatedAt is timestamp;
     }
 
+    function isValidAttachment(data, docType) {
+      return data is map
+        && data.keys().hasAll([
+          'applicationId',
+          'docType',
+          'fileName',
+          'mimeType',
+          'dataUrl',
+          'createdAt'
+        ])
+        && data.keys().hasOnly([
+          'applicationId',
+          'docType',
+          'fileName',
+          'mimeType',
+          'dataUrl',
+          'createdAt'
+        ])
+        && isValidId(data.applicationId)
+        && data.docType is string
+        && data.docType.size() <= 14
+        && data.docType == docType
+        && docType in ['passport', 'personal_photo']
+        && data.fileName is string
+        && data.fileName.size() >= 1
+        && data.fileName.size() <= 160
+        && data.mimeType is string
+        && data.mimeType.size() >= 9
+        && data.mimeType.size() <= 20
+        && data.mimeType in ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
+        && data.dataUrl is string
+        && data.dataUrl.size() >= 20
+        && data.dataUrl.size() <= 820000
+        && data.dataUrl.matches('^data:(image/(jpeg|png|webp)|application/pdf);base64,[A-Za-z0-9+/=]+$')
+        && data.createdAt is timestamp;
+    }
+
     function isValidApplicationTracking(data) {
       return data is map
         && data.keys().hasAll([
@@ -334,6 +377,52 @@ service cloud.firestore {
         && data.updatedAt is timestamp;
     }
 
+    function isValidStaffDirectoryEntry(data) {
+      return data is map
+        && data.keys().hasAll([
+          'staffKey',
+          'email',
+          'displayName',
+          'role',
+          'ownerAdminEmail',
+          'addedByUid',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'staffKey',
+          'email',
+          'displayName',
+          'role',
+          'ownerAdminEmail',
+          'addedByUid',
+          'createdAt',
+          'updatedAt'
+        ])
+        && isValidStaffKey(data.staffKey)
+        && data.email is string
+        && data.email.size() >= 5
+        && data.email.size() <= 160
+        && data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && data.displayName is string
+        && data.displayName.size() >= 2
+        && data.displayName.size() <= 120
+        && data.role is string
+        && data.role.size() >= 16
+        && data.role.size() <= 25
+        && data.role in [
+          'visa_operations_manager',
+          'document_reviewer',
+          'customer_support'
+        ]
+        && data.ownerAdminEmail is string
+        && data.ownerAdminEmail.size() == 23
+        && data.ownerAdminEmail == 'nashkatourism@gmail.com'
+        && isValidId(data.addedByUid)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
     // =========================================================================
     // 4. COLLECTION RULES
     // =========================================================================
@@ -394,6 +483,24 @@ service cloud.firestore {
         && getAfter(/databases/$(database)/documents/applicationTracking/$(existing().trackingKey)).data.photoVerificationStatus == incoming().photoDoc.verificationStatus;
 
       allow delete: if false;
+
+      // Admin-Only Cloud Attachment Copies (Passport / Personal Photo)
+      match /attachments/{docType} {
+        allow get: if isVerifiedUser()
+          && isValidId(applicationId)
+          && docType in ['passport', 'personal_photo']
+          && isAuthorizedAdmin();
+
+        allow list: if false;
+
+        allow create: if isValidId(applicationId)
+          && isValidAttachment(incoming(), docType)
+          && incoming().applicationId == applicationId
+          && incoming().createdAt == request.time
+          && existsAfter(/databases/$(database)/documents/applications/$(applicationId));
+
+        allow update, delete: if false;
+      }
     }
 
     // Split Non-PII Tracking Projection (Single-Doc Lookup Only; No Listing)
@@ -446,7 +553,7 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Authorized Admin Staff Directory (Managed Exclusively by Bootstrapped Super Admin)
+    // Authorized Admin Staff Directory (UID-keyed for fast rules lookups)
     match /admins/{adminUid} {
       allow get: if isVerifiedUser()
         && isValidId(adminUid)
@@ -478,6 +585,40 @@ service cloud.firestore {
       allow delete: if isBootstrappedAdmin()
         && isValidId(adminUid)
         && adminUid != request.auth.uid;
+    }
+
+    // Super-Admin-Managed Staff Directory (Email-SHA256-keyed)
+    match /staffDirectory/{staffKey} {
+      allow get: if isVerifiedUser()
+        && isValidStaffKey(staffKey)
+        && (isBootstrappedAdmin() || existing().email == request.auth.token.email);
+
+      allow list: if isBootstrappedAdmin()
+        && existing().ownerAdminEmail == request.auth.token.email;
+
+      allow create: if isBootstrappedAdmin()
+        && isValidStaffKey(staffKey)
+        && isValidStaffDirectoryEntry(incoming())
+        && incoming().staffKey == staffKey
+        && incoming().addedByUid == request.auth.uid
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+
+      allow update: if isValidStaffDirectoryEntry(incoming())
+        && isBootstrappedAdmin()
+        && isValidStaffKey(staffKey)
+        && incoming().staffKey == existing().staffKey
+        && incoming().email == existing().email
+        && incoming().ownerAdminEmail == existing().ownerAdminEmail
+        && incoming().addedByUid == existing().addedByUid
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly(['role', 'updatedAt'])
+          || incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'role', 'updatedAt'])
+        );
+
+      allow delete: if isBootstrappedAdmin() && isValidStaffKey(staffKey);
     }
   }
 }

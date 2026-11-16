@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Allow: /apply
-Disallow: /admin
-Disallow: /track
-Disallow: /api/

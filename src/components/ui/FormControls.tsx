@@ -36,9 +36,9 @@ export function TextField({
 
   return (
     <div className="w-full">
-      <label htmlFor={id} className="block text-sm sm:text-base font-bold text-slate-900 mb-2">
+      <label htmlFor={id} className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-2">
         {label}
-        {requiredMark && <span className="text-red-600 mr-1" aria-hidden="true">*</span>}
+        {requiredMark && <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>}
       </label>
       <input
         id={id}
@@ -46,9 +46,9 @@ export function TextField({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : hint ? hintId : undefined}
         className={[
-          'w-full min-h-[48px] px-4 py-3 rounded-xl border bg-white text-base text-slate-900 placeholder:text-slate-400',
+          'w-full min-h-[48px] px-4 py-3 rounded-xl border bg-white text-base text-[#0B0B0D] placeholder:text-[#5A657D]/70',
           'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#161A8D]/20 focus:border-[#161A8D]',
-          error ? 'border-red-500 bg-red-50/30' : 'border-slate-300 hover:border-slate-400',
+          error ? 'border-[#DC3545] bg-[#FDECEE]/45' : 'border-[#E8EDF4] hover:border-[#5B8EE6]',
           inputDir === 'ltr' ? 'text-right font-en' : '',
           className,
         ]
@@ -57,12 +57,12 @@ export function TextField({
         {...rest}
       />
       {hint && !error && (
-        <p id={hintId} className="mt-1.5 text-xs sm:text-sm text-slate-500">
+        <p id={hintId} className="mt-1.5 text-xs sm:text-sm text-[#5A657D]">
           {hint}
         </p>
       )}
       {error && (
-        <p id={errorId} role="alert" className="mt-1.5 flex items-center gap-1.5 text-sm font-medium text-red-700">
+        <p id={errorId} role="alert" className="mt-1.5 flex items-center gap-1.5 text-sm font-medium text-[#DC3545]">
           <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
           <span>{error}</span>
         </p>
@@ -92,9 +92,9 @@ export function TextAreaField({
 
   return (
     <div className="w-full">
-      <label htmlFor={id} className="block text-sm sm:text-base font-bold text-slate-900 mb-2">
+      <label htmlFor={id} className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-2">
         {label}
-        {requiredMark && <span className="text-red-600 mr-1" aria-hidden="true">*</span>}
+        {requiredMark && <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>}
       </label>
       <textarea
         id={id}
@@ -102,18 +102,18 @@ export function TextAreaField({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
         className={[
-          'w-full px-4 py-3 rounded-xl border bg-white text-base text-slate-900 placeholder:text-slate-400',
+          'w-full px-4 py-3 rounded-xl border bg-white text-base text-[#0B0B0D] placeholder:text-[#5A657D]/70',
           'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#161A8D]/20 focus:border-[#161A8D]',
-          error ? 'border-red-500 bg-red-50/30' : 'border-slate-300 hover:border-slate-400',
+          error ? 'border-[#DC3545] bg-[#FDECEE]/45' : 'border-[#E8EDF4] hover:border-[#5B8EE6]',
           className,
         ]
           .filter(Boolean)
           .join(' ')}
         {...rest}
       />
-      {hint && !error && <p className="mt-1.5 text-xs sm:text-sm text-slate-500">{hint}</p>}
+      {hint && !error && <p className="mt-1.5 text-xs sm:text-sm text-[#5A657D]">{hint}</p>}
       {error && (
-        <p id={errorId} role="alert" className="mt-1.5 flex items-center gap-1.5 text-sm font-medium text-red-700">
+        <p id={errorId} role="alert" className="mt-1.5 flex items-center gap-1.5 text-sm font-medium text-[#DC3545]">
           <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
           <span>{error}</span>
         </p>
@@ -140,17 +140,17 @@ export function ApplicantCounter({
 
   return (
     <div className="w-full">
-      <span className="block text-sm sm:text-base font-bold text-slate-900 mb-2">
+      <span className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-2">
         عدد المتقدمين
-        <span className="text-red-600 mr-1" aria-hidden="true">*</span>
+        <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>
       </span>
-      <div className="flex items-center justify-between gap-3 p-2 rounded-xl border border-slate-300 bg-white min-h-[52px]">
+      <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl border border-[#E8EDF4] bg-white min-h-[52px]">
         <button
           type="button"
           onClick={onIncrement}
           disabled={!canIncrement}
           aria-label="زيادة عدد المتقدمين"
-          className="w-11 h-11 rounded-lg bg-[#EEF7FF] text-[#161A8D] hover:bg-[#C5E5FF] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer shrink-0"
+          className="w-12 h-12 rounded-lg bg-[#EFF4FF] text-[#161A8D] hover:bg-[#C5E5FF] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer shrink-0"
         >
           <Plus className="w-5 h-5" aria-hidden="true" />
         </button>
@@ -162,7 +162,7 @@ export function ApplicantCounter({
           >
             {value}
           </span>
-          <span className="text-xs text-slate-500">{formatApplicantsLabel(value)}</span>
+          <span className="text-xs text-[#5A657D]">{formatApplicantsLabel(value)}</span>
         </div>
 
         <button
@@ -170,13 +170,13 @@ export function ApplicantCounter({
           onClick={onDecrement}
           disabled={!canDecrement}
           aria-label="تقليل عدد المتقدمين"
-          className="w-11 h-11 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer shrink-0"
+          className="w-12 h-12 rounded-lg bg-[#F4F8FC] text-[#0B0B0D] hover:bg-[#E8EDF4] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer shrink-0"
         >
           <Minus className="w-5 h-5" aria-hidden="true" />
         </button>
       </div>
       {error && (
-        <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-sm font-medium text-red-700">
+        <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-sm font-medium text-[#DC3545]">
           <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
           <span>{error}</span>
         </p>
@@ -189,6 +189,7 @@ interface FileUploadFieldProps {
   label: string;
   description: string;
   accept: string;
+  name?: string;
   document: UploadedDocumentMeta | null;
   error?: string;
   onSelectFile: (file: File | null) => void;
@@ -198,6 +199,7 @@ export function FileUploadField({
   label,
   description,
   accept,
+  name,
   document,
   error,
   onSelectFile,
@@ -210,7 +212,6 @@ export function FileUploadField({
     if (selected) {
       onSelectFile(selected);
     }
-    // Reset input value so selecting the same file after removal still triggers onChange
     e.target.value = '';
   };
 
@@ -219,16 +220,17 @@ export function FileUploadField({
   };
 
   return (
-    <div className="w-full">
-      <label htmlFor={inputId} className="block text-sm sm:text-base font-bold text-slate-900 mb-1.5">
+    <div className="w-full h-full flex flex-col rounded-2xl border border-[#E8EDF4] bg-[#F4F8FC] p-4 sm:p-5">
+      <label htmlFor={inputId} className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-1">
         {label}
-        <span className="text-red-600 mr-1" aria-hidden="true">*</span>
+        <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>
       </label>
-      <p className="text-xs sm:text-sm text-slate-600 mb-2.5">{description}</p>
+      <p className="text-xs sm:text-sm text-[#5A657D] leading-relaxed mb-3.5">{description}</p>
 
       <input
         ref={fileInputRef}
         id={inputId}
+        name={name}
         type="file"
         accept={accept}
         onChange={handleInputChange}
@@ -240,33 +242,30 @@ export function FileUploadField({
           type="button"
           onClick={triggerFilePicker}
           className={[
-            'w-full min-h-[116px] p-5 rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-center transition-colors cursor-pointer',
+            'w-full flex-1 min-h-[124px] p-4 rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-center transition-colors cursor-pointer bg-white',
             error
-              ? 'border-red-400 bg-red-50/40 hover:bg-red-50/70'
-              : 'border-[#161A8D]/25 bg-[#F7F9FC] hover:border-[#161A8D] hover:bg-[#EEF7FF]/60',
+              ? 'border-[#DC3545] bg-[#FDECEE]/50 hover:bg-[#FDECEE]/80'
+              : 'border-[#004AAD]/25 hover:border-[#161A8D] hover:bg-[#EFF4FF]',
           ].join(' ')}
         >
-          <div className="w-11 h-11 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#161A8D] mb-2.5">
+          <div className="w-11 h-11 rounded-full bg-[#EAF4FF] border border-[#C5E5FF] flex items-center justify-center text-[#004AAD] mb-2">
             <Upload className="w-5 h-5" aria-hidden="true" />
           </div>
-          <span className="text-sm sm:text-base font-bold text-[#161A8D]">
-            اضغط لاختيار الملف من جهازك أو الهاتف
-          </span>
-          <span className="text-xs text-slate-500 mt-1">
-            الحد الأقصى لحجم الملف: 10 ميجابايت
+          <span className="text-sm sm:text-base font-bold text-[#004AAD]">
+            اضغط لاختيار الملف من الجهاز
           </span>
         </button>
       ) : (
-        <div className="p-4 rounded-xl border border-[#C5E5FF] bg-[#EEF7FF]/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5 min-w-0 w-full sm:w-auto">
+        <div className="flex-1 p-3.5 sm:p-4 rounded-xl border border-[#C5E5FF] bg-white flex flex-col justify-between gap-3.5">
+          <div className="flex items-center gap-3 min-w-0 w-full">
             {document.previewUrl ? (
               <img
                 src={document.previewUrl}
                 alt={`معاينة ${label}`}
-                className="w-14 h-14 rounded-lg object-cover border border-slate-200 shrink-0 bg-white"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg object-cover border border-[#E8EDF4] shrink-0 bg-white"
               />
             ) : (
-              <div className="w-14 h-14 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-[#161A8D] shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-[#EAF4FF] border border-[#C5E5FF] flex items-center justify-center text-[#161A8D] shrink-0">
                 {document.mimeType === 'application/pdf' ? (
                   <FileText className="w-6 h-6" aria-hidden="true" />
                 ) : (
@@ -275,21 +274,21 @@ export function FileUploadField({
               </div>
             )}
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-slate-900 truncate font-en text-right" dir="ltr">
+              <p className="text-sm font-bold text-[#0B0B0D] truncate font-en text-right" dir="ltr">
                 {document.fileName}
               </p>
-              <p className="text-xs text-slate-600 mt-0.5 tabular-nums">
-                {formatFileSize(document.fileSize)} · تم اختيار الملف بنجاح
+              <p className="text-xs text-[#16A36A] font-semibold mt-0.5 tabular-nums">
+                {formatFileSize(document.fileSize)} · جاهز للإرسال
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+          <div className="flex items-center gap-2 w-full">
             <button
               type="button"
               onClick={triggerFilePicker}
               aria-label={`استبدال ${label}`}
-              className="flex-1 sm:flex-initial min-h-[44px] px-3.5 py-2 rounded-lg bg-white border border-slate-300 text-xs sm:text-sm font-semibold text-slate-800 hover:border-[#161A8D] hover:text-[#161A8D] inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              className="flex-1 min-h-[48px] px-3 py-2 rounded-lg bg-[#EAF4FF] border border-[#C5E5FF] text-xs sm:text-sm font-bold text-[#004AAD] hover:bg-[#C5E5FF]/50 inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               <RefreshCw className="w-4 h-4 shrink-0" aria-hidden="true" />
               <span>استبدال</span>
@@ -298,7 +297,7 @@ export function FileUploadField({
               type="button"
               onClick={() => onSelectFile(null)}
               aria-label={`حذف ${label}`}
-              className="flex-1 sm:flex-initial min-h-[44px] px-3.5 py-2 rounded-lg bg-white border border-red-200 text-xs sm:text-sm font-semibold text-red-700 hover:bg-red-50 inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              className="flex-1 min-h-[48px] px-3 py-2 rounded-lg bg-[#FDECEE] border border-[#DC3545]/25 text-xs sm:text-sm font-bold text-[#DC3545] hover:bg-[#DC3545]/10 inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
               <Trash2 className="w-4 h-4 shrink-0" aria-hidden="true" />
               <span>حذف</span>
@@ -308,7 +307,7 @@ export function FileUploadField({
       )}
 
       {error && (
-        <p role="alert" className="mt-2 flex items-center gap-1.5 text-sm font-medium text-red-700">
+        <p role="alert" className="mt-2.5 flex items-center gap-1.5 text-sm font-medium text-[#DC3545]">
           <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
           <span>{error}</span>
         </p>

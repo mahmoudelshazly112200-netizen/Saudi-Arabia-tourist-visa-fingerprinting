@@ -8,7 +8,7 @@ const STEP_ICONS = [Send, ClipboardCheck, Fingerprint, CheckCircle2] as const;
 
 export function ApplicationStepsSection() {
   return (
-    <section id="steps" className="py-12 sm:py-20 lg:py-24 bg-white scroll-mt-14 sm:scroll-mt-16">
+    <section id="steps" className="py-11 sm:py-14 lg:py-20 bg-[#F4F8FC] border-b border-[#E8EDF4] scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           kicker="رحلتك تبدأ بخطوات بسيطة"
@@ -17,7 +17,7 @@ export function ApplicationStepsSection() {
           align="center"
         />
 
-        <ol className="grid grid-cols-1 min-[360px]:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5 lg:gap-6 items-stretch">
+        <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5 lg:gap-6 items-stretch">
           {APPLICATION_STEPS.map((step, idx) => {
             const StepIcon = STEP_ICONS[idx] || CheckCircle2;
 

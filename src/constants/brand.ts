@@ -1,12 +1,15 @@
 export const BRAND_TOKENS = {
   colors: {
     royalBlue: '#161A8D',
+    actionBlue: '#004AAD',
     skyBlue: '#C5E5FF',
     gold: '#D6AD55',
+    deepBlack: '#0B0B0D',
     white: '#FFFFFF',
+    cloudWhite: '#F4F8FC',
     softBackground: '#F4F8FC',
+    softGray: '#E8EDF4',
     neutral: '#E8EDF4',
-    warmIvory: '#FAF8F5',
     secondaryText: '#5A657D',
   },
   fonts: {
@@ -35,6 +38,30 @@ const configuredWhatsappDigits = (envObj.VITE_NASHKA_WHATSAPP || '201060070093')
   .trim()
   .replace(/[^\d]/g, '');
 const configuredEmail = (envObj.VITE_NASHKA_EMAIL || 'nashkatourism@gmail.com').trim();
+
+const configuredSiteUrl = (envObj.VITE_SITE_URL || '').trim().replace(/\/+$/, '');
+
+export function getSiteOrigin(): string {
+  if (configuredSiteUrl) return configuredSiteUrl;
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin;
+  }
+  return '';
+}
+
+export function normalizeWhatsappDigits(phone: string): string {
+  const digits = (phone || '').replace(/[^\d]/g, '');
+  if (!digits) return '';
+  if (digits.startsWith('00')) return digits.slice(2);
+  if (digits.startsWith('0') && digits.length === 11) return `20${digits.slice(1)}`;
+  return digits;
+}
+
+export function buildCustomerWhatsappHref(phone: string, message: string): string {
+  const normalized = normalizeWhatsappDigits(phone);
+  const encoded = encodeURIComponent(message);
+  return `https://wa.me/${normalized}?text=${encoded}`;
+}
 
 export const CONTACT_CONFIG = {
   brandNameAr: 'نشكا للسياحة',

@@ -61,10 +61,18 @@ export interface JourneyDestinationCardItem {
   imageUrl: string;
 }
 
+export type FaqCategory =
+  | 'all'
+  | 'cost_fees'
+  | 'documents_biometrics'
+  | 'processing_rules'
+  | 'application_tracking';
+
 export interface FaqItem {
   id: string;
   question: string;
   answer: string;
+  category?: Exclude<FaqCategory, 'all'>;
 }
 
 export interface StepItem {

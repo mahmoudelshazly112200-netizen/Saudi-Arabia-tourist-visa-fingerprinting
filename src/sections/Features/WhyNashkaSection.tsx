@@ -20,22 +20,22 @@ export function WhyNashkaSection() {
   return (
     <section
       id="why-nashka"
-      className="py-12 sm:py-16 lg:py-24 bg-[#F4F8FC] border-b border-[#E8EDF4] scroll-mt-14 sm:scroll-mt-16"
+      className="py-11 sm:py-14 lg:py-20 bg-[#F4F8FC] border-b border-[#E8EDF4] scroll-mt-16"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-8 lg:gap-10 xl:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-10 xl:gap-12 items-start">
           {/* 1. Editorial Header Block */}
           <div className="lg:col-start-1 lg:col-span-5 lg:row-start-1 text-center lg:text-right max-w-xl mx-auto lg:mx-0">
-            <div className="inline-flex items-center justify-center lg:justify-start gap-2.5 text-xs sm:text-sm font-bold text-[#8B6918] mb-2.5 sm:mb-3">
+            <div className="inline-flex items-center justify-center lg:justify-start gap-2.5 text-[13px] sm:text-sm font-bold leading-[1.45] text-[#8B6918] mb-1.5 sm:mb-2">
               <span className="w-6 h-[2px] bg-[#D6AD55] rounded-full shrink-0" aria-hidden="true" />
               <span>{WHY_NASHKA_HEADER.kicker}</span>
             </div>
 
-            <h2 className="text-[clamp(1.4rem,6vw,1.7rem)] sm:text-[1.95rem] lg:text-[2.25rem] font-extrabold text-[#161A8D] leading-[1.35] tracking-tight">
+            <h2 className="text-[1.5rem] sm:text-[1.875rem] lg:text-[2.125rem] font-extrabold text-[#161A8D] leading-[1.3] tracking-tight">
               {WHY_NASHKA_HEADER.title}
             </h2>
 
-            <p className="mt-3 sm:mt-3.5 text-[14px] min-[375px]:text-[15px] sm:text-base lg:text-[17px] text-[#5A657D] leading-[1.8] [text-wrap:balance]">
+            <p className="mt-2 sm:mt-2.5 text-[14.5px] sm:text-base lg:text-[17px] text-[#475569] leading-[1.6] sm:leading-[1.7] [text-wrap:balance]">
               {WHY_NASHKA_HEADER.description}
             </p>
           </div>

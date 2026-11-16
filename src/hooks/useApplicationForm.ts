@@ -136,6 +136,34 @@ export function useApplicationForm() {
     []
   );
 
+  const validateStepFields = useCallback(
+    (fields: (keyof VisaApplicationFormData)[]): boolean => {
+      const allErrors = validateVisaApplicationForm(formData);
+      const stepErrors: FormValidationErrors = {};
+
+      for (const field of fields) {
+        if (allErrors[field]) {
+          stepErrors[field] = allErrors[field];
+        }
+      }
+
+      setErrors((prev) => {
+        const next = { ...prev };
+        for (const field of fields) {
+          if (stepErrors[field]) {
+            next[field] = stepErrors[field];
+          } else {
+            delete next[field];
+          }
+        }
+        return next;
+      });
+
+      return Object.keys(stepErrors).length === 0;
+    },
+    [formData]
+  );
+
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -185,6 +213,7 @@ export function useApplicationForm() {
     incrementApplicants,
     decrementApplicants,
     handleFileSelect,
+    validateStepFields,
     handleSubmit,
     resetForm,
   };

@@ -408,10 +408,40 @@ async function requireVerifiedAdminAuth(
   next();
 }
 
+function resolvePublicOrigin(req: Request): string {
+  const explicitSiteUrl = (process.env.SITE_URL || '').trim().replace(/\/+$/, '');
+  if (explicitSiteUrl) {
+    return explicitSiteUrl;
+  }
+  const host = (req.get('x-forwarded-host') || req.get('host') || '').trim();
+  if (host) {
+    const forwardedProto = String(req.headers['x-forwarded-proto'] || '')
+      .split(',')[0]
+      .trim();
+    const proto = forwardedProto || req.protocol || 'https';
+    return `${proto}://${host}`;
+  }
+  const fallbackAppUrl = (process.env.APP_URL || '').trim().replace(/\/+$/, '');
+  if (fallbackAppUrl) {
+    return fallbackAppUrl;
+  }
+  return `http://localhost:${PORT}`;
+}
+
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 async function startServer(): Promise<void> {
   ensureStorageReady();
   const app = express();
   app.disable('x-powered-by');
+  app.set('trust proxy', true);
 
   app.use((req, res, next) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -428,6 +458,51 @@ async function startServer(): Promise<void> {
   });
 
   app.use(express.json({ limit: '64kb' }));
+
+  app.get('/robots.txt', (req, res) => {
+    const origin = resolvePublicOrigin(req);
+    res.type('text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(
+      [
+        'User-agent: *',
+        'Allow: /',
+        'Allow: /apply',
+        'Allow: /faq',
+        'Disallow: /admin',
+        'Disallow: /track',
+        'Disallow: /api/',
+        `Sitemap: ${origin}/sitemap.xml`,
+        '',
+      ].join('\n')
+    );
+  });
+
+  app.get('/sitemap.xml', (req, res) => {
+    const origin = resolvePublicOrigin(req);
+    const today = new Date().toISOString().slice(0, 10);
+    const publicRoutes = [
+      { path: '/', changefreq: 'weekly', priority: '1.0' },
+      { path: '/apply', changefreq: 'weekly', priority: '0.9' },
+      { path: '/faq', changefreq: 'weekly', priority: '0.8' },
+    ];
+    const urlEntries = publicRoutes
+      .map(
+        (route) => `  <url>
+    <loc>${escapeXml(`${origin}${route.path}`)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${route.changefreq}</changefreq>
+    <priority>${route.priority}</priority>
+  </url>`
+      )
+      .join('\n');
+
+    res.type('application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlEntries}\n</urlset>\n`
+    );
+  });
 
   const submitRateLimit = createRateLimiter(20, 15 * 60 * 1000);
   const trackRateLimit = createRateLimiter(60, 15 * 60 * 1000);

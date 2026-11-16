@@ -10,11 +10,14 @@ import {
   OperationType,
 } from '../firebase';
 
+import { computeStaffKey } from '../utils/trackingHash';
+
 interface AdminAuthContextValue {
   user: User | null;
   authReady: boolean;
   isSigningIn: boolean;
   isAuthorizedAdmin: boolean;
+  isSuperAdmin: boolean;
   adminRoleLabelAr: string;
   authError: string;
   signInWithGoogle: () => Promise<void>;
@@ -36,6 +39,7 @@ export function FirebaseAdminAuthProvider({ children }: { children: React.ReactN
   const [authReady, setAuthReady] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isAuthorizedAdmin, setIsAuthorizedAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [adminRoleLabelAr, setAdminRoleLabelAr] = useState('');
   const [authError, setAuthError] = useState('');
 
@@ -46,6 +50,7 @@ export function FirebaseAdminAuthProvider({ children }: { children: React.ReactN
 
       if (!nextUser) {
         setIsAuthorizedAdmin(false);
+        setIsSuperAdmin(false);
         setAdminRoleLabelAr('');
         setAuthReady(true);
         return;
@@ -54,10 +59,13 @@ export function FirebaseAdminAuthProvider({ children }: { children: React.ReactN
       const normalizedEmail = (nextUser.email || '').trim().toLowerCase();
       if (nextUser.emailVerified && normalizedEmail === BOOTSTRAPPED_SUPER_ADMIN_EMAIL) {
         setIsAuthorizedAdmin(true);
+        setIsSuperAdmin(true);
         setAdminRoleLabelAr(ROLE_LABELS_AR.super_admin);
         setAuthReady(true);
         return;
       }
+
+      setIsSuperAdmin(false);
 
       if (!nextUser.emailVerified) {
         setIsAuthorizedAdmin(false);
@@ -73,21 +81,38 @@ export function FirebaseAdminAuthProvider({ children }: { children: React.ReactN
           const data = snap.data() as { role?: string };
           setIsAuthorizedAdmin(true);
           setAdminRoleLabelAr(ROLE_LABELS_AR[data.role || ''] || 'موظف إدارة معتمد');
-        } else {
-          setIsAuthorizedAdmin(false);
-          setAdminRoleLabelAr('');
+          setAuthReady(true);
+          return;
         }
       } catch (err) {
-        setIsAuthorizedAdmin(false);
-        setAdminRoleLabelAr('');
         try {
           handleFirestoreError(err, OperationType.GET, adminDocPath);
         } catch {
-          // Error already logged in structured FirestoreErrorInfo format
+          // Error logged in structured FirestoreErrorInfo format
         }
-      } finally {
-        setAuthReady(true);
       }
+
+      if (normalizedEmail) {
+        const staffKey = computeStaffKey(normalizedEmail);
+        try {
+          const staffSnap = await getDoc(doc(db, 'staffDirectory', staffKey));
+          if (staffSnap.exists()) {
+            const staffData = staffSnap.data() as { role?: string; displayName?: string };
+            setIsAuthorizedAdmin(true);
+            setAdminRoleLabelAr(
+              ROLE_LABELS_AR[staffData.role || ''] || 'موظف معتمد بدليل الفريق'
+            );
+            setAuthReady(true);
+            return;
+          }
+        } catch {
+          // Non-invited users receive permission-denied when evaluating existing().email on missing docs
+        }
+      }
+
+      setIsAuthorizedAdmin(false);
+      setAdminRoleLabelAr('');
+      setAuthReady(true);
     });
 
     return () => unsubscribe();
@@ -129,6 +154,7 @@ export function FirebaseAdminAuthProvider({ children }: { children: React.ReactN
       authReady,
       isSigningIn,
       isAuthorizedAdmin,
+      isSuperAdmin,
       adminRoleLabelAr,
       authError,
       signInWithGoogle,
@@ -140,6 +166,7 @@ export function FirebaseAdminAuthProvider({ children }: { children: React.ReactN
       authReady,
       isSigningIn,
       isAuthorizedAdmin,
+      isSuperAdmin,
       adminRoleLabelAr,
       authError,
       signInWithGoogle,

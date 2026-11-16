@@ -11,7 +11,7 @@ interface NashkaLogoProps {
 
 const HORIZONTAL_SIZE_CLASSES: Record<NashkaLogoSize, string> = {
   sm: 'h-8 sm:h-9',
-  md: 'h-9 sm:h-11',
+  md: 'h-8 min-[375px]:h-9 sm:h-11',
   lg: 'h-12 sm:h-14',
 };
 

@@ -4,6 +4,7 @@ import { HomePage } from './pages/Home/HomePage';
 import { ApplyPage } from './pages/Apply/ApplyPage';
 import { TrackPage } from './pages/Track/TrackPage';
 import { AdminPage } from './pages/Admin/AdminPage';
+import { FaqPage } from './pages/Faq/FaqPage';
 
 export default function App() {
   return (
@@ -12,7 +13,8 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/apply" element={<ApplyPage />} />
         <Route path="/track" element={<TrackPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/faq" element={<FaqPage />} />
+        <Route path="/admin/*" element={<AdminPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

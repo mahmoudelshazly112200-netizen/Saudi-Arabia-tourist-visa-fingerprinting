@@ -1,5 +1,6 @@
 import {
   BankStatementStatus,
+  FaqCategory,
   FaqItem,
   JourneyDestinationCardItem,
   StepItem,
@@ -91,7 +92,7 @@ export const VISA_BENEFIT_CARDS: VisaBenefitCardItem[] = [
     id: 'umrah',
     numberLabel: '01',
     title: 'أداء مناسك العمرة',
-    description: 'أداء العمرة وزيارة المسجد النبوي بكل يسر وطمأنينة.',
+    description: 'أداء العمرة وزيارة المسجد النبوي بيسر.',
     imageUrl: GENERATED_IMAGES.umrahCourtyard,
     imageAlt: 'معتمر يرفع يديه بالدعاء أمام الكعبة المشرفة بالمسجد الحرام',
     featured: true,
@@ -101,7 +102,7 @@ export const VISA_BENEFIT_CARDS: VisaBenefitCardItem[] = [
     id: 'explore-kingdom',
     numberLabel: '02',
     title: 'استكشاف المملكة',
-    description: 'جولات سياحية حرة بين أبرز مدن المملكة ومعالمها.',
+    description: 'جولات حرة بين مدن المملكة ومعالمها.',
     imageUrl: GENERATED_IMAGES.riyadhSkyline,
     imageAlt: 'أفق مدينة الرياض وبرج المملكة وقت الغروب',
     featured: true,
@@ -111,7 +112,7 @@ export const VISA_BENEFIT_CARDS: VisaBenefitCardItem[] = [
     id: 'visit-relatives',
     numberLabel: '03',
     title: 'زيارة الأهل والأصدقاء',
-    description: 'لقاء الأحبة وقضاء أوقات عائلية دافئة في المملكة.',
+    description: 'لقاء الأحبة وقضاء أوقات عائلية دافئة.',
     imageUrl: GENERATED_IMAGES.familyHospitality,
     imageAlt: 'لقاء عائلي عربي دافئ وتقديم القهوة السعودية في المملكة',
     imagePosition: 'center',
@@ -120,7 +121,7 @@ export const VISA_BENEFIT_CARDS: VisaBenefitCardItem[] = [
     id: 'seasons-events',
     numberLabel: '04',
     title: 'الفعاليات والمواسم',
-    description: 'استمتع بأبرز المهرجانات والفعاليات طوال العام.',
+    description: 'حضور أبرز المواسم والفعاليات طوال العام.',
     imageUrl: GENERATED_IMAGES.riyadhSeasonFestival,
     imageAlt: 'أجواء الفعاليات والمواسم السعودية المضاءة ليلاً في الرياض',
     imagePosition: 'center',
@@ -129,7 +130,7 @@ export const VISA_BENEFIT_CARDS: VisaBenefitCardItem[] = [
     id: 'shopping-entertainment',
     numberLabel: '05',
     title: 'التسوق والترفيه',
-    description: 'تسوق في المجمعات الحديثة وخض تجارب ترفيهية مميزة.',
+    description: 'مجمعات حديثة وتجارب ترفيهية متكاملة.',
     imageUrl: GENERATED_IMAGES.shoppingBoulevard,
     imageAlt: 'ممشى تسوق وترفيه حديث في السعودية وقت المساء',
     imagePosition: 'center',
@@ -138,7 +139,7 @@ export const VISA_BENEFIT_CARDS: VisaBenefitCardItem[] = [
     id: 'heritage-nature',
     numberLabel: '06',
     title: 'التراث والطبيعة',
-    description: 'اكتشف المواقع التاريخية والطبيعة الساحرة في العلا.',
+    description: 'اكتشف المواقع التراثية وطبيعة العلا.',
     imageUrl: GENERATED_IMAGES.alulaNature,
     imageAlt: 'التكوينات الصخرية والطبيعة الصحراوية الساحرة في العلا',
     imagePosition: 'center',
@@ -191,8 +192,14 @@ export const JOURNEY_DESTINATIONS: JourneyDestinationCardItem[] = [
   {
     id: 'dest-riyadh',
     city: 'الرياض',
-    landmark: 'أبراج الرياض',
+    landmark: 'برج المملكة وأفق العاصمة',
     imageUrl: GENERATED_IMAGES.riyadhSkyline,
+  },
+  {
+    id: 'dest-jeddah',
+    city: 'جدة',
+    landmark: 'كورنيش جدة والبحر الأحمر',
+    imageUrl: GENERATED_IMAGES.jeddahEvents,
   },
   {
     id: 'dest-makkah',
@@ -203,14 +210,8 @@ export const JOURNEY_DESTINATIONS: JourneyDestinationCardItem[] = [
   {
     id: 'dest-madinah',
     city: 'المدينة المنورة',
-    landmark: 'المسجد النبوي',
+    landmark: 'المسجد النبوي الشريف',
     imageUrl: GENERATED_IMAGES.madinahMosque,
-  },
-  {
-    id: 'dest-alula',
-    city: 'العلا',
-    landmark: 'التكوينات الصخرية',
-    imageUrl: GENERATED_IMAGES.alulaRocks,
   },
 ];
 
@@ -235,7 +236,7 @@ export const REQUIRED_DOCUMENTS_CARDS = [
     id: 'doc-bank',
     iconKey: 'bank',
     title: 'كشف حساب بنكي',
-    description: 'برصيد لا يقل عن 50,000 جنيه مصري.',
+    description: 'برصيد يبدأ من 50,000 ج.م.',
     timingLabel: 'أثناء إجراء البصمة',
     isBiometricOnly: true,
   },
@@ -248,17 +249,17 @@ export const APPLICATION_STEPS: StepItem[] = [
   {
     stepNumber: '01',
     title: 'المستندات',
-    description: 'أرسل صورة جواز السفر والصورة الشخصية.',
+    description: 'أرسل جواز السفر والصورة الشخصية.',
   },
   {
     stepNumber: '02',
     title: 'المراجعة',
-    description: 'ندقق المستندات ونجهز طلب التأشيرة.',
+    description: 'ندقق المستندات ونجهز طلبك.',
   },
   {
     stepNumber: '03',
     title: 'البصمة',
-    description: 'نحجز لك موعدًا لإجراء البصمة.',
+    description: 'نحجز لك موعد إجراء البصمة.',
   },
   {
     stepNumber: '04',
@@ -274,78 +275,96 @@ export const BANK_STATEMENT_OPTIONS: {
 }[] = [
   {
     value: BankStatementStatus.AVAILABLE_IF_REQUESTED,
-    labelAr: 'متوفر لدي كشف حساب بنكي برصيد لا يقل عن 50,000 جنيه مصري لتقديمه أثناء إجراء البصمة',
-    descriptionAr: 'لا يلزم رفعه عند بدء التقديم، ويُقدّم فقط أثناء إجراء البصمة.',
+    labelAr: 'متوفر',
+    descriptionAr: 'لديّ كشف حساب بنكي برصيد لا يقل عن 50,000 جنيه مصري، وسأقدمه أثناء البصمة.',
   },
   {
     value: BankStatementStatus.NOT_AVAILABLE_CURRENTLY,
-    labelAr: 'جاري تجهيز كشف الحساب البنكي قبل موعد إجراء البصمة',
-    descriptionAr: 'يمكنك بدء الطلب الآن بصورة جواز السفر والصورة الشخصية وتجهيز الكشف قبل البصمة.',
+    labelAr: 'قيد التجهيز',
+    descriptionAr: 'أعمل على تجهيز كشف الحساب قبل موعد البصمة.',
   },
   {
     value: BankStatementStatus.NEED_CONSULTATION,
-    labelAr: 'أرغب في استشارة فريق نشكا بخصوص كشف الحساب البنكي',
-    descriptionAr: 'يتواصل معك مختص التأشيرات لتوضيح المتطلبات المناسبة قبل حجز موعد تساهيل.',
+    labelAr: 'أحتاج إلى استشارة',
+    descriptionAr: 'أرغب في استشارة فريق نشكا بشأن متطلبات كشف الحساب.',
   },
+];
+
+export const FAQ_CATEGORIES: { value: FaqCategory; label: string }[] = [
+  { value: 'all', label: 'جميع الأسئلة' },
+  { value: 'cost_fees', label: 'التكلفة والرسوم' },
+  { value: 'documents_biometrics', label: 'المستندات والبصمة' },
+  { value: 'processing_rules', label: 'المدة والضوابط' },
+  { value: 'application_tracking', label: 'التقديم والمتابعة' },
 ];
 
 export const FAQ_ITEMS: FaqItem[] = [
   {
     id: 'faq-1',
+    category: 'cost_fees',
     question: 'كم تبلغ تكلفة خدمة التأشيرة السياحية؟',
     answer:
       'تبلغ تكلفة خدمة التأشيرة السياحية السعودية 9,500 ج.م للفرد الواحد، وتشمل خدمات الباقة الست المعتمدة الموضحة في قسم الأسعار والخدمات.',
   },
   {
     id: 'faq-2',
+    category: 'documents_biometrics',
     question: 'ما هي المستندات المطلوبة لبدء الطلب؟',
     answer:
       'لبدء الطلب عبر المنصة تحتاج فقط إلى مستندين عند بدء التقديم: صورة جواز السفر (ساري لمدة لا تقل عن 6 أشهر)، وصورة شخصية (صورة حديثة بمقاس 4×6 سم).',
   },
   {
     id: 'faq-3',
+    category: 'documents_biometrics',
     question: 'هل كشف الحساب البنكي مطلوب عند بدء التقديم؟',
     answer:
       'لا، كشف الحساب البنكي (برصيد لا يقل عن 50,000 جنيه مصري) يُطلب فقط أثناء إجراء البصمة لدى مركز تساهيل، وليس عند بدء التقديم.',
   },
   {
     id: 'faq-4',
+    category: 'processing_rules',
     question: 'كم تستغرق مدة معالجة واستخراج التأشيرة؟',
     answer:
       'تبلغ مدة الإصدار المعتادة 3 أيام عمل بعد استكمال التقديم وإجراء البصمة، بصلاحية 90 يومًا ومدة إقامة 90 يومًا لدخول مرة واحدة.',
   },
   {
     id: 'faq-5',
+    category: 'documents_biometrics',
     question: 'هل يشترط الذهاب إلى مركز تساهيل شخصيًا؟',
     answer:
       'نعم، الحضور لإجراء البصمة الحيوية لدى مركز تساهيل مطلوب، ويتولى فريق نشكا حجز الموعد ضمن خدمات الباقة.',
   },
   {
     id: 'faq-6',
+    category: 'processing_rules',
     question: 'هل قبول التأشيرة مضمون 100%؟',
     answer:
       'نراجع الملف وندقق المستندات بأعلى دقة، لكن قرار قبول وإصدار التأشيرة النهائي يخضع حصريًا للجهات الرسمية المختصة بالمملكة دون ضمان مسبق.',
   },
   {
     id: 'faq-7',
+    category: 'processing_rules',
     question: 'هل تسمح التأشيرة السياحية بأداء مناسك العمرة؟',
     answer:
       'نعم، تتيح التأشيرة السياحية أداء مناسك العمرة وزيارة المسجد الحرام والمسجد النبوي، إلى جانب زيارة مدن وفعاليات المملكة وفق الضوابط الرسمية.',
   },
   {
     id: 'faq-8',
+    category: 'cost_fees',
     question: 'هل توجد أي رسوم أو مصاريف إضافية غير معلنة؟',
     answer:
       'السعر المعلن هو 9,500 ج.م للفرد الواحد، ويشمل تقديم طلب التأشيرة وسداد رسوم إنجاز، إصدار وثيقة التأمين الطبي المعتمدة، حجز موعد البصمة عبر مركز تساهيل، حجز مبدئي لتذاكر الطيران والإقامة بالفندق، تدقيق شامل على الملف وكافة المستندات، ومتابعة مستمرة للطلب حتى صدور التأشيرة.',
   },
   {
     id: 'faq-9',
+    category: 'application_tracking',
     question: 'كيف أبدأ في تقديم طلب التأشيرة الآن؟',
     answer:
       'اضغط على «ابدأ طلب التأشيرة الآن» للانتقال إلى صفحة التقديم، ثم أدخل بياناتك وارفع صورة جواز السفر والصورة الشخصية وأرسل الطلب للمراجعة مع فريق نشكا.',
   },
   {
     id: 'faq-10',
+    category: 'processing_rules',
     question: 'ما هي السياسة المتبعة في حال تعذر صدور التأشيرة؟',
     answer:
       'في حال تعذر صدور التأشيرة نتيجة إجراءات الاستقصاء أو مراجعة الجهات المختصة، يتم التواصل مع العميل لمراجعة حالة الطلب وتوضيح الإجراءات المتاحة وفقًا لشروط الخدمة والسياسات المعتمدة لدى نشكا. ولا يُعد تعذر إصدار التأشيرة بحد ذاته ضمانًا لاسترداد أي مبالغ، إذ تخضع معالجة الحالة لمراجعة تفاصيل الطلب والرسوم المدفوعة وشروط الخدمة.',

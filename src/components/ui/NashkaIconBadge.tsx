@@ -11,10 +11,10 @@ interface NashkaIconBadgeProps {
 }
 
 const BADGE_SIZE_CLASSES: Record<NashkaIconSize, string> = {
-  // Mobile: 60px | Tablet: 68px | Desktop: 76px
-  standard: 'w-[60px] h-[60px] sm:w-[68px] sm:h-[68px] lg:w-[76px] lg:h-[76px]',
-  compact: 'w-11 h-11 sm:w-12 sm:h-12',
-  detailed: 'w-[60px] h-[60px] sm:w-[68px] sm:h-[68px] lg:w-[76px] lg:h-[76px]',
+  // Mobile: 48px | Tablet: 52px | Desktop: 56px
+  standard: 'w-12 h-12 sm:w-[52px] sm:h-[52px] lg:w-14 lg:h-14',
+  compact: 'w-10 h-10 sm:w-11 sm:h-11',
+  detailed: 'w-12 h-12 sm:w-[52px] sm:h-[52px] lg:w-14 lg:h-14',
 };
 
 /**

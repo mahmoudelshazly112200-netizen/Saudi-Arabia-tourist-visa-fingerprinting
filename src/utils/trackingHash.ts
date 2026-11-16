@@ -100,3 +100,8 @@ export function computeTrackingKey(referenceId: string, phoneNumber: string): st
   const normalizedPhoneTail = normalizeTrackingPhoneDigits(phoneNumber);
   return `trk_${sha256Hex(`${normalizedRef}:${normalizedPhoneTail}`)}`;
 }
+
+export function computeStaffKey(email: string): string {
+  const normalizedEmail = email.trim().toLowerCase();
+  return `stf_${sha256Hex(normalizedEmail)}`;
+}

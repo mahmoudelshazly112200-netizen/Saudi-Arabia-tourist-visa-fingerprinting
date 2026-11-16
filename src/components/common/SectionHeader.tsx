@@ -16,21 +16,21 @@ export function SectionHeader({
   inverted = false,
 }: SectionHeaderProps) {
   const alignmentClass =
-    align === 'center' ? 'text-center mx-auto max-w-[22rem] sm:max-w-2xl' : 'max-w-2xl';
+    align === 'center' ? 'text-center mx-auto max-w-2xl' : 'text-center lg:text-right max-w-2xl mx-auto lg:mx-0';
 
   return (
-    <div className={`mb-7 sm:mb-11 lg:mb-12 ${alignmentClass}`}>
+    <div className={`mb-6 sm:mb-9 lg:mb-10 ${alignmentClass}`}>
       {kicker && (
         <p
-          className={`text-xs sm:text-sm font-bold leading-relaxed mb-2 sm:mb-2.5 ${
-            inverted ? 'text-[#C9A13B]' : 'text-[#8B6918]'
+          className={`text-[13px] sm:text-sm font-bold leading-[1.45] mb-1.5 sm:mb-2 ${
+            inverted ? 'text-[#D6AD55]' : 'text-[#8B6918]'
           }`}
         >
           {kicker}
         </p>
       )}
       <h2
-        className={`text-[clamp(1.35rem,5.8vw,1.6rem)] sm:text-[1.9rem] lg:text-[2.2rem] font-extrabold leading-[1.4] sm:leading-[1.35] ${
+        className={`text-[1.5rem] sm:text-[1.875rem] lg:text-[2.125rem] font-extrabold leading-[1.3] ${
           inverted ? 'text-white' : 'text-[#161A8D]'
         }`}
       >
@@ -38,8 +38,8 @@ export function SectionHeader({
       </h2>
       {description && (
         <p
-          className={`mt-2.5 sm:mt-3.5 text-[13.5px] min-[390px]:text-[14.5px] sm:text-base lg:text-[17.5px] leading-[1.8] sm:leading-[1.85] [text-wrap:balance] ${
-            inverted ? 'text-[#C5E5FF]' : 'text-[#5A657D]'
+          className={`mt-2 sm:mt-2.5 text-[14.5px] sm:text-base lg:text-[17px] leading-[1.6] sm:leading-[1.7] [text-wrap:balance] ${
+            inverted ? 'text-[#C5E5FF]' : 'text-[#475569]'
           }`}
         >
           {description}

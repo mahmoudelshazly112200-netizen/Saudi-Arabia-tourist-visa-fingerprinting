@@ -20,27 +20,27 @@ export function ApplicationStatusBadge({ status }: ApplicationStatusBadgeProps) 
     { colorClass: string; Icon: React.ComponentType<{ className?: string }> }
   > = {
     [ApplicationRecordStatus.NEW_SUBMISSION]: {
-      colorClass: 'text-[#161A8D] bg-[#EEF7FF] border-[#C5E5FF]',
+      colorClass: 'text-[#2878C7] bg-[#EAF4FF] border-[#2878C7]/30',
       Icon: Clock,
     },
     [ApplicationRecordStatus.DOCUMENTS_UNDER_REVIEW]: {
-      colorClass: 'text-amber-800 bg-amber-50 border-amber-200',
+      colorClass: 'text-[#E99A28] bg-[#FFF5E5] border-[#E99A28]/35',
       Icon: FileSearch,
     },
     [ApplicationRecordStatus.ADDITIONAL_INFO_NEEDED]: {
-      colorClass: 'text-orange-800 bg-orange-50 border-orange-200',
+      colorClass: 'text-[#E99A28] bg-[#FFF5E5] border-[#E99A28]/45',
       Icon: AlertCircle,
     },
     [ApplicationRecordStatus.READY_FOR_PROCESSING]: {
-      colorClass: 'text-indigo-800 bg-indigo-50 border-indigo-200',
+      colorClass: 'text-[#161A8D] bg-[#EFF4FF] border-[#C5E5FF]',
       Icon: Send,
     },
     [ApplicationRecordStatus.VISA_ISSUED]: {
-      colorClass: 'text-emerald-800 bg-emerald-50 border-emerald-200',
+      colorClass: 'text-[#16A36A] bg-[#E9F8F0] border-[#16A36A]/35',
       Icon: CheckCircle2,
     },
     [ApplicationRecordStatus.REJECTED]: {
-      colorClass: 'text-red-800 bg-red-50 border-red-200',
+      colorClass: 'text-[#DC3545] bg-[#FDECEE] border-[#DC3545]/35',
       Icon: XCircle,
     },
   };
@@ -49,7 +49,7 @@ export function ApplicationStatusBadge({ status }: ApplicationStatusBadgeProps) 
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-semibold whitespace-nowrap ${colorClass}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-bold whitespace-nowrap ${colorClass}`}
     >
       <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
       <span>{getApplicationStatusLabel(status)}</span>
@@ -67,15 +67,15 @@ export function DocumentStatusBadge({ status }: DocumentStatusBadgeProps) {
     { colorClass: string; Icon: React.ComponentType<{ className?: string }> }
   > = {
     [DocumentVerificationStatus.PENDING]: {
-      colorClass: 'text-slate-700 bg-slate-100 border-slate-200',
+      colorClass: 'text-[#2878C7] bg-[#EAF4FF] border-[#2878C7]/30',
       Icon: Clock,
     },
     [DocumentVerificationStatus.APPROVED]: {
-      colorClass: 'text-emerald-800 bg-emerald-50 border-emerald-200',
+      colorClass: 'text-[#16A36A] bg-[#E9F8F0] border-[#16A36A]/35',
       Icon: CheckCircle2,
     },
     [DocumentVerificationStatus.REPLACEMENT_REQUIRED]: {
-      colorClass: 'text-red-800 bg-red-50 border-red-200',
+      colorClass: 'text-[#DC3545] bg-[#FDECEE] border-[#DC3545]/35',
       Icon: AlertCircle,
     },
   };
@@ -84,7 +84,7 @@ export function DocumentStatusBadge({ status }: DocumentStatusBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-semibold whitespace-nowrap ${colorClass}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-bold whitespace-nowrap ${colorClass}`}
     >
       <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
       <span>{getDocumentStatusLabel(status)}</span>

@@ -1,12 +1,33 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { doc, getDocFromServer, getFirestore } from 'firebase/firestore';
+import {
+  doc,
+  Firestore,
+  getDocFromServer,
+  getFirestore,
+  initializeFirestore,
+} from 'firebase/firestore';
 import firebaseConfig from '../firebase-applet-config.json';
 
 export const BOOTSTRAPPED_SUPER_ADMIN_EMAIL = 'nashkatourism@gmail.com';
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+function createFirestoreInstance(): Firestore {
+  try {
+    return initializeFirestore(
+      app,
+      {
+        experimentalAutoDetectLongPolling: true,
+      },
+      firebaseConfig.firestoreDatabaseId
+    );
+  } catch {
+    return getFirestore(app, firebaseConfig.firestoreDatabaseId);
+  }
+}
+
+export const db = createFirestoreInstance();
 export const auth = getAuth(app);
 
 export const googleAuthProvider = new GoogleAuthProvider();
@@ -67,6 +88,9 @@ export function handleFirestoreError(
 }
 
 async function testConnection(): Promise<void> {
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    return;
+  }
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {

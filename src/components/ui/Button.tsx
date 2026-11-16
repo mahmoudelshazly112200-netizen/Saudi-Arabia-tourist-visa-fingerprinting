@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'gold' | 'outline' | 'ghost';
+export type ButtonVariant = 'primary' | 'secondary' | 'white' | 'outline' | 'ghost';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface BaseButtonProps {
@@ -36,21 +36,21 @@ export type ButtonProps = ActionButtonProps | RouterLinkButtonProps | ExternalLi
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-[#161A8D] text-white hover:bg-[#10136B] active:bg-[#0C0E52] border border-transparent shadow-xs',
+    'bg-[#161A8D] text-white hover:bg-[#10136B] active:bg-[#0D105A] border border-transparent shadow-xs',
   secondary:
-    'bg-[#C5E5FF] text-[#161A8D] hover:bg-[#b2dcff] active:bg-[#9dd1ff] border border-transparent',
-  gold:
-    'bg-[#C9A13B] text-[#0F172A] hover:bg-[#b8912f] active:bg-[#a37f25] border border-transparent font-bold',
+    'bg-[#EAF4FF] text-[#004AAD] hover:bg-[#C5E5FF] active:bg-[#97C2FA]/40 border border-[#C5E5FF]',
+  white:
+    'bg-white text-[#161A8D] hover:bg-[#C5E5FF] active:bg-[#DDE8FF] border border-transparent font-bold shadow-xs',
   outline:
-    'bg-white text-[#161A8D] border border-[#161A8D]/25 hover:border-[#161A8D] hover:bg-[#EEF7FF]',
+    'bg-white text-[#004AAD] border border-[#E8EDF4] hover:border-[#004AAD] hover:bg-[#F4F8FC]',
   ghost:
-    'bg-transparent text-slate-700 hover:text-[#161A8D] hover:bg-slate-100 border border-transparent',
+    'bg-transparent text-[#0B0B0D] hover:text-[#004AAD] hover:bg-[#F4F8FC] border border-transparent',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'min-h-[40px] px-4 py-2 text-sm rounded-lg gap-2',
-  md: 'min-h-[46px] px-5 py-2.5 text-sm sm:text-base rounded-xl gap-2.5',
-  lg: 'min-h-[52px] px-7 py-3.5 text-base rounded-xl gap-3',
+  sm: 'min-h-[42px] px-4 py-2 text-[15px] font-bold rounded-lg gap-2',
+  md: 'min-h-[48px] px-5 py-2.5 text-[15px] sm:text-base font-bold rounded-xl gap-2.5',
+  lg: 'min-h-[52px] px-7 py-3.5 text-base font-bold rounded-xl gap-3',
 };
 
 export function Button(props: ButtonProps) {
@@ -64,7 +64,7 @@ export function Button(props: ButtonProps) {
   } = props;
 
   const baseClass = [
-    'inline-flex items-center justify-center font-semibold transition-colors duration-150',
+    'inline-flex items-center justify-center font-bold transition-colors duration-150',
     'whitespace-nowrap shrink-0 cursor-pointer select-none',
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#161A8D]',
     'disabled:opacity-60 disabled:cursor-not-allowed',

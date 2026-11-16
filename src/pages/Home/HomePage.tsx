@@ -15,7 +15,10 @@ import { usePageMeta } from '../../hooks/usePageMeta';
 export function HomePage() {
   usePageMeta({
     title: 'Nashka Saudi Tourist Visa Platform — نشكا للسياحة | التأشيرة السياحية السعودية',
+    description:
+      'تقديم إلكتروني متكامل على التأشيرة السياحية السعودية عبر شركة نشكا للسياحة بسعر 9,500 ج.م للفرد شامل تجهيز الملف وحجز موعد البصمة والمتابعة حتى الإصدار.',
     robots: 'index, follow',
+    canonicalPath: '/',
   });
 
   return (

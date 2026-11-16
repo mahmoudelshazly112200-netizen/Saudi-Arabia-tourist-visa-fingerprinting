@@ -77,3 +77,15 @@ export interface RolePermissionMatrix {
     manageUsersAndRoles: boolean;
   };
 }
+
+export type AssignableStaffRole = Exclude<AdminRole, AdminRole.SUPER_ADMIN>;
+
+export interface StaffDirectoryEntry {
+  staffKey: string;
+  email: string;
+  displayName: string;
+  role: AssignableStaffRole;
+  ownerAdminEmail: string;
+  addedByUid: string;
+  createdAtIso?: string;
+}

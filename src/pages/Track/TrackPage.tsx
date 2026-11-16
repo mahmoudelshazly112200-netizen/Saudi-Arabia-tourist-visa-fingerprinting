@@ -86,12 +86,12 @@ export function TrackPage() {
         </div>
       </section>
 
-      <section className="py-12 sm:py-16 bg-[#FAF8F5]">
+      <section className="py-12 sm:py-16 bg-[#F4F8FC]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <form
             onSubmit={handleTrackSubmit}
             noValidate
-            className="bg-white rounded-2xl border border-[#E5EAF2] p-6 sm:p-8 space-y-6"
+            className="bg-white rounded-2xl border border-[#E8EDF4] p-6 sm:p-8 space-y-6"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <TextField
@@ -118,9 +118,9 @@ export function TrackPage() {
             {errorMsg && (
               <div
                 role="alert"
-                className="rounded-xl border border-red-200 bg-red-50 p-4 flex items-start gap-2.5 text-sm font-medium text-red-800"
+                className="rounded-xl border border-[#DC3545]/35 bg-[#FDECEE] p-4 flex items-start gap-2.5 text-sm font-medium text-[#DC3545]"
               >
-                <AlertCircle className="w-4 h-4 text-red-700 shrink-0 mt-0.5" aria-hidden="true" />
+                <AlertCircle className="w-4 h-4 text-[#DC3545] shrink-0 mt-0.5" aria-hidden="true" />
                 <span>{errorMsg}</span>
               </div>
             )}
@@ -138,7 +138,7 @@ export function TrackPage() {
               aria-live="polite"
               className="bg-white rounded-2xl border border-[#C5E5FF] p-6 sm:p-8 space-y-6 shadow-[0_10px_28px_-8px_rgba(22,26,141,0.07)]"
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-[#E8EDF4]">
                 <div>
                   <span className="text-xs font-semibold text-[#5A657D] block">
                     رقم المرجع الرسمي
@@ -156,19 +156,19 @@ export function TrackPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E5EAF2]">
+                <div className="p-4 rounded-xl bg-[#F4F8FC] border border-[#E8EDF4]">
                   <span className="text-xs text-[#5A657D] block">اسم المتقدم</span>
-                  <span className="font-bold text-slate-900 block mt-1">
+                  <span className="font-bold text-[#0B0B0D] block mt-1">
                     {trackingResult.fullName}
                   </span>
                 </div>
-                <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E5EAF2]">
+                <div className="p-4 rounded-xl bg-[#F4F8FC] border border-[#E8EDF4]">
                   <span className="text-xs text-[#5A657D] block">تاريخ السفر المتوقع</span>
-                  <span className="font-bold text-slate-900 font-en tabular-nums block text-right mt-1" dir="ltr">
+                  <span className="font-bold text-[#0B0B0D] font-en tabular-nums block text-right mt-1" dir="ltr">
                     {trackingResult.expectedTravelDate}
                   </span>
                 </div>
-                <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E5EAF2]">
+                <div className="p-4 rounded-xl bg-[#F4F8FC] border border-[#E8EDF4]">
                   <span className="text-xs text-[#5A657D] block">الأفراد وإجمالي الباقة</span>
                   <span className="font-bold text-[#161A8D] tabular-nums block mt-1">
                     {formatApplicantsLabel(trackingResult.applicantsCount)} ·{' '}
@@ -178,17 +178,17 @@ export function TrackPage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-[#161A8D] mb-3 flex items-center gap-2">
-                  <FileCheck2 className="w-4 h-4 text-[#C9A13B]" aria-hidden="true" />
+                <h3 className="text-sm font-bold text-[#0B0B0D] mb-3 flex items-center gap-2">
+                  <FileCheck2 className="w-4 h-4 text-[#D6AD55]" aria-hidden="true" />
                   <span>حالة فحص المستندات المرفوعة</span>
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {trackingResult.documents.map((doc) => (
                     <div
                       key={doc.type}
-                      className="p-3.5 rounded-xl border border-[#E5EAF2] flex items-center justify-between gap-3"
+                      className="p-3.5 rounded-xl border border-[#E8EDF4] flex items-center justify-between gap-3"
                     >
-                      <span className="text-sm font-semibold text-slate-800">{doc.labelAr}</span>
+                      <span className="text-sm font-semibold text-[#0B0B0D]">{doc.labelAr}</span>
                       <DocumentStatusBadge
                         status={doc.verificationStatus as DocumentVerificationStatus}
                       />

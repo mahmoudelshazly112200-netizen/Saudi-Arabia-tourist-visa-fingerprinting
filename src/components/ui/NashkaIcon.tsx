@@ -15,9 +15,9 @@ interface NashkaIconProps {
 }
 
 const ICON_SIZE_CLASSES: Record<NashkaIconSize, string> = {
-  standard: 'w-[26px] h-[26px] sm:w-[30px] sm:h-[30px] lg:w-[34px] lg:h-[34px]',
-  compact: 'w-[20px] h-[20px] sm:w-[22px] sm:h-[22px]',
-  detailed: 'w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] lg:w-[56px] lg:h-[56px]',
+  standard: 'w-5 h-5 sm:w-[22px] sm:h-[22px] lg:w-6 lg:h-6',
+  compact: 'w-[18px] h-[18px] sm:w-5 sm:h-5',
+  detailed: 'w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10',
 };
 
 /**
