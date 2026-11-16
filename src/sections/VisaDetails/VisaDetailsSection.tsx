@@ -1,24 +1,30 @@
 import React from 'react';
-import { Calendar, Clock, Fingerprint, LogIn, Timer } from 'lucide-react';
 import { VISA_SPEC_CARDS } from '../../constants/content';
 import { SectionHeader } from '../../components/common/SectionHeader';
 import { NashkaInfoCard } from '../../components/ui/NashkaInfoCard';
 import { NashkaNoticeCard } from '../../components/ui/NashkaNoticeCard';
+import {
+  BiometricGateGlyph,
+  IssuanceSpeedGlyph,
+  MultiEntryGlyph,
+  StayDurationGlyph,
+  ValidityCalendarGlyph,
+} from '../../components/ui/NashkaCardIcons';
 
 const SPEC_ICONS = {
-  calendar: Calendar,
-  clock: Clock,
-  logIn: LogIn,
-  timer: Timer,
+  calendar: ValidityCalendarGlyph,
+  clock: StayDurationGlyph,
+  logIn: MultiEntryGlyph,
+  timer: IssuanceSpeedGlyph,
 } as const;
 
 export function VisaDetailsSection() {
   return (
     <section
       id="visa-details"
-      className="py-11 sm:py-14 lg:py-20 bg-[#F4F8FC] border-b border-[#E8EDF4] scroll-mt-16"
+      className="py-12 min-[390px]:py-14 lg:py-20 bg-[#F3F7FC] border-b border-[#E6ECF4] scroll-mt-16"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 min-[390px]:px-5 sm:px-6 lg:px-8">
         <SectionHeader
           kicker="معلومات التأشيرة"
           title="تفاصيل التأشيرة"
@@ -26,13 +32,16 @@ export function VisaDetailsSection() {
           align="center"
         />
 
-        <div className="grid grid-cols-1 min-[340px]:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5 items-stretch">
-          {VISA_SPEC_CARDS.map((spec) => {
+        <div className="nashka-grid-4 items-stretch">
+          {VISA_SPEC_CARDS.map((spec, idx) => {
             const IconComponent = SPEC_ICONS[spec.iconKey];
+            const cardIndex = String(idx + 1).padStart(2, '0');
             return (
               <NashkaInfoCard
                 key={spec.id}
                 icon={IconComponent}
+                cardIndex={cardIndex}
+                shapeVariant={idx % 2 === 0 ? 'arc-start' : 'arc-end'}
                 label={spec.label}
                 value={spec.value}
               />
@@ -41,13 +50,13 @@ export function VisaDetailsSection() {
         </div>
 
         <NashkaNoticeCard
-          icon={Fingerprint}
+          icon={BiometricGateGlyph}
           surface="white"
           centered
-          className="max-w-2xl mx-auto mt-6 sm:mt-8"
+          className="max-w-2xl mx-auto mt-5 sm:mt-6 lg:mt-7"
         >
-          <p className="font-semibold text-[#334155]">
-            <strong className="text-[#0B0B0D]">البصمة الحيوية:</strong> موعد البصمة مطلوب لدى مركز
+          <p className="font-normal">
+            <strong className="font-bold text-[#17213B]">البصمة الحيوية:</strong> موعد البصمة مطلوب لدى مركز
             تساهيل.
           </p>
         </NashkaNoticeCard>

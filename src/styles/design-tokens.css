@@ -1,15 +1,16 @@
 :root {
   /* ==========================================================================
-     Nashka Official Brand Palette
+     NASHKA Official Design System Palette
      ========================================================================== */
-  --color-primary: #161A8D;        /* Royal Blue — Primary Brand & CTAs */
+  --color-primary: #171C91;        /* Primary Blue — Brand & Headings */
+  --color-primary-dark: #10145F;   /* Dark Blue — Hover, Active & Footer */
   --color-action-blue: #004AAD;    /* Action Blue — Links & Secondary Actions */
   --color-secondary: #C5E5FF;      /* Sky Blue — Quiet Backgrounds & Surfaces */
-  --color-gold: #D6AD55;           /* Premium Gold — Luxury Details & Icons */
-  --color-text-black: #0B0B0D;     /* Deep Black — Strong Headings & Body Copy */
-  --color-white: #FFFFFF;          /* Pure White — Cards & Internal Surfaces */
-  --color-cloud-white: #F4F8FC;    /* Cloud White — Page Canvas Backgrounds */
-  --color-soft-gray: #E8EDF4;      /* Soft Gray — Borders & Hairline Dividers */
+  --color-gold: #D5A43B;           /* Gold — Luxury Details, Accents & Icons */
+  --color-text-black: #17213B;     /* Main Text — Strong Headings & Body Copy */
+  --color-white: #FFFFFF;          /* White — Cards & Internal Surfaces */
+  --color-cloud-white: #F3F7FC;    /* Section Background — Canvas */
+  --color-soft-gray: #E6ECF4;      /* Borders — Hairline Dividers */
 
   /* ==========================================================================
      Harmonized Brand Scales (50 -> 900)
@@ -22,20 +23,20 @@
   --royal-400: #5B8EE6;
   --royal-500: #2E57C7;
   --royal-600: #004AAD;
-  --royal-700: #161A8D;
-  --royal-800: #10136B;
-  --royal-900: #0D105A;
+  --royal-700: #171C91;
+  --royal-800: #10145F;
+  --royal-900: #0C104D;
 
   /* Premium Gold Scale */
   --gold-50: #FCF9F0;
   --gold-100: #F7EED7;
   --gold-200: #EED9A6;
   --gold-300: #E3C37B;
-  --gold-400: #D6AD55;
-  --gold-500: #C9A13B;
-  --gold-600: #A68027;
-  --gold-700: #8B6918;
-  --gold-800: #6B4F12;
+  --gold-400: #D5A43B;
+  --gold-500: #C4932E;
+  --gold-600: #A1761E;
+  --gold-700: #876216;
+  --gold-800: #6B4D11;
   --gold-900: #4C370B;
 
   /* Derived Surface & Alias Tokens */
@@ -52,19 +53,19 @@
   --color-sky-blue-soft: var(--color-cloud-white);
   --color-gold-badge-border: var(--color-gold);
 
-  /* Unified Icon Container Scale (Mobile 60px -> Tablet 68px -> Desktop 76px) */
-  --icon-badge-size-mobile: 60px;
-  --icon-badge-size-tablet: 68px;
-  --icon-badge-size-desktop: 76px;
-  --icon-badge-border-width: 2px;
+  /* Unified Icon Container Scale */
+  --icon-badge-size-mobile: 56px;
+  --icon-badge-size-tablet: 64px;
+  --icon-badge-size-desktop: 72px;
+  --icon-badge-border-width: 1.5px;
 
   /* Neutral & Typography Hierarchy */
   --color-surface-canvas: var(--color-white);
   --color-surface-subtle: var(--color-cloud-white);
   --color-border-hairline: var(--color-soft-gray);
-  --color-text-primary: var(--color-text-black);
-  --color-text-secondary: #475569;
-  --color-text-muted: #5A657D;
+  --color-text-primary: #17213B;
+  --color-text-secondary: #68758A;
+  --color-text-muted: #68758A;
 
   /* ==========================================================================
      Functional UI Semantic Colors
@@ -83,9 +84,26 @@
   --color-status-warning: var(--color-warning);
   --color-status-error: var(--color-error);
 
-  /* Typography */
-  --font-arabic: 'Cairo', system-ui, -apple-system, sans-serif;
-  --font-english: 'Poppins', system-ui, -apple-system, sans-serif;
+  /* ==========================================================================
+     Typography & Fluid clamp() Type Scale
+     ========================================================================== */
+  --font-arabic: 'Tajawal', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+  --font-english: 'Poppins', 'Tajawal', system-ui, -apple-system, sans-serif;
+
+  /* H1: Mobile 30px -> Desktop 40px */
+  --text-h1: clamp(1.875rem, 1.655rem + 0.94vw, 2.5rem);
+  /* H2: Mobile 24px -> Desktop 30px */
+  --text-h2: clamp(1.5rem, 1.368rem + 0.56vw, 1.875rem);
+  /* H3: Mobile 18px -> Desktop 20px */
+  --text-h3: clamp(1.125rem, 1.081rem + 0.19vw, 1.25rem);
+  /* Body: Mobile 15px -> Desktop 16px */
+  --text-body: clamp(0.9375rem, 0.915rem + 0.094vw, 1rem);
+  /* Caption: Mobile 13px -> Desktop 14px */
+  --text-caption: clamp(0.8125rem, 0.79rem + 0.094vw, 0.875rem);
+  /* Buttons: Mobile 14px -> Desktop 15px */
+  --text-btn: clamp(0.875rem, 0.853rem + 0.094vw, 0.9375rem);
+  /* Main Price Showcase: Mobile 34px -> Desktop 56px */
+  --text-price: clamp(2.125rem, 1.64rem + 2.06vw, 3.5rem);
 
   /* Radius Scale */
   --radius-sm: 0.5rem;
@@ -95,8 +113,8 @@
   --radius-xl: 1.125rem;
 
   /* Corporate Elevation */
-  --shadow-card: 0 8px 24px -12px rgba(22, 26, 141, 0.07);
-  --shadow-card-hover: 0 14px 30px -10px rgba(22, 26, 141, 0.13);
-  --shadow-elevated: 0 14px 36px -8px rgba(22, 26, 141, 0.12);
-  --shadow-icon-badge: 0 8px 18px -6px rgba(22, 26, 141, 0.12);
+  --shadow-card: 0 8px 24px -12px rgba(23, 28, 145, 0.07);
+  --shadow-card-hover: 0 14px 30px -10px rgba(23, 28, 145, 0.13);
+  --shadow-elevated: 0 14px 36px -8px rgba(23, 28, 145, 0.12);
+  --shadow-icon-badge: 0 8px 18px -6px rgba(23, 28, 145, 0.12);
 }

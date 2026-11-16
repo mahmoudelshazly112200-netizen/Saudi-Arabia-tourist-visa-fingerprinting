@@ -2,16 +2,17 @@
 @import "./styles/design-tokens.css";
 
 @theme {
-  --color-nashka-royal: #161A8D;
-  --color-nashka-royal-hover: #10136B;
-  --color-nashka-royal-deep: #0D105A;
+  --color-nashka-royal: #171C91;
+  --color-nashka-royal-hover: #10145F;
+  --color-nashka-royal-deep: #10145F;
   --color-nashka-action: #004AAD;
   --color-nashka-sky: #C5E5FF;
-  --color-nashka-cloud: #F4F8FC;
-  --color-nashka-gray: #E8EDF4;
-  --color-nashka-black: #0B0B0D;
-  --color-nashka-gold: #D6AD55;
-  --color-nashka-gold-dark: #8B6918;
+  --color-nashka-cloud: #F3F7FC;
+  --color-nashka-gray: #E6ECF4;
+  --color-nashka-black: #17213B;
+  --color-nashka-muted: #68758A;
+  --color-nashka-gold: #D5A43B;
+  --color-nashka-gold-dark: #876216;
   --color-nashka-gold-soft: #FCF9F0;
   --color-nashka-white: #FFFFFF;
 
@@ -23,20 +24,20 @@
   --color-royal-400: #5B8EE6;
   --color-royal-500: #2E57C7;
   --color-royal-600: #004AAD;
-  --color-royal-700: #161A8D;
-  --color-royal-800: #10136B;
-  --color-royal-900: #0D105A;
+  --color-royal-700: #171C91;
+  --color-royal-800: #10145F;
+  --color-royal-900: #0C104D;
 
   /* Gold Scale */
   --color-gold-50: #FCF9F0;
   --color-gold-100: #F7EED7;
   --color-gold-200: #EED9A6;
   --color-gold-300: #E3C37B;
-  --color-gold-400: #D6AD55;
-  --color-gold-500: #C9A13B;
-  --color-gold-600: #A68027;
-  --color-gold-700: #8B6918;
-  --color-gold-800: #6B4F12;
+  --color-gold-400: #D5A43B;
+  --color-gold-500: #C4932E;
+  --color-gold-600: #A1761E;
+  --color-gold-700: #876216;
+  --color-gold-800: #6B4D11;
   --color-gold-900: #4C370B;
 
   /* Semantic Colors */
@@ -49,8 +50,9 @@
   --color-status-info: #2878C7;
   --color-status-info-bg: #EAF4FF;
 
-  --font-cairo: 'Cairo', system-ui, -apple-system, sans-serif;
-  --font-poppins: 'Poppins', system-ui, -apple-system, sans-serif;
+  --font-tajawal: 'Tajawal', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+  --font-cairo: 'Tajawal', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+  --font-poppins: 'Poppins', 'Tajawal', system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
@@ -62,8 +64,10 @@
 
   body {
     background-color: var(--color-cloud-white);
-    color: var(--color-text-black);
+    color: var(--color-text-primary);
     font-family: var(--font-arabic);
+    font-size: var(--text-body);
+    font-weight: 400;
     overflow-x: clip;
   }
 
@@ -82,27 +86,51 @@
 }
 
 /* ==========================================================================
-   Clean Editorial Split Hero Section Architecture
-   Breakpoints:
-   - Mobile:  320px – 767px
-   - Tablet:  768px – 1024px
-   - Desktop: 1025px and above
+   NASHKA Hero Section — 3 Independent Responsive Luxury Treatments
+   1. Mobile  (< 768px)      : Portrait-framed image above headline, minimal gold touch
+   2. Tablet  (768px–1199px) : Cinematic frame + gold accents, reduced ornament, adaptive stack
+   3. Desktop (>= 1200px)    : Full double frame, gold corners, ambient glow & Riyadh horizon
    ========================================================================== */
 
 .nashka-hero {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+  background: linear-gradient(175deg, #ffffff 0%, #f6f9fe 58%, #eef4fc 100%);
 }
 
 .nashka-hero-ambient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 60% 70% at 15% 45%,
-    rgba(197, 229, 255, 0.35) 0%,
-    rgba(197, 229, 255, 0) 70%
-  );
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse 52% 64% at 18% 42%,
+      rgba(197, 229, 255, 0.45) 0%,
+      rgba(197, 229, 255, 0) 72%
+    ),
+    radial-gradient(
+      ellipse 44% 50% at 86% 18%,
+      rgba(213, 164, 59, 0.09) 0%,
+      rgba(213, 164, 59, 0) 70%
+    );
+}
+
+.nashka-hero-royal-wing {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.nashka-hero-skyline {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
 }
 
 .nashka-hero-grid {
@@ -115,67 +143,472 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 .nashka-hero-kicker {
   display: inline-flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.5rem;
+  font-size: var(--text-caption);
   font-weight: 700;
-  color: #8b6918;
+  line-height: 1.45;
+  color: #876216;
+}
+
+.nashka-hero-h1 {
+  font-size: var(--text-h1);
+  font-weight: 700;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.nashka-hero-line1 {
+  font-size: inherit;
+  font-weight: 700;
+  line-height: inherit;
+  color: #171c91;
+}
+
+.nashka-hero-line2 {
+  font-size: inherit;
+  font-weight: 700;
+  line-height: inherit;
+  color: #17213b;
+}
+
+.nashka-hero-desc {
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.68;
+  color: #68758a;
+  text-wrap: balance;
+}
+
+.nashka-hero-specs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.625rem;
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  color: #68758a;
+  font-weight: 500;
+}
+
+.nashka-hero-cta {
+  font-size: var(--text-btn);
+  font-weight: 700;
+}
+
+.nashka-hero-secondary-link {
+  font-size: var(--text-btn);
+  font-weight: 700;
 }
 
 .nashka-hero-media {
   width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.nashka-hero-frame-stage {
+  position: relative;
+  width: 100%;
+}
+
+.nashka-hero-glow {
+  display: none;
+  position: absolute;
+  inset: -1.5rem;
+  z-index: 0;
+  border-radius: 2.5rem;
+  background:
+    radial-gradient(
+      circle at 12% 88%,
+      rgba(213, 164, 59, 0.36) 0%,
+      rgba(213, 164, 59, 0.12) 26%,
+      transparent 56%
+    ),
+    radial-gradient(
+      circle at 86% 14%,
+      rgba(197, 229, 255, 0.62) 0%,
+      rgba(23, 28, 145, 0.1) 34%,
+      transparent 66%
+    );
+  filter: blur(12px);
+}
+
+.nashka-hero-corner {
+  display: none;
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  z-index: 20;
+  border-color: #d5a43b;
+  border-style: solid;
+}
+
+.nashka-hero-corner--tr {
+  top: -7px;
+  right: -7px;
+  border-width: 2px 2px 0 0;
+  border-top-right-radius: 2.125rem;
+}
+
+.nashka-hero-corner--tl {
+  top: -7px;
+  left: -7px;
+  border-width: 2px 0 0 2px;
+  border-top-left-radius: 2.125rem;
+}
+
+.nashka-hero-corner--br {
+  bottom: -7px;
+  right: -7px;
+  border-width: 0 2px 2px 0;
+  border-bottom-right-radius: 2.125rem;
+}
+
+.nashka-hero-corner--bl {
+  bottom: -7px;
+  left: -7px;
+  border-width: 0 0 2px 2px;
+  border-bottom-left-radius: 2.125rem;
 }
 
 .nashka-hero-frame {
-  background-color: #ffffff;
-  border: 1px solid rgba(197, 229, 255, 0.9);
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.98) 0%, rgba(252, 249, 240, 0.92) 100%);
+  border: 1px solid rgba(213, 164, 59, 0.42);
+  box-shadow:
+    0 24px 54px -16px rgba(23, 28, 145, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.78);
+}
+
+.nashka-hero-frame-inner {
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  box-shadow: 0 22px 48px -18px rgba(22, 26, 141, 0.16);
+  border: 1px solid rgba(213, 164, 59, 0.38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85);
 }
 
 .nashka-hero-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 38% 35%;
   display: block;
 }
 
-/* 1. Mobile Range (320px–767px) */
+.nashka-hero-bottom-arc {
+  width: 58%;
+  height: 2px;
+  margin: 0.625rem auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent 0%, rgba(213, 164, 59, 0.85) 50%, transparent 100%);
+}
+
+/* ==========================================================================
+   1. Mobile Version (< 768px)
+   Portrait-framed image on top, clean soft border, minimal gold touch,
+   clear headline below image, comfortable CTA button, no architectural clutter
+   ========================================================================== */
 @media (max-width: 767px) {
+  .nashka-hero-ambient {
+    background: radial-gradient(
+      ellipse 85% 45% at 50% 18%,
+      rgba(197, 229, 255, 0.34) 0%,
+      rgba(197, 229, 255, 0) 72%
+    );
+  }
+
+  .nashka-hero-royal-wing,
+  .nashka-hero-skyline,
+  .nashka-hero-glow,
+  .nashka-hero-corner {
+    display: none;
+  }
+
   .nashka-hero-grid {
-    padding-top: 1.5rem;
-    padding-bottom: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1.875rem;
     gap: 1.25rem;
   }
 
+  /* Image first above headline */
+  .nashka-hero-media {
+    order: 1;
+  }
+
   .nashka-hero-content {
+    order: 2;
     align-items: center;
     text-align: center;
   }
 
+  .nashka-hero-frame-stage {
+    max-width: 372px;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-frame {
+    border-radius: 1.5rem;
+    padding: 0.3125rem;
+    border: 1px solid rgba(213, 164, 59, 0.34);
+    box-shadow: 0 18px 40px -16px rgba(23, 28, 145, 0.16);
+  }
+
+  .nashka-hero-frame-inner {
+    border-radius: 1.1875rem;
+    aspect-ratio: 11 / 12;
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: none;
+  }
+
+  .nashka-hero-img {
+    border-radius: 1.125rem;
+    object-position: 18% 28%;
+  }
+
+  .nashka-hero-bottom-arc {
+    width: 44%;
+    margin-top: 0.5rem;
+    opacity: 0.72;
+  }
+
   .nashka-hero-kicker {
-    font-size: 0.8125rem;
-    line-height: 1.45;
     justify-content: center;
     margin-bottom: 0.5rem;
   }
 
+  .nashka-hero-line1 {
+    display: block;
+  }
+
+  .nashka-hero-line2 {
+    display: block;
+    margin-top: 0.2rem;
+  }
+
+  .nashka-hero-desc {
+    max-width: 21.5rem;
+    margin-top: 0.75rem;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-specs {
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0.75rem;
+  }
+
+  .nashka-hero-specs-sep {
+    display: none;
+  }
+
+  .nashka-hero-cta-wrap {
+    margin-top: 1.25rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nashka-hero-cta {
+    min-height: 50px;
+    width: 100%;
+    max-width: 320px;
+    padding-inline: 1.25rem;
+  }
+
+  .nashka-hero-secondary-link {
+    min-height: 44px;
+    padding-inline: 0.75rem;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .nashka-hero-grid {
+    padding-top: 1.5rem;
+    padding-bottom: 2.375rem;
+    gap: 1.625rem;
+  }
+
+  .nashka-hero-specs {
+    flex-direction: row;
+  }
+
+  .nashka-hero-specs-sep {
+    display: inline;
+  }
+
+  .nashka-hero-desc {
+    max-width: 26rem;
+  }
+}
+
+/* ==========================================================================
+   2. Tablet Version (768px–1199px)
+   Retains cinematic double frame & restrained gold touches, reduces heavy
+   ornament, adapts from vertical stack (768–1023) to balanced split (1024–1199)
+   ========================================================================== */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .nashka-hero-skyline {
+    display: block;
+    height: 150px;
+    opacity: 0.42;
+  }
+
+  .nashka-hero-glow {
+    display: block;
+    opacity: 0.48;
+  }
+
+  .nashka-hero-frame {
+    border-radius: 1.5rem;
+    padding: 0.4375rem;
+    border-width: 1px;
+    border-color: rgba(213, 164, 59, 0.44);
+  }
+
+  .nashka-hero-frame-inner {
+    border-radius: 1.125rem;
+    border-color: rgba(213, 164, 59, 0.34);
+  }
+
+  .nashka-hero-img {
+    border-radius: 1.0625rem;
+    object-position: 36% 30%;
+  }
+
+  .nashka-hero-bottom-arc {
+    width: 64%;
+    opacity: 0.8;
+  }
+}
+
+/* Tablet Vertical Adaptive Range (768px–1023px): prevents crowding on narrower tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .nashka-hero-royal-wing,
+  .nashka-hero-corner {
+    display: none;
+  }
+
+  .nashka-hero-grid {
+    padding-top: 2rem;
+    padding-bottom: 2.75rem;
+    gap: 1.875rem;
+  }
+
+  .nashka-hero-media {
+    order: 1;
+    max-width: 41rem;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-frame-inner {
+    aspect-ratio: 16 / 9;
+  }
+
+  .nashka-hero-content {
+    order: 2;
+    align-items: center;
+    text-align: center;
+    max-width: 39rem;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-kicker {
+    justify-content: center;
+    margin-bottom: 0.625rem;
+  }
+
+  .nashka-hero-line1,
+  .nashka-hero-line2 {
+    display: inline;
+  }
+
+  .nashka-hero-desc {
+    max-width: 34rem;
+    margin-top: 0.875rem;
+    margin-inline: auto;
+  }
+
+  .nashka-hero-specs {
+    justify-content: center;
+    margin-top: 0.875rem;
+  }
+
+  .nashka-hero-cta-wrap {
+    margin-top: 1.375rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem 1.25rem;
+  }
+
+  .nashka-hero-cta {
+    min-height: 52px;
+    width: auto;
+    min-width: 264px;
+    padding-inline: 1.875rem;
+  }
+
+  .nashka-hero-secondary-link {
+    min-height: 48px;
+    padding-inline: 0.5rem;
+  }
+}
+
+/* Tablet Wide Horizontal Range (1024px–1199px): spacious 2-col split with restrained ornament */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .nashka-hero-royal-wing {
+    display: block;
+    width: 280px;
+    opacity: 0.32;
+  }
+
+  .nashka-hero-skyline {
+    opacity: 0.28;
+  }
+
+  .nashka-hero-corner {
+    display: none;
+  }
+
+  .nashka-hero-grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 2.25rem;
+    padding-top: 3rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .nashka-hero-content {
+    order: 1;
+    align-items: flex-start;
+    text-align: right;
+  }
+
+  .nashka-hero-media {
+    order: 2;
+  }
+
   .nashka-hero-h1 {
-    font-size: clamp(1.75rem, 6.8vw, 2.125rem);
-    font-weight: 800;
-    line-height: 1.25;
-    text-wrap: balance;
+    font-size: clamp(2.05rem, 2.35vw + 0.55rem, 2.375rem);
+  }
+
+  .nashka-hero-kicker {
+    justify-content: flex-start;
+    margin-bottom: 0.625rem;
   }
 
   .nashka-hero-line1 {
     display: block;
-    color: #181881;
-    font-style: normal;
-    text-decoration-line: none;
   }
 
   .nashka-hero-line2 {
@@ -183,212 +616,2220 @@
     margin-top: 0.125rem;
   }
 
-  .nashka-hero-sub {
-    font-size: clamp(1rem, 4.1vw, 1.125rem);
-    line-height: 1.45;
-    margin-top: 0.625rem;
-  }
-
   .nashka-hero-desc {
-    font-size: 0.90625rem;
-    line-height: 1.62;
-    max-width: 21rem;
-    text-wrap: balance;
-    margin-top: 0.5rem;
-    margin-inline: auto;
+    max-width: 29rem;
+    margin-top: 1rem;
   }
 
-  .nashka-hero-cta-wrap {
-    margin-top: 1.25rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .nashka-hero-cta {
-    height: 48px;
-    min-height: 48px;
-    width: 100%;
-    max-width: 300px;
-    padding-inline: 1.375rem;
-    font-size: 0.9375rem;
-  }
-
-  .nashka-hero-frame {
-    border-radius: 1.125rem;
-    padding: 0.375rem;
-    aspect-ratio: 16 / 10;
-  }
-
-  .nashka-hero-img {
-    border-radius: 0.875rem;
-  }
-}
-
-/* 2. Tablet Range (768px–1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .nashka-hero-grid {
-    padding-top: 2.5rem;
-    padding-bottom: 2.75rem;
-    gap: 2rem;
-  }
-
-  .nashka-hero-content {
-    align-items: center;
-    text-align: center;
-    max-width: 38rem;
-    margin-inline: auto;
-  }
-
-  .nashka-hero-kicker {
-    font-size: 0.875rem;
-    justify-content: center;
-    margin-bottom: 0.75rem;
-  }
-
-  .nashka-hero-h1 {
-    font-size: clamp(2.125rem, 4.2vw, 2.5rem);
-    font-weight: 800;
-    line-height: 1.32;
-    text-wrap: balance;
-  }
-
-  .nashka-hero-line1 {
-    display: inline;
-    color: #181881;
-    font-style: normal;
-    text-decoration-line: none;
-  }
-
-  .nashka-hero-line2 {
-    display: inline;
-  }
-
-  .nashka-hero-sub {
-    font-size: 1.125rem;
-    line-height: 1.55;
+  .nashka-hero-specs {
+    justify-content: flex-start;
     margin-top: 0.875rem;
-  }
-
-  .nashka-hero-desc {
-    font-size: 0.96875rem;
-    line-height: 1.65;
-    max-width: 32rem;
-    text-wrap: balance;
-    margin-top: 0.625rem;
-    margin-inline: auto;
   }
 
   .nashka-hero-cta-wrap {
     margin-top: 1.5rem;
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.875rem 1.25rem;
   }
 
   .nashka-hero-cta {
-    height: 50px;
-    min-height: 50px;
+    min-height: 52px;
     width: auto;
-    min-width: 248px;
-    padding-inline: 2rem;
-    font-size: 0.96875rem;
+    min-width: 240px;
+    padding-inline: 1.5rem;
   }
 
-  .nashka-hero-media {
-    max-width: 40rem;
-    margin-inline: auto;
+  .nashka-hero-secondary-link {
+    min-height: 46px;
+    padding-inline: 0.25rem;
   }
 
-  .nashka-hero-frame {
-    border-radius: 1.375rem;
-    padding: 0.5rem;
-    aspect-ratio: 16 / 9;
-  }
-
-  .nashka-hero-img {
-    border-radius: 1rem;
+  .nashka-hero-frame-inner {
+    aspect-ratio: 16 / 11;
   }
 }
 
-/* 3. Desktop Range (1025px and above) */
-@media (min-width: 1025px) {
+/* ==========================================================================
+   3. Desktop Version (>= 1200px)
+   Full luxury editorial presentation: text right, cinematic double-framed
+   photo left, delicate gold corner accents, soft ambient lighting, royal
+   left architectural wing, and Riyadh horizon architectural skyline
+   ========================================================================== */
+@media (min-width: 1200px) {
+  .nashka-hero-royal-wing {
+    display: block;
+    width: clamp(340px, 34vw, 520px);
+    opacity: 0.94;
+  }
+
+  .nashka-hero-skyline {
+    display: block;
+    height: 215px;
+    opacity: 0.96;
+  }
+
+  .nashka-hero-glow {
+    display: block;
+    opacity: 0.92;
+  }
+
+  .nashka-hero-corner {
+    display: block;
+  }
+
   .nashka-hero-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
-    gap: 3rem;
-    padding-top: 3.5rem;
-    padding-bottom: 3.75rem;
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr);
+    gap: 3.5rem;
+    padding-top: 3.75rem;
+    padding-bottom: 4.5rem;
   }
 
   .nashka-hero-content {
+    order: 1;
     align-items: flex-start;
     text-align: right;
   }
 
-  .nashka-hero-kicker {
-    font-size: 0.875rem;
-    justify-content: flex-start;
-    margin-bottom: 0.875rem;
+  .nashka-hero-media {
+    order: 2;
   }
 
-  .nashka-hero-h1 {
-    font-size: clamp(2.5rem, 3.1vw, 3.125rem);
-    font-weight: 800;
-    line-height: 1.32;
+  .nashka-hero-kicker {
+    justify-content: flex-start;
+    margin-bottom: 0.75rem;
   }
 
   .nashka-hero-line1 {
     display: block;
-    font-size: 50px;
-    text-decoration-line: none;
-    font-style: normal;
-    text-align: right;
-    line-height: 80.4696px;
-    color: #181881;
   }
 
   .nashka-hero-line2 {
     display: block;
-  }
-
-  .nashka-hero-sub {
-    font-size: clamp(1.125rem, 1.35vw, 1.25rem);
-    line-height: 1.55;
-    margin-top: 0.875rem;
+    margin-top: 0.15rem;
   }
 
   .nashka-hero-desc {
-    font-size: 1rem;
-    line-height: 1.65;
-    max-width: 29rem;
-    margin-top: 0.75rem;
+    max-width: 32rem;
+    margin-top: 1.25rem;
+  }
+
+  .nashka-hero-specs {
+    justify-content: flex-start;
+    margin-top: 1rem;
   }
 
   .nashka-hero-cta-wrap {
     margin-top: 1.75rem;
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: flex-start;
+    gap: 1.5rem;
   }
 
   .nashka-hero-cta {
-    height: 52px;
-    min-height: 52px;
+    min-height: 54px;
     width: auto;
-    min-width: 256px;
+    min-width: 272px;
     padding-inline: 2rem;
-    font-size: 1rem;
+  }
+
+  .nashka-hero-secondary-link {
+    min-height: 48px;
+    padding-inline: 0.25rem;
   }
 
   .nashka-hero-frame {
-    border-radius: 1.5rem;
-    padding: 0.5rem;
-    aspect-ratio: 4 / 3;
+    border-radius: 1.75rem;
+    padding: 0.625rem;
+    border-width: 1.5px;
+    border-color: rgba(213, 164, 59, 0.54);
+    box-shadow:
+      0 28px 64px -18px rgba(16, 20, 95, 0.34),
+      0 0 0 1px rgba(255, 255, 255, 0.85);
+  }
+
+  .nashka-hero-frame-inner {
+    border-radius: 1.25rem;
+    aspect-ratio: 16 / 11;
+    border-width: 1.5px;
+    border-color: rgba(213, 164, 59, 0.48);
   }
 
   .nashka-hero-img {
-    border-radius: 1.0625rem;
+    border-radius: 1.15rem;
+    object-position: 38% 30%;
+  }
+
+  .nashka-hero-bottom-arc {
+    width: 70%;
+    margin-top: 0.75rem;
   }
 }
 
+/* ==========================================================================
+   NASHKA Signature Card System — 3 Independent Responsive Treatments
+   Mobile (< 768px)      : Horizontal card flow, side emblem, corner index, soft border
+   Tablet (768px–1199px) : 2-column uniform height cards, scaled emblem, restrained depth
+   Desktop (>= 1200px)   : Elevated architectural cards, subtle shape cadence, gold signature & partial rim
+   ========================================================================== */
+
+.nashka-grid-2,
+.nashka-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9375rem;
+}
+
+.nashka-card {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #e6ecf4;
+  border-radius: 1.125rem;
+  overflow: hidden;
+  box-shadow: 0 8px 22px -12px rgba(23, 28, 145, 0.08);
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.22s ease;
+}
+
+/* Partial Gold Lower Perimeter Rim */
+.nashka-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 16%;
+  right: 16%;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(213, 164, 59, 0.56) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+  transition:
+    left 0.24s ease,
+    right 0.24s ease,
+    opacity 0.24s ease;
+}
+
+.nashka-card:hover {
+  border-color: #c5e5ff;
+  box-shadow: 0 16px 34px -12px rgba(23, 28, 145, 0.14);
+}
+
+.nashka-card:hover::before {
+  left: 9%;
+  right: 9%;
+}
+
+/* Dual-Ring Blue & Gold Icon Emblem */
+.nashka-icon-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 25%, #ffffff 0%, #f3f7fc 74%, #e9f2fe 100%);
+  border: 1.5px solid #d5a43b;
+  box-shadow:
+    0 8px 18px -8px rgba(23, 28, 145, 0.14),
+    0 0 0 3px rgba(23, 28, 145, 0.03);
+  transition:
+    transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.24s ease;
+  flex-shrink: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.nashka-icon-badge-inner {
+  position: absolute;
+  inset: 3px;
+  border-radius: 9999px;
+  border: 1px solid rgba(23, 28, 145, 0.14);
+  pointer-events: none;
+}
+
+.nashka-icon-badge--standard {
+  width: 46px;
+  height: 46px;
+}
+
+.nashka-icon-badge--compact {
+  width: 40px;
+  height: 40px;
+}
+
+.group:hover .nashka-icon-badge {
+  transform: translateY(-2.5px);
+  box-shadow:
+    0 12px 24px -8px rgba(23, 28, 145, 0.2),
+    0 0 0 4px rgba(213, 164, 59, 0.12);
+}
+
+/* Refined Small Geometric Gold Numeral Badge */
+.nashka-card-index {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 6;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background-color: rgba(252, 249, 240, 0.96);
+  border: 1px solid rgba(213, 164, 59, 0.48);
+  box-shadow: 0 2px 6px -2px rgba(23, 28, 145, 0.12);
+  color: #876216;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.nashka-card-index--inline {
+  position: static;
+  width: 26px;
+  height: 26px;
+  box-shadow: none;
+}
+
+/* Signature Gold Hairline Mark */
+.nashka-card-signature {
+  display: block;
+  width: 34px;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(213, 164, 59, 0.25), #d5a43b, rgba(213, 164, 59, 0.25));
+  transition: width 0.22s ease;
+}
+
+.group:hover .nashka-card-signature {
+  width: 46px;
+}
+
+/* Card Typography Helpers */
+.nashka-card-title {
+  font-size: var(--text-h3);
+  font-weight: 700;
+  color: #17213b;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.nashka-card-desc {
+  margin-top: 0.375rem;
+  font-size: var(--text-body);
+  font-weight: 400;
+  color: #68758a;
+  line-height: 1.6;
+  width: 100%;
+  text-wrap: balance;
+}
+
+.nashka-card-footer-note-wrap {
+  margin-top: auto;
+  padding-top: 0.875rem;
+  width: 100%;
+}
+
+.nashka-card-footer-note {
+  padding-top: 0.6875rem;
+  border-top: 1px solid #e6ecf4;
+  font-size: var(--text-caption);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.nashka-card--notice {
+  padding: 1rem;
+  border-radius: 1.125rem;
+}
+
+.nashka-card--faq {
+  border-radius: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   1. Card System — Mobile Version (< 768px)
+   Horizontal layout: side emblem on right, clear title & description left,
+   corner geometric index tucked safely away from headings, soft lightweight elevation
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .nashka-card {
+    box-shadow: 0 6px 16px -12px rgba(23, 28, 145, 0.08);
+    border-radius: 1rem;
+  }
+
+  .nashka-card::before {
+    left: 22%;
+    right: 22%;
+    opacity: 0.72;
+  }
+
+  .nashka-card--feature,
+  .nashka-card--step {
+    padding: 1rem;
+  }
+
+  .nashka-card-feature-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: right;
+    gap: 0.875rem;
+  }
+
+  .nashka-card-icon-slot {
+    flex-shrink: 0;
+    padding-top: 0.125rem;
+  }
+
+  .nashka-card-body-slot {
+    flex: 1 1 0%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nashka-card-signature--desktop {
+    display: none;
+  }
+
+  /* Clear safe outer margin from top-left corner numeral medallion */
+  .nashka-card--feature .nashka-card-title,
+  .nashka-card--step .nashka-card-body-slot > p:first-child,
+  .nashka-card--bento-media .nashka-card-title,
+  .nashka-card--featured-media .nashka-card-title {
+    margin-inline-end: 2.125rem;
+  }
+
+  .nashka-card-body-slot .nashka-card-signature {
+    margin-top: 0.75rem;
+    width: 28px;
+  }
+
+  /* Horizontal Spec Cards (Visa Details) on Mobile */
+  .nashka-card--info {
+    padding: 1rem;
+  }
+
+  .nashka-card-info-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    text-align: right;
+  }
+
+  .nashka-card-info-main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    flex: 1 1 0%;
+  }
+
+  .nashka-card-info-mobile-val {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+    padding-top: 1.5rem;
+  }
+
+  .nashka-card-signature--inline {
+    margin-top: 0.375rem;
+    width: 26px;
+  }
+
+  /* Media Benefit & Destination Cards on Mobile */
+  .nashka-card--featured-media {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .nashka-card-featured-img-wrap {
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f3f7fc;
+    border-bottom: 1px solid #e6ecf4;
+  }
+
+  .nashka-card-featured-body {
+    padding: 1rem;
+    text-align: right;
+  }
+
+  .nashka-card--bento-media {
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .nashka-card-bento-img-wrap {
+    height: 100%;
+    min-height: 108px;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f3f7fc;
+    border-left: 1px solid #e6ecf4;
+  }
+
+  .nashka-card--bento-media .nashka-card-index {
+    top: 0.5625rem;
+    left: 0.5625rem;
+  }
+
+  .nashka-card-bento-body {
+    padding: 0.875rem 0.9375rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: right;
+    min-width: 0;
+  }
+
+  .nashka-card-signature--center {
+    margin-inline: 0;
+  }
+}
+
+@media (min-width: 390px) and (max-width: 767px) {
+  .nashka-card--bento-media {
+    grid-template-columns: 118px minmax(0, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Card System — Tablet Version (768px–1199px)
+   Balanced 2-column grids, uniform height alignment, proportionally scaled
+   emblems & corner indices, restrained shadow & ornamental complexity
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .nashka-grid-2,
+  .nashka-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.125rem;
+  }
+
+  .nashka-card {
+    border-radius: 1.125rem;
+    box-shadow: 0 8px 20px -12px rgba(23, 28, 145, 0.07);
+  }
+
+  .nashka-card::before {
+    left: 20%;
+    right: 20%;
+    opacity: 0.8;
+  }
+
+  .nashka-icon-badge--standard {
+    width: 50px;
+    height: 50px;
+  }
+
+  .nashka-icon-badge--compact {
+    width: 42px;
+    height: 42px;
+  }
+
+  .nashka-card-index {
+    top: 0.875rem;
+    left: 0.875rem;
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .nashka-card--feature,
+  .nashka-card--info,
+  .nashka-card--step {
+    padding: 1.375rem 1.25rem;
+  }
+
+  .nashka-card-feature-inner,
+  .nashka-card-info-inner,
+  .nashka-card-info-main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .nashka-card-info-inner {
+    justify-content: space-between;
+  }
+
+  .nashka-card-info-main {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .nashka-card-icon-slot {
+    margin-bottom: 0.875rem;
+  }
+
+  .nashka-card-body-slot {
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nashka-card-info-mobile-val {
+    display: none;
+  }
+
+  .nashka-card-signature {
+    margin-top: auto;
+    padding-top: 0;
+    margin-inline: auto;
+    width: 32px;
+  }
+
+  .nashka-card-body-slot .nashka-card-signature,
+  .nashka-card-info-inner .nashka-card-signature {
+    margin-top: auto;
+    padding-top: 0;
+  }
+
+  .nashka-card-body-slot .nashka-card-desc + .nashka-card-signature {
+    margin-top: 1rem;
+  }
+
+  .nashka-card-footer-note-wrap + .nashka-card-signature {
+    margin-top: 0.75rem;
+  }
+
+  /* Uniform 2-col photographic cards across Benefits & Journey on Tablet */
+  .nashka-card--featured-media,
+  .nashka-card--bento-media {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nashka-card-featured-img-wrap,
+  .nashka-card-bento-img-wrap {
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f3f7fc;
+    border-bottom: 1px solid #e6ecf4;
+  }
+
+  .nashka-card-featured-body,
+  .nashka-card-bento-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: right;
+  }
+
+  .nashka-card--bento-media .nashka-card-bento-body.md\:items-center {
+    align-items: center;
+    text-align: center;
+  }
+
+  .nashka-card-signature--inline {
+    margin-inline: 0;
+  }
+
+  .nashka-card-signature--center {
+    margin-inline: auto;
+  }
+
+  .nashka-card--notice {
+    padding: 1.25rem 1.375rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Card System — Desktop Version (>= 1200px)
+   Architectural white surfaces, subtle asymmetrical shoulder variations,
+   partial gold rim + upper corner edge shimmer, 56px Blue-Gold dual emblems,
+   prominent balanced gold numerals, and full vertical breathing room
+   -------------------------------------------------------------------------- */
+@media (min-width: 1200px) {
+  .nashka-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .nashka-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .nashka-card {
+    border-radius: 1.25rem;
+    box-shadow: 0 12px 28px -12px rgba(23, 28, 145, 0.085);
+  }
+
+  .nashka-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 38px -12px rgba(23, 28, 145, 0.145);
+  }
+
+  /* Subtle Geometric Differentiation Between Cards to Prevent Rigid Clones */
+  .nashka-card[data-nashka-shape='arc-start'] {
+    border-radius: 1.125rem 2.25rem 1.125rem 1.125rem;
+  }
+
+  .nashka-card[data-nashka-shape='arc-end'] {
+    border-radius: 2.25rem 1.125rem 1.125rem 1.125rem;
+  }
+
+  .nashka-card[data-nashka-shape='balanced'] {
+    border-radius: 1.5rem;
+  }
+
+  /* Upper Corner Delicate Gold Edge Accent */
+  .nashka-card[data-nashka-shape]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 44%;
+    height: 2px;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .nashka-card[data-nashka-shape='arc-start']::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(213, 164, 59, 0.52) 0%, transparent 100%);
+  }
+
+  .nashka-card[data-nashka-shape='arc-end']::after {
+    left: 0;
+    background: linear-gradient(90deg, rgba(213, 164, 59, 0.52) 0%, transparent 100%);
+  }
+
+  .nashka-card[data-nashka-shape='balanced']::after {
+    left: 28%;
+    right: 28%;
+    width: auto;
+    background: linear-gradient(90deg, transparent, rgba(213, 164, 59, 0.48), transparent);
+  }
+
+  .nashka-icon-badge--standard {
+    width: 56px;
+    height: 56px;
+  }
+
+  .nashka-icon-badge--compact {
+    width: 44px;
+    height: 44px;
+  }
+
+  .nashka-card-index {
+    top: 1rem;
+    left: 1rem;
+    width: 31px;
+    height: 31px;
+    font-size: 0.75rem;
+  }
+
+  .nashka-card[data-nashka-shape='arc-end'] .nashka-card-index {
+    top: 1.125rem;
+    left: 1.125rem;
+  }
+
+  .nashka-card--feature,
+  .nashka-card--info,
+  .nashka-card--step {
+    padding: 1.625rem 1.5rem;
+  }
+
+  .nashka-card-feature-inner,
+  .nashka-card-info-inner,
+  .nashka-card-info-main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .nashka-card-info-inner {
+    justify-content: space-between;
+  }
+
+  .nashka-card-info-main {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .nashka-card-icon-slot {
+    margin-bottom: 1rem;
+  }
+
+  .nashka-card-body-slot {
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nashka-card-info-mobile-val {
+    display: none;
+  }
+
+  .nashka-card-signature {
+    margin-top: auto;
+    margin-inline: auto;
+    width: 36px;
+  }
+
+  .nashka-card-body-slot .nashka-card-desc + .nashka-card-signature {
+    margin-top: 1.125rem;
+  }
+
+  .nashka-card-footer-note-wrap + .nashka-card-signature {
+    margin-top: 0.875rem;
+  }
+
+  /* Desktop Asymmetric Featured Bento Cards (01 & 02) */
+  .nashka-card--featured-media {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    align-items: stretch;
+  }
+
+  .nashka-card-featured-img-wrap {
+    height: 100%;
+    min-height: 204px;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f3f7fc;
+    border-left: 1px solid #e6ecf4;
+  }
+
+  .nashka-card-featured-body {
+    padding: 1.625rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: right;
+  }
+
+  /* Desktop 4-col Photographic Bento & Journey Cards */
+  .nashka-card--bento-media {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nashka-card-bento-img-wrap {
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f3f7fc;
+    border-bottom: 1px solid #e6ecf4;
+  }
+
+  .nashka-card-bento-body {
+    flex: 1 1 auto;
+    padding: 1.375rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: right;
+  }
+
+  .nashka-card-signature--inline {
+    margin-inline: 0;
+  }
+
+  .nashka-card-signature--center {
+    margin-inline: auto;
+  }
+
+  .nashka-card--notice {
+    padding: 1.5rem;
+    border-radius: 1.375rem;
+  }
+
+  .nashka-card--pricing:hover {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   NASHKA Editorial Travel Gallery (#journey) — 3 Independent Responsive Treatments
+   1. Mobile  (< 768px)      : Tall upright lead photo (01), below-photo readable caption band, no heavy map ornaments
+   2. Tablet  (768px–1199px) : 2-column gallery with prominent featured banner, restrained geographic backdrop
+   3. Desktop (>= 1200px)   : 12-col Asymmetric Editorial Grid, inlaid scrim typography, Saudi map & flight paths
+   ========================================================================== */
+
+.nashka-gallery-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f3f7fc 0%, #eef4fc 54%, #f7faff 100%);
+  border-bottom: 1px solid #e6ecf4;
+}
+
+.nashka-gallery-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 60% 48% at 50% 10%,
+      rgba(197, 229, 255, 0.42) 0%,
+      rgba(197, 229, 255, 0) 72%
+    ),
+    radial-gradient(
+      ellipse 42% 38% at 14% 82%,
+      rgba(213, 164, 59, 0.08) 0%,
+      rgba(213, 164, 59, 0) 70%
+    );
+}
+
+.nashka-gallery-flight,
+.nashka-gallery-map,
+.nashka-gallery-skyline {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.nashka-gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.nashka-gallery-card {
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid rgba(213, 164, 59, 0.28);
+  box-shadow: 0 12px 28px -14px rgba(16, 20, 95, 0.14);
+  transition:
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.24s ease;
+}
+
+.nashka-gallery-card--active {
+  border-color: #d5a43b;
+  box-shadow:
+    0 18px 36px -14px rgba(23, 28, 145, 0.22),
+    0 0 0 2px rgba(213, 164, 59, 0.36);
+}
+
+.nashka-gallery-trigger {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: right;
+  cursor: pointer;
+  color: inherit;
+}
+
+.nashka-gallery-trigger:focus-visible {
+  outline: 2px solid #171c91;
+  outline-offset: -3px;
+}
+
+.nashka-gallery-numeral {
+  position: absolute;
+  top: 0.875rem;
+  left: 0.875rem;
+  z-index: 8;
+  min-width: 34px;
+  height: 28px;
+  padding-inline: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(252, 249, 240, 0.94);
+  border: 1px solid rgba(213, 164, 59, 0.62);
+  box-shadow: 0 4px 12px -4px rgba(12, 16, 77, 0.28);
+  color: #876216;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.nashka-gallery-media-box {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #e6ecf4;
+}
+
+.nashka-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover .nashka-gallery-img {
+  transform: scale(1.035);
+}
+
+/* Tailored focal points protecting key landmarks above overlays */
+.nashka-gallery-img--01 {
+  object-position: 38% 38%;
+}
+
+.nashka-gallery-img--02 {
+  object-position: 56% 42%;
+}
+
+.nashka-gallery-img--03 {
+  object-position: 50% 44%;
+}
+
+.nashka-gallery-img--04 {
+  object-position: 44% 38%;
+}
+
+.nashka-gallery-scrim {
+  display: none;
+}
+
+.nashka-gallery-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.875rem;
+  width: 100%;
+}
+
+.nashka-gallery-caption-text {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.nashka-gallery-city {
+  font-size: var(--text-h3);
+  font-weight: 700;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.nashka-gallery-landmark {
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-caption);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.nashka-gallery-pin {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  flex-shrink: 0;
+  color: #d5a43b;
+}
+
+.nashka-gallery-arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    transform 0.22s ease,
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease;
+}
+
+/* Footer Discover CTA Button */
+.nashka-gallery-footer {
+  margin-top: 1.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.nashka-gallery-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 48px;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  background-color: #171c91;
+  color: #ffffff;
+  font-size: var(--text-btn);
+  font-weight: 700;
+  border: 1px solid rgba(213, 164, 59, 0.38);
+  box-shadow: 0 12px 26px -10px rgba(23, 28, 145, 0.4);
+  cursor: pointer;
+  transition:
+    background-color 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.nashka-gallery-cta:hover {
+  background-color: #10145f;
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px -10px rgba(16, 20, 95, 0.48);
+}
+
+/* Interactive Quick-Guide Drawer */
+.nashka-gallery-drawer {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  background-color: #ffffff;
+  border: 1px solid #e6ecf4;
+  box-shadow: 0 14px 34px -14px rgba(16, 20, 95, 0.14);
+}
+
+.nashka-gallery-drawer-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e6ecf4;
+}
+
+.nashka-gallery-drawer-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.nashka-gallery-drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: 0.875rem;
+  background-color: #f3f7fc;
+  border: 1px solid #e6ecf4;
+}
+
+.nashka-gallery-drawer-item--active {
+  background-color: #fcf9f0;
+  border-color: rgba(213, 164, 59, 0.6);
+}
+
+.nashka-gallery-drawer-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  border: 1px solid rgba(213, 164, 59, 0.55);
+  color: #876216;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   1. Gallery — Mobile Version (< 768px)
+   Tall vertical hero frame (01), clean gold corner numeral, city & description
+   clearly below photo on soft light gradient surface, no large map clutter
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .nashka-gallery-flight,
+  .nashka-gallery-map,
+  .nashka-gallery-skyline {
+    display: none;
+  }
+
+  .nashka-gallery-grid {
+    gap: 1rem;
+  }
+
+  .nashka-gallery-card {
+    border-radius: 1.125rem;
+    box-shadow: 0 10px 24px -14px rgba(16, 20, 95, 0.14);
+  }
+
+  .nashka-gallery-card--lead .nashka-gallery-media-box {
+    aspect-ratio: 4 / 5;
+    max-height: 410px;
+  }
+
+  .nashka-gallery-card:not(.nashka-gallery-card--lead) .nashka-gallery-media-box {
+    aspect-ratio: 16 / 10;
+  }
+
+  .nashka-gallery-scrim {
+    display: none;
+  }
+
+  /* Caption positioned below the photograph on high-contrast gradient wash */
+  .nashka-gallery-caption {
+    padding: 0.9375rem 1rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f5f9fe 100%);
+    border-top: 1px solid #e6ecf4;
+  }
+
+  .nashka-gallery-card--lead .nashka-gallery-caption {
+    padding: 1.0625rem 1.125rem;
+  }
+
+  .nashka-gallery-city {
+    color: #17213b;
+  }
+
+  .nashka-gallery-landmark {
+    color: #68758a;
+  }
+
+  .nashka-gallery-arrow {
+    background-color: #fcf9f0;
+    border: 1px solid rgba(213, 164, 59, 0.5);
+    color: #171c91;
+  }
+
+  .nashka-gallery-cta {
+    width: 100%;
+    max-width: 310px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Gallery — Tablet Version (768px–1199px)
+   Balanced 2-column gallery with full-width lead photo on top, side-by-side 02 & 03,
+   full-width balanced closer 04, restrained map & reduced geographical details
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .nashka-gallery-map {
+    display: block;
+    top: 2.25rem;
+    left: 1.5rem;
+    width: 155px;
+    opacity: 0.45;
+  }
+
+  .nashka-gallery-skyline {
+    display: block;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 76px;
+    opacity: 0.45;
+  }
+
+  .nashka-gallery-flight {
+    display: none;
+  }
+
+  .nashka-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.125rem;
+  }
+
+  .nashka-gallery-card {
+    border-radius: 1.25rem;
+  }
+
+  .nashka-gallery-card--01 {
+    grid-column: 1 / -1;
+    height: 280px;
+  }
+
+  .nashka-gallery-card--02,
+  .nashka-gallery-card--03 {
+    height: 228px;
+  }
+
+  .nashka-gallery-card--04 {
+    grid-column: 1 / -1;
+    height: 232px;
+  }
+
+  .nashka-gallery-card--01 .nashka-gallery-img--01 {
+    object-position: 50% 42%;
+  }
+
+  .nashka-gallery-card--04 .nashka-gallery-img--04 {
+    object-position: 50% 40%;
+  }
+
+  .nashka-gallery-media-box {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .nashka-gallery-scrim {
+    display: block;
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 54%;
+    z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgba(12, 16, 77, 0.9) 0%,
+      rgba(16, 20, 95, 0.56) 48%,
+      rgba(16, 20, 95, 0) 100%
+    );
+  }
+
+  .nashka-gallery-caption {
+    position: relative;
+    margin-top: auto;
+    z-index: 6;
+    padding: 1.25rem 1.375rem;
+  }
+
+  .nashka-gallery-city {
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(12, 16, 77, 0.45);
+  }
+
+  .nashka-gallery-landmark {
+    color: #e6ecf4;
+  }
+
+  .nashka-gallery-arrow {
+    background-color: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    color: #ffffff;
+    backdrop-filter: blur(4px);
+  }
+
+  .group:hover .nashka-gallery-arrow {
+    background-color: #d5a43b;
+    border-color: #d5a43b;
+    color: #10145f;
+  }
+
+  .nashka-gallery-drawer-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nashka-gallery-drawer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Gallery — Desktop Version (>= 1200px)
+   Asymmetric 12-Col Editorial Grid (Tall lead 01 right, varied 02 & 03 top left,
+   panoramic 04 bottom left), faint Saudi map silhouette & curved flight lines
+   -------------------------------------------------------------------------- */
+@media (min-width: 1200px) {
+  .nashka-gallery-flight {
+    display: block;
+    top: 2.25rem;
+    right: 4%;
+    width: 310px;
+    opacity: 0.92;
+  }
+
+  .nashka-gallery-map {
+    display: block;
+    top: 2rem;
+    left: 4.5%;
+    width: 225px;
+    opacity: 0.95;
+  }
+
+  .nashka-gallery-skyline {
+    display: block;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 112px;
+    opacity: 0.9;
+  }
+
+  .nashka-gallery-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: 264px 264px;
+    gap: 1.375rem;
+  }
+
+  .nashka-gallery-card {
+    border-radius: 1.375rem;
+    border: 1px solid rgba(213, 164, 59, 0.34);
+    box-shadow: 0 18px 40px -18px rgba(12, 16, 77, 0.24);
+  }
+
+  .nashka-gallery-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(213, 164, 59, 0.72);
+    box-shadow: 0 24px 48px -16px rgba(16, 20, 95, 0.3);
+  }
+
+  /* 01 — Tall Lead Vertical Frame on Right (Columns 1..5, Rows 1..2) */
+  .nashka-gallery-card--01 {
+    grid-column: 1 / span 5;
+    grid-row: 1 / span 2;
+    border-radius: 1.375rem 2.5rem 1.375rem 1.375rem;
+  }
+
+  /* 02 — Medium Editorial Frame Top Middle-Left (Columns 6..9, Row 1) */
+  .nashka-gallery-card--02 {
+    grid-column: 6 / span 4;
+    grid-row: 1;
+  }
+
+  /* 03 — Compact Architectural Frame Top Far-Left (Columns 10..12, Row 1) */
+  .nashka-gallery-card--03 {
+    grid-column: 10 / span 3;
+    grid-row: 1;
+    border-radius: 2.25rem 1.375rem 1.375rem 1.375rem;
+  }
+
+  /* 04 — Wide Panoramic Spread Bottom Left (Columns 6..12, Row 2) */
+  .nashka-gallery-card--04 {
+    grid-column: 6 / span 7;
+    grid-row: 2;
+  }
+
+  .nashka-gallery-card--04 .nashka-gallery-img--04 {
+    object-position: 50% 42%;
+  }
+
+  .nashka-gallery-numeral {
+    top: 1.0625rem;
+    left: 1.0625rem;
+    min-width: 38px;
+    height: 30px;
+    font-size: 0.8125rem;
+  }
+
+  .nashka-gallery-media-box {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .nashka-gallery-scrim {
+    display: block;
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 52%;
+    z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgba(12, 16, 77, 0.9) 0%,
+      rgba(16, 20, 95, 0.56) 46%,
+      rgba(16, 20, 95, 0) 100%
+    );
+  }
+
+  .nashka-gallery-card--01 .nashka-gallery-scrim {
+    height: 44%;
+  }
+
+  .nashka-gallery-caption {
+    position: relative;
+    margin-top: auto;
+    z-index: 6;
+    padding: 1.375rem 1.5rem;
+  }
+
+  .nashka-gallery-card--01 .nashka-gallery-caption {
+    padding: 1.75rem 1.75rem;
+  }
+
+  .nashka-gallery-card--01 .nashka-gallery-city {
+    font-size: 1.5rem;
+  }
+
+  .nashka-gallery-city {
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(12, 16, 77, 0.48);
+  }
+
+  .nashka-gallery-landmark {
+    color: #e6ecf4;
+  }
+
+  .nashka-gallery-arrow {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    color: #ffffff;
+    backdrop-filter: blur(4px);
+  }
+
+  .group:hover .nashka-gallery-arrow {
+    transform: translateX(-3px);
+    background-color: #d5a43b;
+    border-color: #d5a43b;
+    color: #10145f;
+  }
+
+  .nashka-gallery-footer {
+    margin-top: 2.25rem;
+  }
+
+  .nashka-gallery-drawer {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .nashka-gallery-drawer-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nashka-gallery-drawer-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   NASHKA Premium Travel Offer (#pricing) — 3 Independent Responsive Treatments
+   1. Mobile  (< 768px)      : Clean top title, standalone Price Card + corner seal, vertical list, full-width CTA, no heavy images
+   2. Tablet  (768px–1199px) : Balanced offer card on top, 2-col inclusions grid, reduced backdrop visuals, prominent CTA
+   3. Desktop (>= 1200px)   : Hero Price Card + adjacent 6-inclusion showcase, ambient glow, gold ribbon, panoramic skyline
+   ========================================================================== */
+
+.nashka-offer-section {
+  position: relative;
+  overflow-x: clip;
+  background: linear-gradient(180deg, #f7faff 0%, #eff5fd 52%, #ffffff 100%);
+  border-bottom: 1px solid #e6ecf4;
+}
+
+.nashka-offer-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nashka-offer-ambient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 56% 48% at 50% 14%,
+      rgba(197, 229, 255, 0.48) 0%,
+      rgba(197, 229, 255, 0) 74%
+    ),
+    radial-gradient(
+      ellipse 38% 36% at 84% 72%,
+      rgba(213, 164, 59, 0.08) 0%,
+      rgba(213, 164, 59, 0) 70%
+    );
+}
+
+.nashka-offer-flights,
+.nashka-offer-bottom-wave {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.nashka-offer-flights {
+  top: 0.75rem;
+  height: 220px;
+}
+
+.nashka-offer-bottom-wave {
+  bottom: 0;
+  height: 112px;
+}
+
+/* Offer Main Composition Grid */
+.nashka-offer-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.375rem;
+  align-items: stretch;
+}
+
+/* 1. Hero Price Card */
+.nashka-offer-hero-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1.5px solid rgba(213, 164, 59, 0.45);
+  border-radius: 1.5rem;
+  box-shadow:
+    0 22px 48px -18px rgba(16, 20, 95, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
+  padding-top: 1.25rem;
+  text-align: center;
+}
+
+/* Corner Brushed Gold Seal Badge */
+.nashka-offer-seal {
+  position: absolute;
+  top: -12px;
+  left: 14px;
+  z-index: 12;
+  width: 62px;
+  height: 62px;
+  border-radius: 9999px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  background: linear-gradient(145deg, #faefc9 0%, #e4bd5f 55%, #cf9d30 100%);
+  border: 2px solid #ffffff;
+  box-shadow:
+    0 10px 22px -6px rgba(135, 98, 22, 0.45),
+    inset 0 1px 2px rgba(255, 255, 255, 0.75);
+  color: #10145f;
+}
+
+.nashka-offer-seal-icon {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  stroke-width: 2.25;
+}
+
+.nashka-offer-seal-label {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+}
+
+/* Horizontal Brushed Gold Price Ribbon */
+.nashka-offer-ribbon-wrap {
+  position: relative;
+  z-index: 6;
+  padding-inline: 1.25rem;
+  display: flex;
+  justify-content: center;
+}
+
+.nashka-offer-ribbon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: calc(100% - 3.75rem);
+  padding: 0.45rem 1.25rem;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #f8ecc4 0%, #ead084 50%, #f8ecc4 100%);
+  border: 1px solid rgba(213, 164, 59, 0.58);
+  box-shadow: 0 6px 14px -8px rgba(135, 98, 22, 0.35);
+  color: #10145f;
+  font-size: var(--text-caption);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Focal Price Display Stage */
+.nashka-offer-price-stage {
+  position: relative;
+  z-index: 6;
+  padding: 1.5rem 1.25rem 1.625rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nashka-offer-price-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 240px;
+  height: 130px;
+  transform: translate(-50%, -62%);
+  border-radius: 9999px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(197, 229, 255, 0.58) 0%,
+    rgba(213, 164, 59, 0.16) 48%,
+    rgba(255, 255, 255, 0) 76%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nashka-offer-price-row {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.625rem;
+}
+
+.nashka-offer-price-amount {
+  font-size: clamp(2.75rem, 11vw, 3.25rem);
+  font-weight: 800;
+  color: #171c91;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.nashka-offer-price-currency {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+
+.nashka-offer-currency-en {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #876216;
+  letter-spacing: 0.04em;
+}
+
+.nashka-offer-currency-ar {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #10145f;
+}
+
+.nashka-offer-gold-divider {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 84px;
+  height: 2.5px;
+  margin-top: 1rem;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(213, 164, 59, 0.15) 0%, #d5a43b 50%, rgba(213, 164, 59, 0.15) 100%);
+}
+
+.nashka-offer-price-sub {
+  position: relative;
+  z-index: 2;
+  margin-top: 0.875rem;
+  font-size: var(--text-body);
+  font-weight: 700;
+  color: #17213b;
+  line-height: 1.45;
+}
+
+.nashka-offer-price-note {
+  position: relative;
+  z-index: 2;
+  margin-top: 0.375rem;
+  font-size: var(--text-caption);
+  font-weight: 400;
+  color: #68758a;
+  line-height: 1.5;
+}
+
+/* Panoramic Riyadh Skyline Band inside Card Bottom (Hidden Mobile, Shown Tablet/Desktop) */
+.nashka-offer-pano-wrap {
+  display: none;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-bottom-left-radius: 1.4rem;
+  border-bottom-right-radius: 1.4rem;
+}
+
+.nashka-offer-pano-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  display: block;
+}
+
+.nashka-offer-pano-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    #fbfdff 0%,
+    rgba(251, 253, 255, 0.88) 18%,
+    rgba(251, 253, 255, 0.12) 64%,
+    rgba(16, 20, 95, 0.25) 100%
+  );
+  pointer-events: none;
+}
+
+.nashka-offer-pano-trim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #10145f 0%, #171c91 48%, #d5a43b 100%);
+  pointer-events: none;
+}
+
+/* 2. Independent Inclusions Panel */
+.nashka-offer-inclusions-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid #e6ecf4;
+  border-radius: 1.375rem;
+  padding: 1.25rem;
+  box-shadow: 0 14px 32px -16px rgba(16, 20, 95, 0.1);
+}
+
+.nashka-offer-inclusions-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nashka-offer-inclusions-title {
+  font-size: var(--text-h3);
+  font-weight: 700;
+  color: #171c91;
+  line-height: 1.35;
+}
+
+.nashka-offer-inclusions-sub {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  color: #004aad;
+  line-height: 1.45;
+}
+
+.nashka-offer-hairline {
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-block: 0.875rem;
+  background: linear-gradient(90deg, rgba(213, 164, 59, 0.45) 0%, #e6ecf4 65%, transparent 100%);
+}
+
+.nashka-offer-inclusions-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6875rem;
+}
+
+.nashka-offer-inclusion-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem 0.9375rem;
+  border-radius: 1rem;
+  background-color: #ffffff;
+  border: 1px solid #e6ecf4;
+  box-shadow: 0 6px 14px -10px rgba(23, 28, 145, 0.08);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.nashka-offer-inclusion-row:hover {
+  border-color: rgba(213, 164, 59, 0.52);
+  box-shadow: 0 10px 20px -10px rgba(23, 28, 145, 0.13);
+}
+
+.nashka-offer-inclusion-badge {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: radial-gradient(circle at 30% 25%, #ffffff 0%, #f3f7fc 75%, #e8f1fe 100%);
+  border: 1.5px solid #d5a43b;
+}
+
+.nashka-offer-inclusion-badge-ring {
+  position: absolute;
+  inset: 2.5px;
+  border-radius: 9999px;
+  border: 1px solid rgba(23, 28, 145, 0.13);
+  pointer-events: none;
+}
+
+.nashka-offer-inclusion-text {
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: #17213b;
+  line-height: 1.5;
+}
+
+/* Centered Booking CTA + Secondary Link */
+.nashka-offer-cta-zone {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nashka-offer-cta {
+  width: 100%;
+  min-height: 54px;
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #171c91 0%, #1b22a8 52%, #10145f 100%);
+  color: #ffffff;
+  font-size: var(--text-btn);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: 1.5px solid rgba(213, 164, 59, 0.52);
+  box-shadow: 0 18px 36px -12px rgba(23, 28, 145, 0.45);
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.nashka-offer-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 42px -12px rgba(16, 20, 95, 0.55);
+}
+
+.nashka-offer-cta-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  background-color: rgba(213, 164, 59, 0.22);
+  border: 1px solid rgba(213, 164, 59, 0.48);
+  color: #f6e6b8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nashka-offer-faq-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--text-caption);
+  text-align: center;
+}
+
+.nashka-offer-faq-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 44px;
+  padding-inline: 0.5rem;
+  font-weight: 700;
+  color: #004aad;
+  transition: color 0.18s ease;
+}
+
+.nashka-offer-faq-link:hover {
+  color: #171c91;
+}
+
+/* --------------------------------------------------------------------------
+   1. Offer — Mobile Version (< 768px)
+   Title on top, clean independent Price Card + corner seal, vertical list,
+   full-width CTA button, large images and heavy ornaments hidden
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .nashka-offer-flights,
+  .nashka-offer-bottom-wave,
+  .nashka-offer-pano-wrap {
+    display: none;
+  }
+
+  .nashka-offer-seal {
+    top: 10px;
+    left: 10px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .nashka-offer-seal-icon {
+    width: 0.8125rem;
+    height: 0.8125rem;
+  }
+
+  .nashka-offer-seal-label {
+    font-size: 0.625rem;
+  }
+
+  .nashka-offer-ribbon-wrap {
+    padding-top: 2.875rem;
+    padding-inline: 1rem;
+  }
+
+  .nashka-offer-ribbon {
+    max-width: 100%;
+    padding: 0.425rem 1rem;
+    font-size: 0.78rem;
+  }
+
+  .nashka-offer-price-stage {
+    padding: 1.375rem 1rem 1.5rem;
+  }
+
+  .nashka-offer-price-glow {
+    width: 190px;
+    height: 104px;
+    opacity: 0.75;
+  }
+
+  .nashka-offer-inclusions-panel {
+    padding: 1.0625rem;
+    background-color: #ffffff;
+  }
+
+  .nashka-offer-cta {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Offer — Tablet Version (768px–1199px)
+   Balanced Hero Offer Card on top, 2-column inclusions grid cleanly arranged,
+   restrained panoramic image & subtle backdrop, clear booking CTA below
+   -------------------------------------------------------------------------- */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .nashka-offer-flights {
+    display: none;
+  }
+
+  .nashka-offer-bottom-wave {
+    display: block;
+    height: 82px;
+    opacity: 0.55;
+  }
+
+  .nashka-offer-layout {
+    gap: 1.5rem;
+  }
+
+  .nashka-offer-hero-card {
+    max-width: 44rem;
+    width: 100%;
+    margin-inline: auto;
+    padding-top: 1.5rem;
+  }
+
+  .nashka-offer-seal {
+    top: -14px;
+    left: -10px;
+    width: 70px;
+    height: 70px;
+  }
+
+  .nashka-offer-seal-label {
+    font-size: 0.75rem;
+  }
+
+  .nashka-offer-ribbon {
+    max-width: none;
+    padding: 0.5rem 1.75rem;
+  }
+
+  .nashka-offer-price-stage {
+    padding: 1.625rem 1.75rem 1.25rem;
+  }
+
+  .nashka-offer-price-amount {
+    font-size: clamp(3.125rem, 5.5vw, 3.75rem);
+  }
+
+  .nashka-offer-pano-wrap {
+    display: block;
+    height: 108px;
+  }
+
+  .nashka-offer-inclusions-panel {
+    padding: 1.5rem;
+  }
+
+  .nashka-offer-inclusions-header {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .nashka-offer-inclusions-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.875rem;
+  }
+
+  .nashka-offer-cta {
+    width: auto;
+    min-width: 320px;
+    padding-inline: 2.5rem;
+  }
+
+  .nashka-offer-faq-strip {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .nashka-offer-faq-link {
+    min-height: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Offer — Desktop Version (>= 1200px)
+   Commanding 12-Col Composition: Price Hero Card with radiant halo + gold
+   ribbon + corner "عرض مميز" seal + lower Riyadh panorama beside dedicated
+   6-inclusion column, anchored by a high-presence Royal Booking CTA below
+   -------------------------------------------------------------------------- */
+@media (min-width: 1200px) {
+  .nashka-offer-flights,
+  .nashka-offer-bottom-wave {
+    display: block;
+  }
+
+  .nashka-offer-layout {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .nashka-offer-hero-card {
+    grid-column: 1 / span 6;
+    border-radius: 1.75rem;
+    padding-top: 1.75rem;
+    box-shadow:
+      0 26px 56px -18px rgba(16, 20, 95, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.92);
+  }
+
+  .nashka-offer-seal {
+    top: -18px;
+    left: -14px;
+    width: 78px;
+    height: 78px;
+  }
+
+  .nashka-offer-seal-icon {
+    width: 1.0625rem;
+    height: 1.0625rem;
+  }
+
+  .nashka-offer-seal-label {
+    font-size: 0.8125rem;
+  }
+
+  .nashka-offer-ribbon {
+    max-width: none;
+    padding: 0.5625rem 2rem;
+  }
+
+  .nashka-offer-price-stage {
+    padding: 2.375rem 2rem 1.5rem;
+  }
+
+  .nashka-offer-price-glow {
+    width: 340px;
+    height: 180px;
+  }
+
+  .nashka-offer-price-amount {
+    font-size: clamp(3.875rem, 4.5vw, 4.75rem);
+  }
+
+  .nashka-offer-currency-en {
+    font-size: 1.25rem;
+  }
+
+  .nashka-offer-currency-ar {
+    font-size: 1.0625rem;
+  }
+
+  .nashka-offer-pano-wrap {
+    display: block;
+    height: 158px;
+    border-bottom-left-radius: 1.65rem;
+    border-bottom-right-radius: 1.65rem;
+  }
+
+  .nashka-offer-inclusions-panel {
+    grid-column: 7 / span 6;
+    border-radius: 1.75rem;
+    padding: 2rem;
+  }
+
+  .nashka-offer-inclusions-header {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .nashka-offer-inclusions-list {
+    gap: 0.8125rem;
+  }
+
+  .nashka-offer-inclusion-row {
+    padding: 0.875rem 1.125rem;
+  }
+
+  .nashka-offer-cta-zone {
+    margin-top: 2.25rem;
+  }
+
+  .nashka-offer-cta {
+    width: auto;
+    min-width: 360px;
+    min-height: 58px;
+    padding-inline: 2.75rem;
+    font-size: 1rem;
+  }
+
+  .nashka-offer-faq-strip {
+    flex-direction: row;
+    gap: 1.25rem;
+  }
+
+  .nashka-offer-faq-link {
+    min-height: 0;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

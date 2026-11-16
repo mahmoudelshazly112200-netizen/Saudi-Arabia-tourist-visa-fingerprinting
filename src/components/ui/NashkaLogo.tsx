@@ -37,7 +37,7 @@ export function NashkaLogo({
       <span
         dir="ltr"
         className={[
-          'inline-flex items-center justify-center rounded-xl overflow-hidden bg-[#161A8D] shrink-0 select-none',
+          'inline-flex items-center justify-center rounded-xl overflow-hidden bg-[#171C91] shrink-0 select-none',
           MARK_SIZE_CLASSES[size],
           className,
         ].join(' ')}
@@ -57,7 +57,7 @@ export function NashkaLogo({
       <span
         dir="ltr"
         className={[
-          'inline-flex items-center rounded-xl bg-[#161A8D] border border-white/15 px-2.5 py-1 shadow-sm shrink-0 select-none',
+          'inline-flex items-center rounded-xl bg-[#171C91] border border-white/15 px-2.5 py-1 shadow-sm shrink-0 select-none',
           className,
         ].join(' ')}
       >

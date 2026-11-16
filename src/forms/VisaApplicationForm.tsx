@@ -214,33 +214,33 @@ export function VisaApplicationForm() {
               <p className="text-xs sm:text-sm font-bold text-[#16A36A]">
                 تم حفظ الطلب وتأكيد استلام المستندات
               </p>
-              <h2 className="mt-1 text-lg sm:text-2xl font-extrabold text-[#161A8D]">
+              <h2 className="mt-1 text-lg sm:text-2xl font-extrabold text-[#171C91]">
                 شكراً لك، تم تسجيل طلب التأشيرة السياحية بنجاح
               </h2>
-              <p className="mt-1.5 text-sm sm:text-base text-[#5A657D] leading-relaxed">
+              <p className="mt-1.5 text-sm sm:text-base text-[#68758A] leading-relaxed">
                 {outcome.message}
               </p>
             </div>
           </div>
 
-          <div className="rounded-xl bg-[#F4F8FC] border border-[#E8EDF4] p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+          <div className="rounded-xl bg-[#F3F7FC] border border-[#E6ECF4] p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
             <div>
-              <span className="text-xs text-[#5A657D] block">رقم الطلب المرجعي المؤكد</span>
+              <span className="text-xs text-[#68758A] block">رقم الطلب المرجعي المؤكد</span>
               <span
                 data-testid="confirmed-reference-id"
-                className="font-extrabold text-base text-[#161A8D] font-en tabular-nums block text-right mt-1"
+                className="font-extrabold text-base text-[#171C91] font-en tabular-nums block text-right mt-1"
                 dir="ltr"
               >
                 {confirmedRef}
               </span>
             </div>
             <div>
-              <span className="text-xs text-[#5A657D] block">اسم مقدم الطلب</span>
-              <span className="font-bold text-[#0B0B0D] block mt-1">{formData.fullName}</span>
+              <span className="text-xs text-[#68758A] block">اسم مقدم الطلب</span>
+              <span className="font-bold text-[#17213B] block mt-1">{formData.fullName}</span>
             </div>
             <div>
-              <span className="text-xs text-[#5A657D] block">عدد المتقدمين والإجمالي</span>
-              <span className="font-bold text-[#161A8D] tabular-nums block mt-1">
+              <span className="text-xs text-[#68758A] block">عدد المتقدمين والإجمالي</span>
+              <span className="font-bold text-[#171C91] tabular-nums block mt-1">
                 {formatApplicantsLabel(formData.applicantsCount)} ·{' '}
                 {formatEgpAmount(outcome.calculatedTotalEgp ?? totalAmountEgp)}{' '}
                 {VISA_SERVICE_CONFIG.currencyLabelAr}
@@ -251,7 +251,7 @@ export function VisaApplicationForm() {
           <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
             <Link
               to={trackUrl}
-              className="min-h-[48px] px-6 py-3 rounded-xl bg-[#161A8D] hover:bg-[#10136B] text-white text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 transition-colors"
+              className="min-h-[48px] px-6 py-3 rounded-xl bg-[#171C91] hover:bg-[#10145F] text-white text-sm sm:text-base font-semibold inline-flex items-center justify-center gap-2 transition-colors"
             >
               <Search className="w-4 h-4 shrink-0" aria-hidden="true" />
               <span>متابعة حالة الطلب الآن</span>
@@ -278,7 +278,7 @@ export function VisaApplicationForm() {
                 setCopiedRef(true);
                 window.setTimeout(() => setCopiedRef(false), 2000);
               }}
-              className="min-h-[48px] px-4 py-2.5 rounded-xl border border-[#E8EDF4] bg-[#EAF4FF] hover:bg-[#C5E5FF]/60 text-sm font-semibold text-[#004AAD] inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+              className="min-h-[48px] px-4 py-2.5 rounded-xl border border-[#E6ECF4] bg-[#EAF4FF] hover:bg-[#C5E5FF]/60 text-sm font-semibold text-[#004AAD] inline-flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
             >
               {copiedRef ? (
                 <>
@@ -296,7 +296,7 @@ export function VisaApplicationForm() {
             <button
               type="button"
               onClick={handleResetWizard}
-              className="min-h-[48px] px-4 py-2.5 rounded-xl text-sm font-semibold text-[#5A657D] hover:text-[#0B0B0D] hover:bg-[#F4F8FC] inline-flex items-center justify-center gap-1.5 cursor-pointer"
+              className="min-h-[48px] px-4 py-2.5 rounded-xl text-sm font-semibold text-[#68758A] hover:text-[#17213B] hover:bg-[#F3F7FC] inline-flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <RotateCcw className="w-4 h-4" aria-hidden="true" />
               <span>تقديم طلب آخر</span>
@@ -315,16 +315,16 @@ export function VisaApplicationForm() {
             <h2 className="text-sm sm:text-base font-bold text-[#DC3545]">
               تعذر إرسال الطلب إلى الخادم
             </h2>
-            <p className="mt-1 text-xs sm:text-sm text-[#0B0B0D] leading-relaxed">{outcome.message}</p>
+            <p className="mt-1 text-xs sm:text-sm text-[#17213B] leading-relaxed">{outcome.message}</p>
           </div>
         </section>
       )}
 
       {!isConfirmed && (
         <form onSubmit={handleFormSubmit} noValidate className="space-y-5 sm:space-y-6">
-          {/* 4-Step Progress Indicator */}
-          <nav aria-label="خطوات تقديم الطلب" className="bg-white rounded-2xl border border-[#E8EDF4] p-3 sm:p-4">
-            <ol className="grid grid-cols-4 gap-1.5 sm:gap-3">
+          {/* 4-Step Progress Indicator (2x2 on phones for readability, 4-col on sm+) */}
+          <nav aria-label="خطوات تقديم الطلب" className="bg-white rounded-2xl border border-[#E6ECF4] p-3 sm:p-4">
+            <ol className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               {WIZARD_STEPS.map((step) => {
                 const isActive = step.number === currentStep;
                 const isCompleted = step.number < currentStep;
@@ -336,31 +336,31 @@ export function VisaApplicationForm() {
                       onClick={() => handleStepSelect(step.number)}
                       aria-current={isActive ? 'step' : undefined}
                       className={[
-                        'w-full min-h-[48px] px-1.5 sm:px-3 py-2 rounded-xl border text-center sm:text-right transition-colors cursor-pointer flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-start gap-1 sm:gap-2.5',
+                        'w-full h-full min-h-[48px] px-2.5 sm:px-3 py-2 rounded-xl border text-right transition-colors cursor-pointer flex items-center justify-start gap-2 sm:gap-2.5',
                         isActive
-                          ? 'border-[#161A8D] bg-[#F4F8FC] text-[#161A8D]'
+                          ? 'border-[#171C91] bg-[#F3F7FC] text-[#171C91]'
                           : isCompleted
-                          ? 'border-[#C5E5FF] bg-white text-[#161A8D] hover:bg-[#F4F8FC]'
-                          : 'border-[#E8EDF4] bg-white text-[#5A657D] hover:border-[#C5E5FF]',
+                          ? 'border-[#C5E5FF] bg-white text-[#171C91] hover:bg-[#F3F7FC]'
+                          : 'border-[#E6ECF4] bg-white text-[#68758A] hover:border-[#C5E5FF]',
                       ].join(' ')}
                     >
                       <span
                         className={[
                           'w-7 h-7 sm:w-8 sm:h-8 rounded-full text-xs sm:text-sm font-extrabold tabular-nums flex items-center justify-center shrink-0',
                           isActive
-                            ? 'bg-[#161A8D] text-white'
+                            ? 'bg-[#171C91] text-white'
                             : isCompleted
-                            ? 'bg-[#FCF9F0] border border-[#D6AD55] text-[#8B6918]'
-                            : 'bg-[#F4F8FC] text-[#5A657D] border border-[#E8EDF4]',
+                            ? 'bg-[#FCF9F0] border border-[#D5A43B] text-[#876216]'
+                            : 'bg-[#F3F7FC] text-[#68758A] border border-[#E6ECF4]',
                         ].join(' ')}
                       >
                         {isCompleted ? (
-                          <Check className="w-4 h-4 text-[#D6AD55]" aria-hidden="true" />
+                          <Check className="w-4 h-4 text-[#D5A43B]" aria-hidden="true" />
                         ) : (
                           step.number
                         )}
                       </span>
-                      <span className="text-[11px] min-[375px]:text-xs sm:text-sm font-bold leading-tight truncate max-w-full">
+                      <span className="text-[12.5px] sm:text-sm font-bold leading-snug">
                         <span className="sm:hidden">{step.shortTitle}</span>
                         <span className="hidden sm:inline">{step.title}</span>
                       </span>
@@ -385,12 +385,12 @@ export function VisaApplicationForm() {
           )}
 
           {/* Active Step Card */}
-          <section className="bg-white rounded-2xl border border-[#E8EDF4] p-4 sm:p-6 lg:p-8 space-y-5 sm:space-y-6">
-            <div className="flex items-center justify-between gap-3 border-b border-[#E8EDF4] pb-3.5 sm:pb-4">
-              <h2 className="text-[clamp(1.125rem,2vw,1.375rem)] font-bold text-[#161A8D]">
+          <section className="bg-white rounded-2xl border border-[#E6ECF4] p-4 sm:p-6 lg:p-8 space-y-5 sm:space-y-6">
+            <div className="flex items-center justify-between gap-3 border-b border-[#E6ECF4] pb-3.5 sm:pb-4">
+              <h2 className="text-[clamp(1.125rem,2vw,1.375rem)] font-bold text-[#171C91]">
                 {activeStepConfig.title}
               </h2>
-              <span className="text-xs sm:text-sm font-bold text-[#8B6918] tabular-nums shrink-0">
+              <span className="text-xs sm:text-sm font-bold text-[#876216] tabular-nums shrink-0">
                 الخطوة {currentStep} من 4
               </span>
             </div>
@@ -475,10 +475,10 @@ export function VisaApplicationForm() {
                 </div>
 
                 {/* Package Cost Summary - displayed exclusively inside Step 2 */}
-                <div className="rounded-xl bg-[#F4F8FC] border border-[#C5E5FF] p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div className="rounded-xl bg-[#F3F7FC] border border-[#C5E5FF] p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                   <div className="space-y-0.5">
-                    <p className="text-xs sm:text-sm font-bold text-[#161A8D]">ملخص التكلفة</p>
-                    <p className="text-xs sm:text-sm text-[#5A657D] tabular-nums">
+                    <p className="text-xs sm:text-sm font-bold text-[#171C91]">ملخص التكلفة</p>
+                    <p className="text-xs sm:text-sm text-[#68758A] tabular-nums">
                       {formatEgpAmount(VISA_SERVICE_CONFIG.pricePerPersonEgp)}{' '}
                       {VISA_SERVICE_CONFIG.currencyLabelAr} ×{' '}
                       {formatApplicantsLabel(formData.applicantsCount)}
@@ -486,7 +486,7 @@ export function VisaApplicationForm() {
                   </div>
                   <p
                     data-testid="calculated-total-price"
-                    className="text-lg sm:text-2xl font-extrabold text-[#161A8D] tabular-nums"
+                    className="text-lg sm:text-2xl font-extrabold text-[#171C91] tabular-nums"
                   >
                     {formatEgpAmount(totalAmountEgp)} {VISA_SERVICE_CONFIG.currencyLabelAr}
                   </p>
@@ -523,7 +523,7 @@ export function VisaApplicationForm() {
             {currentStep === 4 && (
               <div className="space-y-5 sm:space-y-6">
                 <fieldset>
-                  <legend className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-3">
+                  <legend className="block text-sm sm:text-base font-bold text-[#17213B] mb-3">
                     اختر حالة كشف الحساب البنكي
                     <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>
                   </legend>
@@ -537,8 +537,8 @@ export function VisaApplicationForm() {
                           className={[
                             'flex items-start gap-3 p-3.5 sm:p-4 rounded-xl border transition-colors cursor-pointer min-h-[56px]',
                             isSelected
-                              ? 'border-[#161A8D] bg-[#EFF4FF]'
-                              : 'border-[#E8EDF4] hover:border-[#C5E5FF] bg-white',
+                              ? 'border-[#171C91] bg-[#EFF4FF]'
+                              : 'border-[#E6ECF4] hover:border-[#C5E5FF] bg-white',
                           ].join(' ')}
                         >
                           <input
@@ -549,13 +549,13 @@ export function VisaApplicationForm() {
                             onChange={() =>
                               updateField('bankStatementStatus', option.value as BankStatementStatus)
                             }
-                            className="mt-1 w-5 h-5 accent-[#161A8D] shrink-0 cursor-pointer"
+                            className="mt-1 w-5 h-5 accent-[#171C91] shrink-0 cursor-pointer"
                           />
                           <div>
-                            <span className="block text-sm sm:text-base font-bold text-[#0B0B0D]">
+                            <span className="block text-sm sm:text-base font-bold text-[#17213B]">
                               {option.labelAr}
                             </span>
-                            <span className="block text-xs sm:text-sm text-[#5A657D] mt-0.5 leading-relaxed">
+                            <span className="block text-xs sm:text-sm text-[#68758A] mt-0.5 leading-relaxed">
                               {option.descriptionAr}
                             </span>
                           </div>
@@ -585,16 +585,16 @@ export function VisaApplicationForm() {
                   error={errors.explanatoryNotes}
                 />
 
-                <div className="pt-2 border-t border-[#E8EDF4] space-y-3">
+                <div className="pt-2 border-t border-[#E6ECF4] space-y-3">
                   <label className="flex items-start gap-3 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       name="dataUsageConsent"
                       checked={formData.dataUsageConsent}
                       onChange={(e) => updateField('dataUsageConsent', e.target.checked)}
-                      className="mt-1 w-5 h-5 rounded accent-[#161A8D] shrink-0 cursor-pointer"
+                      className="mt-1 w-5 h-5 rounded accent-[#171C91] shrink-0 cursor-pointer"
                     />
-                    <span className="text-xs sm:text-sm text-[#0B0B0D] leading-relaxed">
+                    <span className="text-xs sm:text-sm text-[#17213B] leading-relaxed">
                       <strong>الموافقة على استخدام البيانات:</strong> أقر بصحة البيانات والمستندات
                       المرفقة وأوافق على استخدامها لتجهيز طلب التأشيرة وحجز موعد تساهيل.
                       <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>
@@ -611,7 +611,7 @@ export function VisaApplicationForm() {
                     </p>
                   )}
 
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-[#5A657D]">
+                  <div className="flex items-center gap-2 text-xs sm:text-sm text-[#68758A]">
                     <ShieldCheck className="w-4 h-4 text-[#004AAD] shrink-0" aria-hidden="true" />
                     <span>يتم رفع المستندات وحفظ الطلب مباشرة على خادم المنصة.</span>
                   </div>
@@ -620,7 +620,7 @@ export function VisaApplicationForm() {
             )}
 
             {/* Step Navigation Controls */}
-            <div className="pt-4 sm:pt-5 border-t border-[#E8EDF4] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="pt-4 sm:pt-5 border-t border-[#E6ECF4] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               {currentStep > 1 ? (
                 <Button
                   type="button"

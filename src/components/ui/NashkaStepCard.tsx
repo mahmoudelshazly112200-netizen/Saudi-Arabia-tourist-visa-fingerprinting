@@ -1,45 +1,57 @@
 import React from 'react';
 import { NashkaIconComponent } from './NashkaIcon';
 import { NashkaIconBadge } from './NashkaIconBadge';
+import { NashkaCardIndex } from './NashkaCardIndex';
+import type { NashkaCardShape } from './NashkaFeatureCard';
 
 interface NashkaStepCardProps {
   icon: NashkaIconComponent;
   stepNumber: string;
   title: string;
   description: string;
+  shapeVariant?: NashkaCardShape;
   className?: string;
 }
 
 /**
  * NashkaStepCard
- * Standardized application stage card:
- * Pure White (#FFFFFF), Soft Gray border (#E8EDF4), circular icon badge,
- * accessible Gold stage label (#8B6918), Deep Black heading (#0B0B0D), and 16px description (#334155).
+ * NASHKA application stage card:
+ * - Mobile (< 768px): Horizontal timeline card (Icon right, Stage + Title + Desc + gold signature left, gold step index corner)
+ * - Tablet (768px–1199px): Uniform 2x2 centered vertical stage cards
+ * - Desktop (>= 1200px): Editorial vertical stage cards with architectural variation & gold signature
  */
 export function NashkaStepCard({
   icon,
   stepNumber,
   title,
   description,
+  shapeVariant = 'arc-start',
   className = '',
 }: NashkaStepCardProps) {
   return (
     <article
-      className={`group h-full bg-white rounded-2xl border border-[#E8EDF4] shadow-[var(--shadow-card)] p-4 sm:p-5 lg:p-6 text-center flex flex-col items-center justify-start transition-[transform,box-shadow,border-color] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-[var(--shadow-card-hover)] hover:border-[#C5E5FF] active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100 ${className}`}
+      data-nashka-shape={shapeVariant}
+      className={`group nashka-card nashka-card--step h-full ${className}`}
     >
-      <NashkaIconBadge icon={icon} className="mb-3" />
+      <NashkaCardIndex numberLabel={stepNumber} />
 
-      <p className="text-[12.5px] sm:text-[13px] font-bold leading-[1.45] text-[#8B6918] tracking-wide mb-1 tabular-nums">
-        المرحلة {stepNumber}
-      </p>
+      <div className="nashka-card-feature-inner">
+        <div className="nashka-card-icon-slot">
+          <NashkaIconBadge icon={icon} />
+        </div>
 
-      <h3 className="text-[17px] sm:text-[18px] font-bold text-[#0B0B0D] leading-[1.35] [text-wrap:balance]">
-        {title}
-      </h3>
+        <div className="nashka-card-body-slot">
+          <p className="text-[length:var(--text-caption)] font-bold leading-[1.45] text-[#876216] tracking-wide mb-0.5 md:mb-1 tabular-nums">
+            المرحلة {stepNumber}
+          </p>
 
-      <p className="mt-2 text-[14px] sm:text-[14.5px] text-[#475569] leading-[1.6] w-full [text-wrap:balance]">
-        {description}
-      </p>
+          <h3 className="nashka-card-title">{title}</h3>
+
+          <p className="nashka-card-desc">{description}</p>
+
+          <span className="nashka-card-signature" aria-hidden="true" />
+        </div>
+      </div>
     </article>
   );
 }

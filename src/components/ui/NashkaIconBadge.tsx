@@ -11,19 +11,17 @@ interface NashkaIconBadgeProps {
 }
 
 const BADGE_SIZE_CLASSES: Record<NashkaIconSize, string> = {
-  // Mobile: 48px | Tablet: 52px | Desktop: 56px
-  standard: 'w-12 h-12 sm:w-[52px] sm:h-[52px] lg:w-14 lg:h-14',
-  compact: 'w-10 h-10 sm:w-11 sm:h-11',
-  detailed: 'w-12 h-12 sm:w-[52px] sm:h-[52px] lg:w-14 lg:h-14',
+  standard: 'nashka-icon-badge--standard',
+  compact: 'nashka-icon-badge--compact',
+  detailed: 'nashka-icon-badge--standard',
 };
 
 /**
  * NashkaIconBadge
- * Official Nashka Circular Icon Container (v1.0):
- * - Soft light background (#F4F8FC)
- * - Gold border (#D6AD55)
- * - Royal Blue outline icon (#161A8D)
- * - Smooth -3.5px hover translation and subtle touch press feedback
+ * Signature Nashka Dual-Ring Circular Emblem:
+ * - Inner light radial cushion framed by subtle Royal Blue hairline
+ * - Outer Gold perimeter border (#D5A43B)
+ * - Two-tone Royal Blue & Gold architectural SVG artwork
  */
 export function NashkaIconBadge({
   icon,
@@ -34,9 +32,10 @@ export function NashkaIconBadge({
   return (
     <span
       aria-hidden="true"
-      className={`inline-flex items-center justify-center rounded-full bg-[var(--color-soft-bg)] border-2 border-[var(--color-gold)] shadow-[var(--shadow-icon-badge)] transition-[transform,box-shadow] duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-[3.5px] group-hover:shadow-[0_12px_22px_-6px_rgba(22,26,141,0.2)] group-active:translate-y-0 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0 shrink-0 pointer-events-none select-none ${BADGE_SIZE_CLASSES[size]} ${className}`}
+      className={`nashka-icon-badge ${BADGE_SIZE_CLASSES[size]} ${className}`}
     >
-      <NashkaIcon icon={icon} size={iconSize ?? size} />
+      <span className="nashka-icon-badge-inner" />
+      <NashkaIcon icon={icon} size={iconSize ?? size} className="relative z-10" />
     </span>
   );
 }

@@ -15,7 +15,7 @@ export function ResilientImage({
   alt,
   fallbackLabel,
   className = 'w-full h-full object-cover',
-  containerClassName = 'relative overflow-hidden bg-[#F4F8FC]',
+  containerClassName = 'relative overflow-hidden bg-[#F3F7FC]',
   loading = 'eager',
 }: ResilientImageProps) {
   const [hasError, setHasError] = useState(false);
@@ -36,9 +36,9 @@ export function ResilientImage({
         <div
           role="img"
           aria-label={alt}
-          className="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#161A8D] to-[#0C0E52] text-white"
+          className="w-full h-full min-h-[200px] flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#171C91] to-[#10145F] text-white"
         >
-          <Compass className="w-8 h-8 text-[#D6AD55] mb-2.5" aria-hidden="true" />
+          <Compass className="w-8 h-8 text-[#D5A43B] mb-2.5" aria-hidden="true" />
           <span className="text-sm font-semibold text-[#C5E5FF]">
             {fallbackLabel || alt}
           </span>

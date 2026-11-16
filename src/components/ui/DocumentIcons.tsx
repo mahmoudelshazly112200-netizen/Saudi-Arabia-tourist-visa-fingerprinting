@@ -31,11 +31,11 @@ export function PassportDocumentIcon({
       <line x1="8" y1="2.75" x2="8" y2="21.25" />
       {/* Official globe emblem on cover */}
       <circle cx="13.75" cy="9.75" r="3" />
-      <ellipse cx="13.75" cy="9.75" rx="1.35" ry="3" />
+      <ellipse cx="13.75" cy="9.75" rx="1.35" ry="3" stroke="var(--color-gold, #D5A43B)" />
       <line x1="10.85" y1="9.75" x2="16.65" y2="9.75" />
       {/* Cover title & biometric chip lines */}
       <line x1="11.25" y1="15.75" x2="16.25" y2="15.75" />
-      <line x1="12.25" y1="18" x2="15.25" y2="18" />
+      <line x1="12.25" y1="18" x2="15.25" y2="18" stroke="var(--color-gold, #D5A43B)" />
     </svg>
   );
 }
@@ -63,8 +63,8 @@ export function PersonalPhotoIcon({
       {/* Official 4x6 portrait border */}
       <rect x="4.25" y="2.75" width="15.5" height="18.5" rx="2.25" />
       {/* Top corner biometric framing guides */}
-      <path d="M7.25 7.25V5.75h1.5" />
-      <path d="M16.75 7.25V5.75h-1.5" />
+      <path d="M7.25 7.25V5.75h1.5" stroke="var(--color-gold, #D5A43B)" />
+      <path d="M16.75 7.25V5.75h-1.5" stroke="var(--color-gold, #D5A43B)" />
       {/* Centered official portrait head & shoulders */}
       <circle cx="12" cy="10.25" r="2.65" />
       <path d="M7.5 18.25c.65-2.3 2.4-3.55 4.5-3.55s3.85 1.25 4.5 3.55" />
@@ -103,7 +103,7 @@ export function BankStatementIcon({
       <line x1="7.75" y1="14.5" x2="11.25" y2="14.5" />
       <line x1="14.25" y1="14.5" x2="16" y2="14.5" />
       {/* Total balance summary line */}
-      <line x1="7.75" y1="17.75" x2="16" y2="17.75" />
+      <line x1="7.75" y1="17.75" x2="16" y2="17.75" stroke="var(--color-gold, #D5A43B)" />
     </svg>
   );
 }

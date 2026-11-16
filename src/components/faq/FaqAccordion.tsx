@@ -61,18 +61,18 @@ export function FaqAccordion({
     }
   };
 
-  const renderFaqCard = (item: FaqItem) => {
+  const renderFaqCard = (item: FaqItem, idx: number) => {
     const isOpen = openIds.has(item.id);
     const panelId = `${item.id}-panel`;
     const buttonId = `${item.id}-button`;
+    const numLabel = String(idx + 1).padStart(2, '0');
 
     return (
       <div
         key={item.id}
-        className={`bg-white rounded-2xl border transition-colors overflow-hidden ${
-          isOpen
-            ? 'border-[#C5E5FF] shadow-[var(--shadow-card)]'
-            : 'border-[#E8EDF4] hover:border-[#C5E5FF]'
+        data-open={isOpen ? 'true' : 'false'}
+        className={`nashka-card nashka-card--faq !p-0 overflow-hidden transition-[box-shadow,border-color] duration-200 ${
+          isOpen ? 'border-[#D5A43B]/45' : ''
         }`}
       >
         <h3>
@@ -82,14 +82,21 @@ export function FaqAccordion({
             aria-expanded={isOpen}
             aria-controls={panelId}
             onClick={() => toggleItem(item.id)}
-            className="w-full min-h-[54px] px-4 sm:px-5 py-3.5 text-right flex items-center justify-between gap-3 sm:gap-4 hover:bg-[#F4F8FC] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#161A8D]"
+            className="w-full min-h-[54px] px-4 sm:px-5 lg:px-6 py-3.5 sm:py-4 text-right flex items-center justify-between gap-3 sm:gap-4 hover:bg-[#F3F7FC]/75 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#171C91]"
           >
-            <span className="text-[15px] sm:text-base font-bold text-[#0B0B0D] leading-[1.4]">
-              {item.question}
+            <span className="flex items-center gap-3 min-w-0">
+              <span className="nashka-card-index nashka-card-index--inline font-en tabular-nums shrink-0 select-none">
+                {numLabel}
+              </span>
+              <span className="text-[length:var(--text-body)] font-bold text-[#17213B] leading-[1.45]">
+                {item.question}
+              </span>
             </span>
             <span
-              className={`w-8 h-8 rounded-full bg-[#F4F8FC] text-[#161A8D] flex items-center justify-center shrink-0 transition-colors border ${
-                isOpen ? 'border-[#D6AD55] bg-[#FCF9F0]' : 'border-[#E8EDF4]'
+              className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors border-[1.5px] ${
+                isOpen
+                  ? 'border-[#D5A43B] bg-[#FCF9F0] text-[#171C91]'
+                  : 'border-[#D5A43B]/45 bg-[#F3F7FC] text-[#171C91]'
               }`}
             >
               <ChevronDown
@@ -107,7 +114,7 @@ export function FaqAccordion({
             id={panelId}
             role="region"
             aria-labelledby={buttonId}
-            className="px-4 sm:px-5 pb-4 sm:pb-5 pt-3 border-t border-[#E8EDF4] text-[14px] sm:text-[15px] text-[#475569] leading-[1.65] sm:leading-[1.75]"
+            className="px-4 sm:px-5 lg:px-6 pb-4 sm:pb-5 pt-3 border-t border-[#E6ECF4] text-[length:var(--text-body)] font-normal text-[#68758A] leading-[1.65]"
           >
             <p>{item.answer}</p>
           </div>
@@ -123,11 +130,11 @@ export function FaqAccordion({
   return (
     <div className="space-y-6">
       {enableFiltering && (
-        <div className="bg-white rounded-2xl border border-[#E8EDF4] p-4 sm:p-5 space-y-4 shadow-[var(--shadow-card)]">
+        <div className="bg-white rounded-2xl border border-[#E6ECF4] p-4 sm:p-5 space-y-4 shadow-[var(--shadow-card)]">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <div className="relative flex-1">
               <Search
-                className="w-4 h-4 text-[#475569] absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                className="w-4 h-4 text-[#68758A] absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
                 aria-hidden="true"
               />
               <input
@@ -136,14 +143,14 @@ export function FaqAccordion({
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="ابحث عن سؤال (مثال: كشف الحساب، العمرة، تساهيل، التكلفة...)"
                 aria-label="ابحث في الأسئلة الشائعة"
-                className="w-full min-h-[48px] pr-10 pl-10 py-2 rounded-xl border border-[#E8EDF4] bg-[#F4F8FC] text-base text-[#0B0B0D] placeholder:text-slate-400 focus:outline-none focus:border-[#161A8D] focus:bg-white transition-colors"
+                className="w-full min-h-[48px] pr-10 pl-10 py-2 rounded-xl border border-[#E6ECF4] bg-[#F3F7FC] text-base text-[#17213B] placeholder:text-[#68758A]/70 focus:outline-none focus:border-[#171C91] focus:bg-white transition-colors"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
                   aria-label="مسح البحث"
-                  className="w-8 h-8 rounded-lg text-slate-400 hover:text-[#0B0B0D] flex items-center justify-center absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                  className="w-8 h-8 rounded-lg text-[#68758A] hover:text-[#17213B] flex items-center justify-center absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
                 >
                   <X className="w-4 h-4" aria-hidden="true" />
                 </button>
@@ -154,9 +161,9 @@ export function FaqAccordion({
               type="button"
               onClick={handleToggleAll}
               disabled={filteredItems.length === 0}
-              className="min-h-[48px] px-4 py-2 rounded-xl border border-[#E8EDF4] bg-white hover:bg-[#F4F8FC] text-[15px] font-bold text-[#004AAD] inline-flex items-center justify-center gap-2 shrink-0 cursor-pointer disabled:opacity-50"
+              className="min-h-[48px] px-4 py-2 rounded-xl border border-[#E6ECF4] bg-white hover:bg-[#F3F7FC] text-[length:var(--text-btn)] font-bold text-[#004AAD] inline-flex items-center justify-center gap-2 shrink-0 cursor-pointer disabled:opacity-50"
             >
-              <ChevronsDownUp className="w-4 h-4 text-[#D6AD55]" aria-hidden="true" />
+              <ChevronsDownUp className="w-4 h-4 text-[#D5A43B]" aria-hidden="true" />
               <span>{allFilteredOpen ? 'إغلاق جميع الإجابات' : 'فتح جميع الإجابات'}</span>
             </button>
           </div>
@@ -176,10 +183,10 @@ export function FaqAccordion({
                   aria-selected={isSelected}
                   onClick={() => setSelectedCategory(cat.value)}
                   className={[
-                    'min-h-[42px] px-4 py-1.5 rounded-xl text-sm font-bold transition-colors cursor-pointer border',
+                    'min-h-[42px] px-4 py-1.5 rounded-xl text-[length:var(--text-caption)] font-bold transition-colors cursor-pointer border',
                     isSelected
-                      ? 'bg-[#161A8D] text-white border-[#161A8D]'
-                      : 'bg-[#F4F8FC] text-[#0B0B0D] border-[#E8EDF4] hover:border-[#C5E5FF] hover:text-[#004AAD]',
+                      ? 'bg-[#171C91] text-white border-[#171C91]'
+                      : 'bg-[#F3F7FC] text-[#17213B] border-[#E6ECF4] hover:border-[#C5E5FF] hover:text-[#004AAD]',
                   ].join(' ')}
                 >
                   {cat.label}
@@ -191,11 +198,11 @@ export function FaqAccordion({
       )}
 
       {filteredItems.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-[#E8EDF4] p-8 sm:p-10 text-center space-y-4">
-          <p className="text-lg font-bold text-[#0B0B0D]">
+        <div className="bg-white rounded-2xl border border-[#E6ECF4] p-8 sm:p-10 text-center space-y-4">
+          <p className="text-[length:var(--text-h3)] font-bold text-[#17213B]">
             لم يتم العثور على أسئلة مطابقة لبحثك
           </p>
-          <p className="text-base text-[#334155] max-w-md mx-auto">
+          <p className="text-[length:var(--text-body)] text-[#68758A] max-w-md mx-auto">
             تواصل مع فريق نشكا للسياحة مباشرة عبر واتساب للإجابة عن سؤالك بشكل فوري ودقيق.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -215,23 +222,23 @@ export function FaqAccordion({
                 setSearchQuery('');
                 setSelectedCategory('all');
               }}
-              className="min-h-[48px] px-4 py-2 rounded-xl border border-[#E8EDF4] text-[15px] font-bold text-[#004AAD] hover:bg-[#F4F8FC] cursor-pointer"
+              className="min-h-[48px] px-4 py-2 rounded-xl border border-[#E6ECF4] text-[length:var(--text-btn)] font-bold text-[#004AAD] hover:bg-[#F3F7FC] cursor-pointer"
             >
               إعادة ضبط التصفية
             </button>
           </div>
         </div>
       ) : columns === 2 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 sm:gap-5 items-start">
-          <div className="flex flex-col gap-3.5 sm:gap-4 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 items-start">
+          <div className="flex flex-col gap-4 items-stretch">
             {firstColumnItems.map(renderFaqCard)}
           </div>
-          <div className="flex flex-col gap-3.5 sm:gap-4 items-stretch">
-            {secondColumnItems.map(renderFaqCard)}
+          <div className="flex flex-col gap-4 items-stretch">
+            {secondColumnItems.map((item, idx) => renderFaqCard(item, midpoint + idx))}
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-3.5 sm:gap-4 items-start">
+        <div className="grid grid-cols-1 gap-4 items-start">
           {filteredItems.map(renderFaqCard)}
         </div>
       )}

@@ -11,9 +11,9 @@ export function FaqSection() {
   return (
     <section
       id="faq"
-      className="py-11 sm:py-14 lg:py-20 bg-white border-b border-[#E8EDF4] scroll-mt-16"
+      className="py-12 min-[390px]:py-14 lg:py-20 bg-white border-b border-[#E6ECF4] scroll-mt-16"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 min-[390px]:px-5 sm:px-6 lg:px-8">
         <SectionHeader
           kicker="إجابات سريعة ومباشرة"
           title="الأسئلة الشائعة"
@@ -25,7 +25,7 @@ export function FaqSection() {
 
         {/* Bottom Support Prompt & Interactive FAQ Page Link */}
         <div className="mt-7 sm:mt-9 pt-2 text-center">
-          <p className="text-[15px] sm:text-base font-bold leading-[1.5] text-[#0B0B0D] mb-3.5">
+          <p className="text-[length:var(--text-body)] font-bold leading-[1.55] text-[#17213B] mb-3.5">
             هل لديك استفسار إضافي؟ تواصل معنا مباشرة.
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-center gap-3">
@@ -53,7 +53,7 @@ export function FaqSection() {
 
             <Link
               to="/faq"
-              className="min-h-[48px] px-5 py-2.5 rounded-xl bg-white border border-[#E8EDF4] hover:border-[#004AAD] text-[14.5px] sm:text-[15px] font-bold text-[#004AAD] inline-flex items-center justify-center gap-2 transition-colors"
+              className="min-h-[48px] px-5 py-2.5 rounded-xl bg-white border border-[#E6ECF4] hover:border-[#004AAD] text-[length:var(--text-btn)] font-bold text-[#004AAD] inline-flex items-center justify-center gap-2 transition-colors"
             >
               <span>البحث في جميع الأسئلة الشائعة</span>
               <ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />

@@ -1,41 +1,68 @@
 import React from 'react';
 import { NashkaIconComponent } from './NashkaIcon';
 import { NashkaIconBadge } from './NashkaIconBadge';
+import { NashkaCardIndex } from './NashkaCardIndex';
+import type { NashkaCardShape } from './NashkaFeatureCard';
 
 interface NashkaInfoCardProps {
   icon: NashkaIconComponent;
   label: string;
   value: string;
+  cardIndex?: string;
+  shapeVariant?: NashkaCardShape;
   className?: string;
 }
 
 /**
  * NashkaInfoCard
- * Standardized metric/specification card:
- * Pure White (#FFFFFF), Soft Gray border (#E8EDF4), circular badge,
- * clear 16px label (#334155), prominent Royal Blue value (#161A8D), and Premium Gold #D6AD55 accent line.
+ * NASHKA specification card:
+ * - Mobile (< 768px): Horizontal spec card with right dual-ring icon, label + signature bar, left bold metric & safe top-left gold index
+ * - Tablet (768px–1199px): Uniform 2x2 vertical cards with scaled icon & restrained gold edge
+ * - Desktop (>= 1200px): Elevated vertical card with geometric index, subtle architectural curve & centered gold signature bar
  */
-export function NashkaInfoCard({ icon, label, value, className = '' }: NashkaInfoCardProps) {
+export function NashkaInfoCard({
+  icon,
+  label,
+  value,
+  cardIndex,
+  shapeVariant = 'arc-start',
+  className = '',
+}: NashkaInfoCardProps) {
   return (
     <article
-      className={`group h-full bg-white rounded-2xl border border-[#E8EDF4] shadow-[var(--shadow-card)] p-4 sm:p-5 lg:p-6 text-center flex flex-col items-center justify-between transition-[transform,box-shadow,border-color] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:shadow-[var(--shadow-card-hover)] hover:border-[#C5E5FF] active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100 ${className}`}
+      data-nashka-shape={shapeVariant}
+      className={`group nashka-card nashka-card--info h-full ${className}`}
     >
-      <div className="flex flex-col items-center w-full">
-        <NashkaIconBadge icon={icon} className="mb-3" />
+      {cardIndex && <NashkaCardIndex numberLabel={cardIndex} />}
 
-        <h3 className="text-[14px] sm:text-[15px] font-bold text-[#475569] leading-[1.45]">
-          {label}
-        </h3>
+      <div className="nashka-card-info-inner">
+        <div className="nashka-card-info-main">
+          <div className="nashka-card-icon-slot">
+            <NashkaIconBadge icon={icon} />
+          </div>
 
-        <p className="mt-1.5 text-[20px] sm:text-[22px] lg:text-[24px] font-extrabold text-[#161A8D] leading-[1.3] tabular-nums">
-          {value}
-        </p>
+          <div className="min-w-0 flex-1 md:w-full">
+            <h3 className="text-[length:var(--text-body)] font-bold text-[#68758A] leading-[1.4]">
+              {label}
+            </h3>
+
+            <p className="hidden md:block mt-2 text-[clamp(1.25rem,1.8vw,1.5rem)] font-bold text-[#171C91] leading-[1.3] tabular-nums">
+              {value}
+            </p>
+          </div>
+        </div>
+
+        {/* Mobile Prominent Value (padded clear of corner numeral) */}
+        <div className="nashka-card-info-mobile-val">
+          <p className="text-[17px] font-bold text-[#171C91] leading-[1.2] tabular-nums whitespace-nowrap">
+            {value}
+          </p>
+          <span className="nashka-card-signature nashka-card-signature--inline" aria-hidden="true" />
+        </div>
+
+        {/* Tablet/Desktop Bottom Gold Signature */}
+        <span className="nashka-card-signature nashka-card-signature--desktop" aria-hidden="true" />
       </div>
-
-      <span
-        className="w-7 h-0.5 bg-[#D6AD55] rounded-full mt-3.5"
-        aria-hidden="true"
-      />
     </article>
   );
 }

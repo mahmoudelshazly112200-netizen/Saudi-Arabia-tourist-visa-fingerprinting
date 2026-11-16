@@ -36,7 +36,7 @@ export function TextField({
 
   return (
     <div className="w-full">
-      <label htmlFor={id} className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-2">
+      <label htmlFor={id} className="block text-sm sm:text-base font-bold text-[#17213B] mb-2">
         {label}
         {requiredMark && <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>}
       </label>
@@ -46,9 +46,9 @@ export function TextField({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : hint ? hintId : undefined}
         className={[
-          'w-full min-h-[48px] px-4 py-3 rounded-xl border bg-white text-base text-[#0B0B0D] placeholder:text-[#5A657D]/70',
-          'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#161A8D]/20 focus:border-[#161A8D]',
-          error ? 'border-[#DC3545] bg-[#FDECEE]/45' : 'border-[#E8EDF4] hover:border-[#5B8EE6]',
+          'w-full min-h-[48px] px-4 py-3 rounded-xl border bg-white text-base text-[#17213B] placeholder:text-[#68758A]/70',
+          'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#171C91]/20 focus:border-[#171C91]',
+          error ? 'border-[#DC3545] bg-[#FDECEE]/45' : 'border-[#E6ECF4] hover:border-[#5B8EE6]',
           inputDir === 'ltr' ? 'text-right font-en' : '',
           className,
         ]
@@ -57,7 +57,7 @@ export function TextField({
         {...rest}
       />
       {hint && !error && (
-        <p id={hintId} className="mt-1.5 text-xs sm:text-sm text-[#5A657D]">
+        <p id={hintId} className="mt-1.5 text-xs sm:text-sm text-[#68758A]">
           {hint}
         </p>
       )}
@@ -92,7 +92,7 @@ export function TextAreaField({
 
   return (
     <div className="w-full">
-      <label htmlFor={id} className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-2">
+      <label htmlFor={id} className="block text-sm sm:text-base font-bold text-[#17213B] mb-2">
         {label}
         {requiredMark && <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>}
       </label>
@@ -102,16 +102,16 @@ export function TextAreaField({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
         className={[
-          'w-full px-4 py-3 rounded-xl border bg-white text-base text-[#0B0B0D] placeholder:text-[#5A657D]/70',
-          'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#161A8D]/20 focus:border-[#161A8D]',
-          error ? 'border-[#DC3545] bg-[#FDECEE]/45' : 'border-[#E8EDF4] hover:border-[#5B8EE6]',
+          'w-full px-4 py-3 rounded-xl border bg-white text-base text-[#17213B] placeholder:text-[#68758A]/70',
+          'transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-[#171C91]/20 focus:border-[#171C91]',
+          error ? 'border-[#DC3545] bg-[#FDECEE]/45' : 'border-[#E6ECF4] hover:border-[#5B8EE6]',
           className,
         ]
           .filter(Boolean)
           .join(' ')}
         {...rest}
       />
-      {hint && !error && <p className="mt-1.5 text-xs sm:text-sm text-[#5A657D]">{hint}</p>}
+      {hint && !error && <p className="mt-1.5 text-xs sm:text-sm text-[#68758A]">{hint}</p>}
       {error && (
         <p id={errorId} role="alert" className="mt-1.5 flex items-center gap-1.5 text-sm font-medium text-[#DC3545]">
           <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -140,17 +140,17 @@ export function ApplicantCounter({
 
   return (
     <div className="w-full">
-      <span className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-2">
+      <span className="block text-sm sm:text-base font-bold text-[#17213B] mb-2">
         عدد المتقدمين
         <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>
       </span>
-      <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl border border-[#E8EDF4] bg-white min-h-[52px]">
+      <div className="flex items-center justify-between gap-3 p-1.5 rounded-xl border border-[#E6ECF4] bg-white min-h-[52px]">
         <button
           type="button"
           onClick={onIncrement}
           disabled={!canIncrement}
           aria-label="زيادة عدد المتقدمين"
-          className="w-12 h-12 rounded-lg bg-[#EFF4FF] text-[#161A8D] hover:bg-[#C5E5FF] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer shrink-0"
+          className="w-12 h-12 rounded-lg bg-[#EFF4FF] text-[#171C91] hover:bg-[#C5E5FF] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer shrink-0"
         >
           <Plus className="w-5 h-5" aria-hidden="true" />
         </button>
@@ -158,11 +158,11 @@ export function ApplicantCounter({
         <div className="flex flex-col items-center justify-center text-center px-2">
           <span
             data-testid="applicants-count-value"
-            className="text-lg font-extrabold text-[#161A8D] tabular-nums leading-tight"
+            className="text-lg font-extrabold text-[#171C91] tabular-nums leading-tight"
           >
             {value}
           </span>
-          <span className="text-xs text-[#5A657D]">{formatApplicantsLabel(value)}</span>
+          <span className="text-xs text-[#68758A]">{formatApplicantsLabel(value)}</span>
         </div>
 
         <button
@@ -170,7 +170,7 @@ export function ApplicantCounter({
           onClick={onDecrement}
           disabled={!canDecrement}
           aria-label="تقليل عدد المتقدمين"
-          className="w-12 h-12 rounded-lg bg-[#F4F8FC] text-[#0B0B0D] hover:bg-[#E8EDF4] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer shrink-0"
+          className="w-12 h-12 rounded-lg bg-[#F3F7FC] text-[#17213B] hover:bg-[#E6ECF4] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer shrink-0"
         >
           <Minus className="w-5 h-5" aria-hidden="true" />
         </button>
@@ -220,12 +220,12 @@ export function FileUploadField({
   };
 
   return (
-    <div className="w-full h-full flex flex-col rounded-2xl border border-[#E8EDF4] bg-[#F4F8FC] p-4 sm:p-5">
-      <label htmlFor={inputId} className="block text-sm sm:text-base font-bold text-[#0B0B0D] mb-1">
+    <div className="w-full h-full flex flex-col rounded-2xl border border-[#E6ECF4] bg-[#F3F7FC] p-4 sm:p-5">
+      <label htmlFor={inputId} className="block text-sm sm:text-base font-bold text-[#17213B] mb-1">
         {label}
         <span className="text-[#DC3545] mr-1" aria-hidden="true">*</span>
       </label>
-      <p className="text-xs sm:text-sm text-[#5A657D] leading-relaxed mb-3.5">{description}</p>
+      <p className="text-xs sm:text-sm text-[#68758A] leading-relaxed mb-3.5">{description}</p>
 
       <input
         ref={fileInputRef}
@@ -245,7 +245,7 @@ export function FileUploadField({
             'w-full flex-1 min-h-[124px] p-4 rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-center transition-colors cursor-pointer bg-white',
             error
               ? 'border-[#DC3545] bg-[#FDECEE]/50 hover:bg-[#FDECEE]/80'
-              : 'border-[#004AAD]/25 hover:border-[#161A8D] hover:bg-[#EFF4FF]',
+              : 'border-[#004AAD]/25 hover:border-[#171C91] hover:bg-[#EFF4FF]',
           ].join(' ')}
         >
           <div className="w-11 h-11 rounded-full bg-[#EAF4FF] border border-[#C5E5FF] flex items-center justify-center text-[#004AAD] mb-2">
@@ -262,10 +262,10 @@ export function FileUploadField({
               <img
                 src={document.previewUrl}
                 alt={`معاينة ${label}`}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg object-cover border border-[#E8EDF4] shrink-0 bg-white"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg object-cover border border-[#E6ECF4] shrink-0 bg-white"
               />
             ) : (
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-[#EAF4FF] border border-[#C5E5FF] flex items-center justify-center text-[#161A8D] shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-[#EAF4FF] border border-[#C5E5FF] flex items-center justify-center text-[#171C91] shrink-0">
                 {document.mimeType === 'application/pdf' ? (
                   <FileText className="w-6 h-6" aria-hidden="true" />
                 ) : (
@@ -274,7 +274,7 @@ export function FileUploadField({
               </div>
             )}
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-[#0B0B0D] truncate font-en text-right" dir="ltr">
+              <p className="text-sm font-bold text-[#17213B] truncate font-en text-right" dir="ltr">
                 {document.fileName}
               </p>
               <p className="text-xs text-[#16A36A] font-semibold mt-0.5 tabular-nums">
